@@ -1,0 +1,14 @@
+# tools
+ipython
+
+# chart
+python-nvd3
+
+# science toolkit
+numpy
+scipy
+scikit-learn
+matplotlib
+
+# for hull computation
+setuptools>=5.7
