@@ -1,9 +1,16 @@
+# profiler
+psutil
+line_profiler
+memory_profiler
+graphviz
+pycallgraph
+
 # tools
 ipython
 pyzmq
 
 # chart
-python-nvd3
+python-nvd3>=0.13.3
 
 # science toolkit
 numpy
