@@ -1,5 +1,6 @@
 # tools
 ipython
+pyzmq
 
 # chart
 python-nvd3
