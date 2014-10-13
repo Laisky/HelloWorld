@@ -3,10 +3,16 @@
 - [Fast numerical computations with Cython](http://conference.scipy.org/proceedings/SciPy2009/paper_2/)
 - [Cython三分钟入门](http://blog.csdn.net/gzlaiyonghao/article/details/4561611)
 
+
+```sh
+$ python setup.py build_ext --inplace
+$ ipython bench.ipy
+```
+
 You can analysis any python file by run
 
 ```sh
-cython -a origin.py
+$ cython -a origin.py
 ```
 
 Then you get this:
