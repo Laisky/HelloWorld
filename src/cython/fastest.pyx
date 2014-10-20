@@ -17,8 +17,7 @@ cdef float _great_circle(float lon1, float lat1, float lon2, float lat2):
     a = (90.0 - lat1) * (x)
     b = (90.0 - lat2) * (x)
     theta = (lon2 - lon1) * (x)
-    c = acosf((cosf(a) * cosf(b)) +
-                  (sinf(a) * sinf(b) * cosf(theta)))
+    c = acosf((cosf(a) * cosf(b)) + (sinf(a) * sinf(b) * cosf(theta)))
     return radius * c
 
 
