@@ -9,6 +9,9 @@ pycallgraph
 ipython
 pyzmq
 
+# pub / sub & event-driver
+blinker
+
 # chart
 python-nvd3>=0.13.3
 
