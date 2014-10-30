@@ -8,6 +8,7 @@ pycallgraph
 # tools
 ipython
 pyzmq
+pipe
 
 # pub / sub & event-driver
 blinker
