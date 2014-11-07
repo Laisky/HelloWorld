@@ -5,6 +5,9 @@ memory_profiler
 graphviz
 pycallgraph
 
+# async
+aiohttp
+
 # tools
 ipython
 pyzmq
