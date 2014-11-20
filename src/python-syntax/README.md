@@ -8,13 +8,16 @@ Python 的多线程和多进程实现
 
 [doc](https://docs.python.org/3/library/concurrent.futures.html)
 
-[example](http://htmlpreview.github.io/?https://github.com/Laisky/JUST_FOR_FUN/blob/master/src/python-syntax/concurrent.futures.html)
+[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/concurrent.futures.html)
 
+### descriptor
+
+[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/descriptor.html)
 
 ### Asyncio
 
 Python 3.x 的异步库
 
-[Tasks and coroutines](https://docs.python.org/3/library/asyncio-task.html)
+[doc](https://docs.python.org/3/library/asyncio-task.html)
 
-[example](http://htmlpreview.github.io/?https://github.com/Laisky/JUST_FOR_FUN/blob/master/src/python-syntax/Coroutine.html)
+[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/Coroutine.html)
