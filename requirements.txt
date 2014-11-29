@@ -8,6 +8,9 @@ pycallgraph
 # async
 aiohttp
 
+# web
+tornado
+
 # tools
 ipython
 pyzmq
@@ -24,6 +27,7 @@ numpy
 scipy
 scikit-learn
 matplotlib
+pandas
 
 # for hull computation
 setuptools>=5.7
