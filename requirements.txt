@@ -28,6 +28,7 @@ scipy
 scikit-learn
 matplotlib
 pandas
+numexpr
 
 # for hull computation
 setuptools>=5.7
