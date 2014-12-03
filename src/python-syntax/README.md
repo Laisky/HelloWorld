@@ -1,23 +1,22 @@
-# Python Syntax
+Python Syntax
+---
 
-一些 Python3 的语法和特性
+> 一些 Python3 的语法和特性
 
-### concurrent.futures
+#### concurrent.futures
 
-Python 的多线程和多进程实现
+> Python 的多线程和多进程实现
 
-[doc](https://docs.python.org/3/library/concurrent.futures.html)
+- [doc](https://docs.python.org/3/library/concurrent.futures.html)
+- [example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/concurrent.futures.html)
 
-[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/concurrent.futures.html)
+#### descriptor
 
-### descriptor
+- [example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/descriptor.html)
 
-[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/descriptor.html)
+#### Asyncio
 
-### Asyncio
+> Python 3.x 的异步库
 
-Python 3.x 的异步库
-
-[doc](https://docs.python.org/3/library/asyncio-task.html)
-
-[example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/Coroutine.html)
+- [doc](https://docs.python.org/3/library/asyncio-task.html)
+- [example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/python-syntax/Coroutine.html)
