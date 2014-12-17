@@ -1,0 +1,26 @@
+@charset "utf-8";
+/*will be compiler to css*/
+body {
+  background-color: #373737;
+}
+.box {
+  background: red;
+  width: 200px;
+  height: 200px;
+}
+.border {
+  border: solid 5px yellow;
+}
+.box1 {
+  background: red;
+  width: 200px;
+  height: 200px;
+  border: solid 5px yellow;
+}
+.box2 {
+  background: red;
+  width: 200px;
+  height: 200px;
+  border: solid 5px #008000;
+  margin-left: 20px;
+}

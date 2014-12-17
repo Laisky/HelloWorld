@@ -10,5 +10,5 @@ requires = [str(i.req) for i in parse_requirements('requirements.txt')
 
 setup(name='src',
       version='0.1',
-      package=find_packages('src'),
+      packages=find_packages('src'),
       install_requires=requires)

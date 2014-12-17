@@ -17,7 +17,7 @@ $ ipython bench.ipy
 $ ipython notebook notebook
 ```
 
-0. [simple example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/cython/Cython.html)
+0. [simple example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/python/src/cython/Cython.html)
 
 #### Profile Analysis
 
@@ -28,5 +28,5 @@ $ cython -a origin.py
 ```
 
 Then you get this:
-[cython profile analysis html - origin.py](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/cython/origin.html)
+[cython profile analysis html - origin.py](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/python/src/cython/origin.html)
 

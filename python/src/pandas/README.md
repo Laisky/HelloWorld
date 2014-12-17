@@ -11,4 +11,4 @@ $ pip install matplotlib
 
 #### 示例
 - matplotlib 绘图
-    - [example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/src/pandas/matplotlib.html)
+    - [example](http://htmlpreview.github.io/?https://github.com/Laisky/HelloWorld/blob/master/python/src/pandas/matplotlib.html)

@@ -13,6 +13,7 @@ tornado
 
 # tools
 ipython
+pygments
 pyzmq
 pipe
 

@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+/*will be compiler to css*/
+
+// this comment only appears in less
+body {
+    background-color: #373737;
+}
+
+// variable
+@var_width: 200px;
+@var_height: 200px;
+
+.box {
+    background: red;
+    width: @var_width;
+    height: @var_height;
+}
+
+// mixin
+.border {
+    border:solid 5px yellow;
+}
+
+.box1 {
+    .box;
+    .border;
+}
+
+// mixin with arguments
+.border_color(@b_color){
+    border: solid 5px @b_color;
+}
+
+// mixin with default arguments
+.box_margin(@margin: 20px){
+    margin-left: 20px;
+}
+
+.box2 {
+    .box;
+    .border_color(green);
+    .box_margin(); // .box_margin; also right
+}
