@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+/*will be compiler to css*/
+
+// this comment only appears in less
+body {
+    background-color: #373737;
+}
+
+// variable
+@var_width: 200px;
+@var_height: 200px;
+
+.box {
+    background: red;
+    width: @var_width;
+    height: @var_height;
+}
+
+// mixin
+.border {
+    border:solid 5px yellow;
+}
+
+.box1 {
+    .box;
+    .border;
+}
+
+// mixin with arguments
+.border_color(@b_color){
+    border: solid 5px @b_color;
+}
+
+// mixin with default arguments
+.box_margin(@margin: 20px){
+    margin-left: 20px;
+}
+
+.box2 {
+    .box;
+    .border_color(green);
+    .box_margin(); // .box_margin; also right
+}
+
+// 匹配模式
+// 根据参数来决定调用， switch-case 模式
+.triangle(top, @width: 5px, @color: red){
+    border-width: @width;
+    border-color: transparent transparent @color transparent;
+    border-style: dashed dashed solid dashed;
+}
+.triangle(right, @width: 5px, @color: red){
+    border-width: @width;
+    border-color: transparent transparent transparent @color;
+    border-style: dashed dashed dashed solid;
+}
+.triangle(buttom, @width: 5px, @color: red){
+    border-width: @width;
+    border-color: @color transparent transparent;
+    border-style: solid dashed dashed dashed;
+}
+.triangle(left, @width: 5px, @color: red){
+    border-width: @width;
+    border-color: transparent @color transparent transparent;
+    border-style: dashed solid dashed dashed;
+}
+.triangle(@_, @width: 5px, @color: red){
+    // @_ 表示全适配，无论实参是多少都执行
+    // 其他参数还是需要保留
+    height: 0px;
+    width: 0px;
+}
+
+.triangle_box {
+    // 调用
+    .triangle(top);
+}
+
+// 运算
+.box3 {
+    .box;
+    width: (@var_width + 5) / 2; // 不需要带单位
+    background: #ccc - 20;
+}
+
+// 嵌套
+.box4 {
+    .box;
+    span {
+        color: yellow;
+        // & 代表上一层选择器
+        &:hover {
+            background: #373737;
+        }
+    }
+    ul {
+        color: blue;
+    }
+    &_li:hover {
+        color: yellow;
+    }
+}
+
+// 使用 ~ 避免编译
+.test {
+    // 这一段会原样编译成 height: calc(200px - 50px);
+    height: ~"calc(200px - 50px)"
+}
+
+
+// 导入
+// @import "less" // import less.less
+// @import "base.css" // import base.css
+// @import (less) "base.css"
