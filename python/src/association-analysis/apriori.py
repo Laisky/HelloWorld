@@ -221,14 +221,7 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
     freq_sets = [sorted(i) for i in freq_sets]
     n_k_items_limit = 100000
     n_k_items = 1
-
-    # check length of k-items result
-    len_freq_sets = len(freq_sets)
-    len_k_items = int(len_freq_sets * (len_freq_sets - 1) / 2)
-    if len_k_items > n_k_items_limit:
-        retlist = [0] * n_k_items_limit
-    else:
-        retlist = [0] * len_k_items
+    retlist = [0] * n_k_items_limit
 
     for i, a in enumerate(freq_sets):
         F1 = a[: k - 2]  # first k-2 items of freq_sets[i]
@@ -247,12 +240,11 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
             if F1 == F2:  # if the first k-2 items are identical
                 # Merge the frequent itemsets.
                 retlist[n_k_items - 1] = frozenset(a) | frozenset(b)
-                if n_k_items < n_k_items_limit:
-                    n_k_items += 1
-                else:
+                n_k_items += 1
+                if n_k_items > n_k_items_limit:
                     break
 
-        if n_k_items == n_k_items_limit:
+        if n_k_items > n_k_items_limit:
             break
 
     log.debug('generate {} candidates'.format(n_k_items))
