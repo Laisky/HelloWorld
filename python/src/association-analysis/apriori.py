@@ -156,12 +156,11 @@ def support_prune(dataset, candidates, min_support, min_hconf,
     log.info('support_prune with min_supp {}, min_hconf {}'
              .format(min_support, min_hconf))
 
-    # updata support data
     len_dataset = len(dataset)
     len_each_cand = len(candidates[0])
+    n_items = 0
 
-    # total number of transactions in the dataset
-    retlist = []  # array for unpruned itemsets
+    retlist = [0] * len(candidates)
     for cand in candidates:
         supp_bits = np.ones(len_dataset, dtype=np.bool)
         supp_cand = []
@@ -182,10 +181,11 @@ def support_prune(dataset, candidates, min_support, min_hconf,
 
         if support >= min_support and hconf >= min_hconf:
             log.debug('save candidates: {}'.format(cand))
-            retlist.append(cand)
+            retlist[n_items] = cand
+            n_items += 1
 
     log.debug('save {} itemsets after prune'.format(len(retlist)))
-    return retlist
+    return retlist[: n_items]
 
 
 def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
@@ -218,7 +218,7 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
     log.info('apriori_gen for k {}'.format(k))
 
     freq_sets = [sorted(i) for i in freq_sets]
-    n_k_items_limit = 100000
+    n_k_items_limit = 1000000
     n_k_items = 1
     retlist = [0] * n_k_items_limit
 
