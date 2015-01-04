@@ -4,7 +4,6 @@
 # Modified from: http://goo.gl/7u27tb
 import sys
 import logging
-import datetime
 
 import numpy as np
 import pandas as pd
@@ -56,7 +55,7 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
         Ck = apriori_gen(F[k - 2], k, support_map, min_hconf,
                          single_item_supp_map)
         if len(Ck) == 0:
-            log.debug('no candidates')
+            log.debug('generate no candidates')
             break
 
         Fk = support_prune(D, Ck, min_support, min_hconf,
@@ -182,7 +181,7 @@ def support_prune(dataset, candidates, min_support, min_hconf,
             hconf = 1
 
         if support >= min_support and hconf >= min_hconf:
-            log.debug('save cand: {}'.format(cand))
+            log.debug('save candidates: {}'.format(cand))
             retlist.append(cand)
 
     log.debug('save {} itemsets after prune'.format(len(retlist)))
@@ -251,32 +250,22 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
     return retlist[: n_k_items - 1]
 
 
-def load_movie_data():
-    dataset = pd.read_csv(
-        '/Users/laisky/repo/caigen-lab/consume-analysis/data/ratings.dat',
-        # '../data/ratings.dat',
-        sep='::', parse_dates=['time'],
-        date_parser=lambda ts: datetime.datetime.fromtimestamp(int(ts))
-    )[['user', 'movie', 'rate']]
-    dataset = dataset[dataset['rate'] > 3][['user', 'movie']].\
-        groupby(['user'], as_index=False).\
-        agg(lambda vals: tuple(vals))
-
-    dataset = dataset['movie']
-    return dataset
-
-
 def load_b2b_data():
-    dataset = pd.read_csv(
-        '/Users/laisky/repo/caigen-lab/consume-analysis/data/b2b_总价(不含税).csv',
-        encoding='utf-8', parse_dates=['确认时间']
+    return pd.read_pickle(
+        '/Users/laisky/repo/caigen-lab/consume-analysis/data/b2b.pkl'
     )
 
-    dataset = dataset[['客户名称', '产品名称', '系统合同号']]
-    dataset['产品名称'] = pd.factorize(dataset['产品名称'])[0]
-    dataset = dataset.groupby(['客户名称', '系统合同号'], as_index=False).\
-        agg(lambda vals: tuple(set(vals)))['产品名称']
-    return dataset
+
+def load_movie_data():
+    return pd.read_pickle(
+        '/Users/laisky/repo/caigen-lab/consume-analysis/data/ratings.pkl'
+    )
+
+
+def load_merck_data():
+    return pd.read_pickle(
+        '/Users/laisky/repo/caigen-lab/consume-analysis/data/merck.pkl'
+    )
 
 
 def setup_log(log):
@@ -296,12 +285,7 @@ def main(min_conf=0.1):
     setup_log(log)
     # dataset = np.random.exponential(scale=10, size=(1000, 10)).\
     #     astype(np.int64)
-    dataset = load_b2b_data()
-    # dataset = load_movie_data()
-    # dataset = pd.read_pickle(
-    #     # '/Users/laisky/repo/caigen-lab/consume-analysis/data/b2b.pkl'
-    #     '../data/b2b.pkl'
-    # )
+    dataset = load_merck_data()
     r = apriori(dataset, min_support=0.00009, min_hconf=min_conf)
     log.info('min_conf: {}'.format(min_conf))
     log.info(sum([len(_) for _ in r[0]]))
