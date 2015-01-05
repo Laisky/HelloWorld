@@ -54,12 +54,8 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     while (len(F[k - 2]) > 0):
         Ck = apriori_gen(F[k - 2], k, support_map, min_hconf,
                          single_item_supp_map)
-        if len(Ck) == 0:
-            log.debug('generate no candidates')
-            break
-
         Fk = support_prune(D, Ck, min_support, min_hconf,
-                           support_map, single_item_supp_map)
+                           support_map, single_item_supp_map, k)
         F.append(Fk)
         k += 1
 
@@ -117,7 +113,7 @@ def create_candidates(dataset):
 
 
 def support_prune(dataset, candidates, min_support, min_hconf,
-                  support_map, single_item_supp_map):
+                  support_map, single_item_supp_map, k=None):
     """Returns all candidate itemsets that meet a minimum support threshold.
 
     By the apriori principle, if an itemset is frequent, then all of its
@@ -147,6 +143,8 @@ def support_prune(dataset, candidates, min_support, min_hconf,
     single_item_supp_map : dict
         The support data for each single candidate itemsets.
 
+    k : int
+
     Returns
     -------
     retlist : list
@@ -157,10 +155,10 @@ def support_prune(dataset, candidates, min_support, min_hconf,
              .format(min_support, min_hconf))
 
     len_dataset = len(dataset)
-    len_each_cand = len(candidates[0])
     n_items = 0
+    n_items_limit = 1000
 
-    retlist = [0] * len(candidates)
+    retlist = [0] * n_items_limit
     for cand in candidates:
         supp_bits = np.ones(len_dataset, dtype=np.bool)
         supp_cand = []
@@ -173,18 +171,23 @@ def support_prune(dataset, candidates, min_support, min_hconf,
         # Calculate the support of itemset cand.
         support = n_supp / len_dataset
 
-        if len_each_cand > 1:
+        if k:
             # Calculate h-confidence
             hconf = support / max(supp_cand)
         else:
             hconf = 1
 
         if support >= min_support and hconf >= min_hconf:
-            log.debug('save candidates: {}'.format(cand))
+            log.debug('{}. save candidates: {}'.format(n_items, cand))
             retlist[n_items] = cand
             n_items += 1
+            if n_items == n_items_limit:
+                break
 
-    log.debug('save {} itemsets after prune'.format(len(retlist)))
+        if n_items == n_items_limit:
+            break
+
+    log.debug('save {} itemsets after prune'.format(n_items))
     return retlist[: n_items]
 
 
@@ -218,9 +221,7 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
     log.info('apriori_gen for k {}'.format(k))
 
     freq_sets = [sorted(i) for i in freq_sets]
-    n_k_items_limit = 1000000
-    n_k_items = 1
-    retlist = [0] * n_k_items_limit
+    n_k_items = 0
 
     for i, a in enumerate(freq_sets):
         F1 = a[: k - 2]  # first k-2 items of freq_sets[i]
@@ -233,39 +234,26 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
                 min_supp = min([single_item_supp_map[item] for item in b])
                 upper_bound = min_supp / max_supp
                 if upper_bound < min_hconf:
-                    log.debug('prune by cross-support property')
                     continue
 
             if F1 == F2:  # if the first k-2 items are identical
                 # Merge the frequent itemsets.
-                retlist[n_k_items - 1] = frozenset(a) | frozenset(b)
+                yield (frozenset(a) | frozenset(b))
                 n_k_items += 1
-                if n_k_items > n_k_items_limit:
-                    break
-
-        if n_k_items > n_k_items_limit:
-            break
 
     log.debug('generate {} candidates'.format(n_k_items))
-    return retlist[: n_k_items - 1]
 
 
 def load_b2b_data():
-    return pd.read_pickle(
-        '/Users/laisky/repo/caigen-lab/consume-analysis/data/b2b.pkl'
-    )
+    return pd.read_pickle('./data/b2b.pkl')
 
 
 def load_movie_data():
-    return pd.read_pickle(
-        '/Users/laisky/repo/caigen-lab/consume-analysis/data/ratings.pkl'
-    )
+    return pd.read_pickle('./data/ratings.pkl')
 
 
 def load_merck_data():
-    return pd.read_pickle(
-        '/Users/laisky/repo/caigen-lab/consume-analysis/data/merck.pkl'
-    )
+    return pd.read_pickle('./data/merck.pkl')
 
 
 def setup_log(log):
@@ -285,7 +273,7 @@ def main(min_conf=0.1):
     setup_log(log)
     # dataset = np.random.exponential(scale=10, size=(1000, 10)).\
     #     astype(np.int64)
-    dataset = load_merck_data()
+    dataset = load_movie_data()
     r = apriori(dataset, min_support=0.00009, min_hconf=min_conf)
     log.info('min_conf: {}'.format(min_conf))
     log.info(sum([len(_) for _ in r[0]]))
@@ -298,10 +286,10 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.conf)
 
-    # import profile
-    # profile.run('main()', 'prof.txt')
-    # import pstats
-    # p = pstats.Stats("prof.txt")
-    # p.sort_stats("cumtime").print_stats()
+    import profile
+    profile.run('main()', 'prof.txt')
+    import pstats
+    p = pstats.Stats("prof.txt")
+    p.sort_stats("cumtime").print_stats()
 
-    main()
+    # main()
