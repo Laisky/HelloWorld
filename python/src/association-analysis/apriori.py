@@ -4,6 +4,7 @@
 # Modified from: http://goo.gl/7u27tb
 import sys
 import logging
+import operator
 
 import numpy as np
 import pandas as pd
@@ -236,8 +237,8 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
 
             # check cross-support property
             if k > 2:
-                max_supp = max([single_item_supp_map[item] for item in a])
-                min_supp = min([single_item_supp_map[item] for item in b])
+                max_supp = max(operator.itemgetter(*a)(single_item_supp_map))
+                min_supp = min(operator.itemgetter(*b)(single_item_supp_map))
                 upper_bound = min_supp / max_supp
                 if upper_bound < min_hconf:
                     continue
@@ -266,7 +267,7 @@ def mine_assoc_rules(freq_sets_ls, support_map, single_item_supp_map,
                      min_conf=0.2):
     rules = []
     len_dataset = len(next(iter(support_map.values())))
-    for freq_sets in freq_sets_ls:
+    for freq_sets in freq_sets_ls[1:]:
         for freq_set in freq_sets:
             for right in freq_set:
                 right = frozenset([right])
@@ -291,7 +292,7 @@ def generate_rules(left, right, rules, freq_set, support_map,
         rules.append(rule)
         log.debug('append rule: {}'.format(rule))
         n_rules += 1
-        if n_rules == n_rules_limit:
+        if n_rules == n_rules_limit or len(left) == 1:
             return
 
         for item in left:
