@@ -59,7 +59,7 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
         F.append(Fk)
         k += 1
 
-    return F, support_map
+    return F, support_map, single_item_supp_map
 
 
 def create_support_map(dataset, C1):
@@ -87,6 +87,14 @@ def create_support_map(dataset, C1):
     }
 
     return support_map, single_item_supp_map
+
+
+def load_supp(len_dataset, itemset, support_map):
+    supp_bits = np.ones(len_dataset, dtype=np.bool)
+    for item in itemset:
+        np.bitwise_and(supp_bits, support_map[item], supp_bits)
+
+    return supp_bits.sum()
 
 
 def create_candidates(dataset):
@@ -167,10 +175,8 @@ def support_prune(dataset, candidates, min_support, min_hconf,
             supp_cand.append(single_item_supp_map[item])
 
         n_supp = supp_bits.sum()
-
         # Calculate the support of itemset cand.
         support = n_supp / len_dataset
-
         if k:
             # Calculate h-confidence
             hconf = support / max(supp_cand)
@@ -256,6 +262,48 @@ def load_merck_data():
     return pd.read_pickle('./data/merck.pkl')
 
 
+def mine_assoc_rules(freq_sets_ls, support_map, single_item_supp_map,
+                     min_conf=0.2):
+    rules = []
+    len_dataset = len(next(iter(support_map.values())))
+    for freq_sets in freq_sets_ls:
+        for freq_set in freq_sets:
+            for right in freq_set:
+                right = frozenset([right])
+                left = freq_set - right
+
+                generate_rules(
+                    left, right, rules, freq_set, support_map,
+                    single_item_supp_map,
+                    min_conf, len_dataset, n_rules_limit=10000, n_rules=0
+                )
+    return rules
+
+
+def generate_rules(left, right, rules, freq_set, support_map,
+                   single_item_supp_map,
+                   min_conf, len_dataset, n_rules_limit, n_rules):
+    conf = load_supp(len_dataset, freq_set, support_map) /\
+        load_supp(len_dataset, left, support_map)
+
+    if conf >= min_conf:
+        rule = (left, right, conf)
+        rules.append(rule)
+        log.debug('append rule: {}'.format(rule))
+        n_rules += 1
+        if n_rules == n_rules_limit:
+            return
+
+        for item in left:
+            new_left = left.difference([item])
+            new_right = right.union([item])
+            generate_rules(
+                new_left, new_right, rules, freq_set, support_map,
+                single_item_supp_map,
+                min_conf, len_dataset, n_rules_limit, n_rules=n_rules
+            )
+
+
 def setup_log(log):
     log.setLevel(logging.DEBUG)
     ch = logging.StreamHandler(sys.stdout)
@@ -267,16 +315,20 @@ def setup_log(log):
     log.addHandler(ch)
 
 
-def main(min_conf=0.1):
+def main(min_hconf=0.1, min_conf=0.2):
     logging.basicConfig(filename='apriori_{:1.2f}.log'.format(min_conf),
                         level=logging.DEBUG)
     setup_log(log)
     # dataset = np.random.exponential(scale=10, size=(1000, 10)).\
     #     astype(np.int64)
-    dataset = load_movie_data()
-    r = apriori(dataset, min_support=0.00009, min_hconf=min_conf)
+    dataset = load_merck_data()
+    freq_sets_ls, support_map, single_item_supp_map =\
+        apriori(dataset, min_support=0.00009, min_hconf=min_hconf)
+    rules = mine_assoc_rules(
+        freq_sets_ls, support_map, single_item_supp_map, min_conf
+    )
     log.info('min_conf: {}'.format(min_conf))
-    log.info(sum([len(_) for _ in r[0]]))
+    log.info(sum([len(_) for _ in freq_sets_ls]))
     # pprint.pprint(r[0])
 
 
@@ -286,10 +338,10 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.conf)
 
-    import profile
-    profile.run('main()', 'prof.txt')
-    import pstats
-    p = pstats.Stats("prof.txt")
-    p.sort_stats("cumtime").print_stats()
+    # import profile
+    # profile.run('main()', 'prof.txt')
+    # import pstats
+    # p = pstats.Stats("prof.txt")
+    # p.sort_stats("cumtime").print_stats()
 
-    # main()
+    main()
