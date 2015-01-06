@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Modified from: http://goo.gl/7u27tb
+# Modified from: https://github.com/cse40647/cse40647
 import sys
 import logging
 import functools
@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 
 
-N_CANDIDATES_LIMITE = 200
-N_RULES_LIMIT = 10000
+N_CANDIDATES_LIMITE = 200  # limit of each k pruned freq_sets
+N_RULES_LIMIT = 10000  # limit of number of all rules
 
 
 log = logging.getLogger(__name__)
@@ -41,8 +41,16 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     F : list
         The list of frequent itemsets.
 
-    support_map : dict
-        The support data for all candidate itemsets.
+    load_supp : function
+        load_supp(itemset)
+            Arguments
+            ---------
+            itemset: int / frozenset
+
+            Returns
+            -------
+            support: float
+                support ratio
 
     References
     ----------
@@ -51,9 +59,9 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     """
     C1 = create_candidates(dataset)
     D = list(map(set, dataset))
-    support_map, single_item_supp_map = create_support_map(D, C1)
+    support_map, item_supp_map = create_support_map(D, C1)
     load_supp = functools.partial(_load_supp, len(dataset), support_map,
-                                  single_item_supp_map)
+                                  item_supp_map)
     F1 = support_prune(C1, min_support, min_hconf, load_supp)
     F = [F1]
     k = 2
@@ -74,10 +82,16 @@ def create_support_map(dataset, C1):
     dataset: list
 
     C1: list
+
+    Returns
+    -------
+    support_map: dict
+
+    item_supp_map: dict
     """
-    len_dataset = len(dataset)
+    len_all_trasactions = len(dataset)
     support_map = {
-        list(item)[0]: np.zeros(len_dataset, dtype=np.bool)
+        list(item)[0]: np.zeros(len_all_trasactions, dtype=np.bool)
         for item in C1
     }
 
@@ -85,26 +99,43 @@ def create_support_map(dataset, C1):
         for item in trac:
             support_map[item][i] = 1
 
-    single_item_supp_map = {
-        item: support_map[item].sum() / len_dataset
+    item_supp_map = {
+        item: support_map[item].sum() / len_all_trasactions
         for item in support_map
     }
 
-    return support_map, single_item_supp_map
+    return support_map, item_supp_map
 
 
-def _load_supp(len_dataset, support_map, single_item_supp_map, itemset):
+def _load_supp(len_all_trasactions, support_map, item_supp_map, itemset):
+    """Compute support ratio for item of itemset
+
+    Parameters
+    ----------
+    len_all_trasactions: int
+        length of trasactions
+
+    support_map: dict
+
+    item_supp_map: dict
+
+    itemset: int / frozenset
+
+    Returns
+    -------
+    support: float
+    """
     if not isinstance(itemset, frozenset):
-        return single_item_supp_map[itemset]
+        return item_supp_map[itemset]
 
     if len(itemset) == 1:
-        return single_item_supp_map[list(itemset)[0]]
+        return item_supp_map[list(itemset)[0]]
 
-    supp_bits = np.ones(len_dataset, dtype=np.bool)
+    supp_bits = np.ones(len_all_trasactions, dtype=np.bool)
     for item in itemset:
         np.bitwise_and(supp_bits, support_map[item], supp_bits)
 
-    return supp_bits.sum() / len_dataset
+    return supp_bits.sum() / len_all_trasactions
 
 
 def create_candidates(dataset):
@@ -157,7 +188,7 @@ def support_prune(candidates, min_support, min_hconf, load_supp, k=None):
     support_map : dict
         The support data for all candidate itemsets.
 
-    single_item_supp_map : dict
+    item_supp_map : dict
         The support data for each single candidate itemsets.
 
     k : int
@@ -218,11 +249,9 @@ def apriori_gen(freq_sets, k, load_supp, min_hconf):
     k : integer
         The cardinality of the current itemsets being evaluated.
 
-    support_map : dict
+    load_supp: func
 
     min_hconf : float
-
-    single_item_supp_map : dict
 
     Returns
     -------
@@ -284,8 +313,7 @@ def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence,
     H : list
         A list of frequent itemsets (of a particular length).
 
-    support_data : dict
-        The support data for all candidate itemsets.
+    load_supp : func
 
     rules : list
         A potentially incomplete set of candidate rules above the minimum
@@ -293,6 +321,12 @@ def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence,
 
     min_confidence : float
         The minimum confidence threshold. Defaults to 0.5.
+
+    n_rules: int
+
+    Returns
+    -------
+    n_rules: int
     """
     m = len(H[0])
     if (len(freq_set) > (m + 1)):
@@ -335,8 +369,7 @@ def calc_confidence(freq_set, H, load_supp, rules, min_confidence, n_rules):
     H : list
         A list of frequent itemsets (of a particular length).
 
-    min_support : float
-        The minimum support threshold.
+    load_supp : func
 
     rules : list
         A potentially incomplete set of candidate rules above the minimum
@@ -345,10 +378,14 @@ def calc_confidence(freq_set, H, load_supp, rules, min_confidence, n_rules):
     min_confidence : float
         The minimum confidence threshold. Defaults to 0.5.
 
+    n_rules: int
+
     Returns
     -------
     pruned_H : list
         The list of candidate rules above the minimum confidence threshold.
+
+    n_rules: int
     """
     pruned_H = []
     for conseq in H:
