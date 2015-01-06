@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 
-N_CANDIDATES_LIMITE = 10000
+N_CANDIDATES_LIMITE = 200
 N_RULES_LIMIT = 10000
 
 
@@ -54,13 +54,12 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     support_map, single_item_supp_map = create_support_map(D, C1)
     load_supp = functools.partial(_load_supp, len(dataset), support_map,
                                   single_item_supp_map)
-    F1 = support_prune(D, C1, min_support, min_hconf, load_supp, support_map)
+    F1 = support_prune(C1, min_support, min_hconf, load_supp)
     F = [F1]
     k = 2
     while (len(F[k - 2]) > 0):
         Ck = apriori_gen(F[k - 2], k, load_supp, min_hconf)
-        Fk = support_prune(D, Ck, min_support, min_hconf,
-                           load_supp, support_map, k)
+        Fk = support_prune(Ck, min_support, min_hconf, load_supp, k)
         F.append(Fk)
         k += 1
 
@@ -105,7 +104,7 @@ def _load_supp(len_dataset, support_map, single_item_supp_map, itemset):
     for item in itemset:
         np.bitwise_and(supp_bits, support_map[item], supp_bits)
 
-    return supp_bits.sum()
+    return supp_bits.sum() / len_dataset
 
 
 def create_candidates(dataset):
@@ -131,8 +130,7 @@ def create_candidates(dataset):
     return [frozenset([_]) for _ in c1]
 
 
-def support_prune(dataset, candidates, min_support, min_hconf,
-                  load_supp, support_map, k=None):
+def support_prune(candidates, min_support, min_hconf, load_supp, k=None):
     """Returns all candidate itemsets that meet a minimum support threshold.
 
     By the apriori principle, if an itemset is frequent, then all of its
@@ -173,24 +171,20 @@ def support_prune(dataset, candidates, min_support, min_hconf,
     log.info('support_prune with min_supp {}, min_hconf {}'
              .format(min_support, min_hconf))
 
-    len_dataset = len(dataset)
     n_items = 0
     n_items_limit = N_CANDIDATES_LIMITE
 
-    retlist = [0] * n_items_limit
-    for cand in candidates:
-        supp_bits = np.ones(len_dataset, dtype=np.bool)
-        supp_cand = []
-        for item in cand:
-            np.bitwise_and(supp_bits, support_map[item], supp_bits)
-            supp_cand.append(load_supp(item))
+    if k:
+        retlist = [0] * n_items_limit
+    else:
+        retlist = [0] * len(candidates)
 
-        n_supp = supp_bits.sum()
+    for cand in candidates:
         # Calculate the support of itemset cand.
-        support = n_supp / len_dataset
+        support = load_supp(cand)
         if k:
             # Calculate h-confidence
-            hconf = support / max(supp_cand)
+            hconf = support / max(map(load_supp, cand))
         else:
             hconf = 1
 
@@ -198,10 +192,10 @@ def support_prune(dataset, candidates, min_support, min_hconf,
             log.debug('{}. save candidates: {}'.format(n_items, cand))
             retlist[n_items] = cand
             n_items += 1
-            if n_items == n_items_limit:
+            if k and n_items == n_items_limit:
                 break
 
-        if n_items == n_items_limit:
+        if k and n_items == n_items_limit:
             break
 
     log.debug('save {} itemsets after prune'.format(n_items))
@@ -278,7 +272,8 @@ def load_random_data():
         astype(np.int64)
 
 
-def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence):
+def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence,
+                      n_rules):
     """Generates a set of candidate rules.
 
     Parameters
@@ -302,19 +297,23 @@ def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence):
     m = len(H[0])
     if (len(freq_set) > (m + 1)):
         Hmp1 = apriori_gen(H, m + 1, load_supp, 0)
-        Hmp1 = calc_confidence(freq_set, Hmp1, load_supp, rules,
-                               min_confidence)
-        if len(Hmp1) > 1:
+        Hmp1, n_rules = calc_confidence(freq_set, Hmp1, load_supp, rules,
+                                        min_confidence, n_rules)
+
+        if n_rules < N_RULES_LIMIT and len(Hmp1) > 1:
             # If there are candidate rules above the minimum confidence
             # threshold, recurse on the list of these candidate rules.
-            rules_from_conseq(freq_set, Hmp1, load_supp, rules,
-                              min_confidence)
+            n_rules = rules_from_conseq(
+                freq_set, Hmp1, load_supp, rules, min_confidence, n_rules
+            )
     elif m == 1:
-        Hmp1 = calc_confidence(freq_set, H, load_supp, rules,
-                               min_confidence)
+        Hmp1, n_rules = calc_confidence(freq_set, H, load_supp, rules,
+                                        min_confidence, n_rules)
+
+    return n_rules
 
 
-def calc_confidence(freq_set, H, load_supp, rules, min_confidence):
+def calc_confidence(freq_set, H, load_supp, rules, min_confidence, n_rules):
     """Evaluates the generated rules.
 
     One measurement for quantifying the goodness of association rules is
@@ -357,10 +356,14 @@ def calc_confidence(freq_set, H, load_supp, rules, min_confidence):
         if conf >= min_confidence:
             rule = (freq_set - conseq, conseq, conf)
             rules.append(rule)
-            log.debug('append rule: {}'.format(rule))
+            n_rules += 1
+            log.debug('{}. save rule: {}'.format(n_rules, rule))
             pruned_H.append(conseq)
 
-    return pruned_H
+            if n_rules >= N_RULES_LIMIT:
+                break
+
+    return pruned_H, n_rules
 
 
 def generate_rules(F, load_supp, min_confidence=0.5):
@@ -388,15 +391,21 @@ def generate_rules(F, load_supp, min_confidence=0.5):
         The list of candidate rules above the minimum confidence threshold.
     """
     rules = []
+    n_rules = 0
     for i in range(1, len(F)):
         for freq_set in F[i]:
             H1 = [frozenset([itemset]) for itemset in freq_set]
             if (i > 1):
-                rules_from_conseq(freq_set, H1, load_supp, rules,
-                                  min_confidence)
+                n_rules = rules_from_conseq(
+                    freq_set, H1, load_supp, rules, min_confidence, n_rules
+                )
             else:
-                calc_confidence(freq_set, H1, load_supp, rules,
-                                min_confidence)
+                Hmp1, n_rules = calc_confidence(
+                    freq_set, H1, load_supp, rules, min_confidence, n_rules
+                )
+
+            if n_rules >= N_RULES_LIMIT:
+                return rules
 
     return rules
 
@@ -416,13 +425,15 @@ def main(min_hconf=0.2, min_conf=0.2):
     logging.basicConfig(filename='apriori_{:1.2f}.log'.format(min_conf),
                         level=logging.DEBUG)
     setup_log(log)
-    dataset = load_merck_data()
+    dataset = load_b2b_data()
     freq_sets_ls, load_supp =\
-        apriori(dataset, min_support=0, min_hconf=min_hconf)
+        apriori(dataset, min_support=0.00009, min_hconf=min_hconf)
     rules = generate_rules(freq_sets_ls, load_supp, min_conf)
     log.info('min_conf: {}'.format(min_conf))
-    log.info(sum([len(_) for _ in freq_sets_ls]))
-    log.info(len(rules))
+    log.info('length of frequent set: {}'.
+             format(sum([len(_) for _ in freq_sets_ls])))
+    log.info('length of rules: {}'.
+             format(len(rules)))
     # pprint.pprint(r[0])
 
 
@@ -432,10 +443,10 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.conf)
 
-    import profile
-    profile.run('main()', 'prof.txt')
-    import pstats
-    p = pstats.Stats("prof.txt")
-    p.sort_stats("cumtime").print_stats()
+    # import profile
+    # profile.run('main()', 'prof.txt')
+    # import pstats
+    # p = pstats.Stats("prof.txt")
+    # p.sort_stats("cumtime").print_stats()
 
-    # main()
+    main()
