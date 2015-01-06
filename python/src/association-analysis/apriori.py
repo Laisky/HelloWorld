@@ -4,10 +4,14 @@
 # Modified from: http://goo.gl/7u27tb
 import sys
 import logging
-import operator
+import functools
 
 import numpy as np
 import pandas as pd
+
+
+N_CANDIDATES_LIMITE = 10000
+N_RULES_LIMIT = 10000
 
 
 log = logging.getLogger(__name__)
@@ -48,19 +52,19 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     C1 = create_candidates(dataset)
     D = list(map(set, dataset))
     support_map, single_item_supp_map = create_support_map(D, C1)
-    F1 = support_prune(D, C1, min_support, min_hconf,
-                       support_map, single_item_supp_map)
+    load_supp = functools.partial(_load_supp, len(dataset), support_map,
+                                  single_item_supp_map)
+    F1 = support_prune(D, C1, min_support, min_hconf, load_supp, support_map)
     F = [F1]
     k = 2
     while (len(F[k - 2]) > 0):
-        Ck = apriori_gen(F[k - 2], k, support_map, min_hconf,
-                         single_item_supp_map)
+        Ck = apriori_gen(F[k - 2], k, load_supp, min_hconf)
         Fk = support_prune(D, Ck, min_support, min_hconf,
-                           support_map, single_item_supp_map, k)
+                           load_supp, support_map, k)
         F.append(Fk)
         k += 1
 
-    return F, support_map, single_item_supp_map
+    return F, load_supp
 
 
 def create_support_map(dataset, C1):
@@ -90,7 +94,13 @@ def create_support_map(dataset, C1):
     return support_map, single_item_supp_map
 
 
-def load_supp(len_dataset, itemset, support_map):
+def _load_supp(len_dataset, support_map, single_item_supp_map, itemset):
+    if not isinstance(itemset, frozenset):
+        return single_item_supp_map[itemset]
+
+    if len(itemset) == 1:
+        return single_item_supp_map[list(itemset)[0]]
+
     supp_bits = np.ones(len_dataset, dtype=np.bool)
     for item in itemset:
         np.bitwise_and(supp_bits, support_map[item], supp_bits)
@@ -122,7 +132,7 @@ def create_candidates(dataset):
 
 
 def support_prune(dataset, candidates, min_support, min_hconf,
-                  support_map, single_item_supp_map, k=None):
+                  load_supp, support_map, k=None):
     """Returns all candidate itemsets that meet a minimum support threshold.
 
     By the apriori principle, if an itemset is frequent, then all of its
@@ -165,7 +175,7 @@ def support_prune(dataset, candidates, min_support, min_hconf,
 
     len_dataset = len(dataset)
     n_items = 0
-    n_items_limit = 1000
+    n_items_limit = N_CANDIDATES_LIMITE
 
     retlist = [0] * n_items_limit
     for cand in candidates:
@@ -173,7 +183,7 @@ def support_prune(dataset, candidates, min_support, min_hconf,
         supp_cand = []
         for item in cand:
             np.bitwise_and(supp_bits, support_map[item], supp_bits)
-            supp_cand.append(single_item_supp_map[item])
+            supp_cand.append(load_supp(item))
 
         n_supp = supp_bits.sum()
         # Calculate the support of itemset cand.
@@ -198,7 +208,7 @@ def support_prune(dataset, candidates, min_support, min_hconf,
     return retlist[: n_items]
 
 
-def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
+def apriori_gen(freq_sets, k, load_supp, min_hconf):
     """Generates candidate itemsets (via the F_k-1 x F_k-1 method).
 
     This operation generates new candidate k-itemsets based on the frequent
@@ -237,8 +247,8 @@ def apriori_gen(freq_sets, k, support_map, min_hconf, single_item_supp_map):
 
             # check cross-support property
             if k > 2:
-                max_supp = max(operator.itemgetter(*a)(single_item_supp_map))
-                min_supp = min(operator.itemgetter(*b)(single_item_supp_map))
+                max_supp = max(map(load_supp, a))
+                min_supp = min(map(load_supp, b))
                 upper_bound = min_supp / max_supp
                 if upper_bound < min_hconf:
                     continue
@@ -263,46 +273,132 @@ def load_merck_data():
     return pd.read_pickle('./data/merck.pkl')
 
 
-def mine_assoc_rules(freq_sets_ls, support_map, single_item_supp_map,
-                     min_conf=0.2):
+def load_random_data():
+    return np.random.exponential(scale=10, size=(1000, 10)).\
+        astype(np.int64)
+
+
+def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence):
+    """Generates a set of candidate rules.
+
+    Parameters
+    ----------
+    freq_set : frozenset
+        The complete list of frequent itemsets.
+
+    H : list
+        A list of frequent itemsets (of a particular length).
+
+    support_data : dict
+        The support data for all candidate itemsets.
+
+    rules : list
+        A potentially incomplete set of candidate rules above the minimum
+        confidence threshold.
+
+    min_confidence : float
+        The minimum confidence threshold. Defaults to 0.5.
+    """
+    m = len(H[0])
+    if (len(freq_set) > (m + 1)):
+        Hmp1 = apriori_gen(H, m + 1, load_supp, 0)
+        Hmp1 = calc_confidence(freq_set, Hmp1, load_supp, rules,
+                               min_confidence)
+        if len(Hmp1) > 1:
+            # If there are candidate rules above the minimum confidence
+            # threshold, recurse on the list of these candidate rules.
+            rules_from_conseq(freq_set, Hmp1, load_supp, rules,
+                              min_confidence)
+    elif m == 1:
+        Hmp1 = calc_confidence(freq_set, H, load_supp, rules,
+                               min_confidence)
+
+
+def calc_confidence(freq_set, H, load_supp, rules, min_confidence):
+    """Evaluates the generated rules.
+
+    One measurement for quantifying the goodness of association rules is
+    confidence. The confidence for a rule 'P implies H' (P -> H) is defined as
+    the support for P and H divided by the support for P
+    (support (P|H) / support(P)), where the | symbol denotes the set union
+    (thus P|H means all the items in set P or in set H).
+
+    To calculate the confidence, we iterate through the frequent itemsets and
+    associated support data. For each frequent itemset, we divide the support
+    of the itemset by the support of the antecedent (left-hand-side of the
+    rule).
+
+    Parameters
+    ----------
+    freq_set : frozenset
+        The complete list of frequent itemsets.
+
+    H : list
+        A list of frequent itemsets (of a particular length).
+
+    min_support : float
+        The minimum support threshold.
+
+    rules : list
+        A potentially incomplete set of candidate rules above the minimum
+        confidence threshold.
+
+    min_confidence : float
+        The minimum confidence threshold. Defaults to 0.5.
+
+    Returns
+    -------
+    pruned_H : list
+        The list of candidate rules above the minimum confidence threshold.
+    """
+    pruned_H = []
+    for conseq in H:
+        conf = load_supp(freq_set) / load_supp(freq_set - conseq)
+        if conf >= min_confidence:
+            rule = (freq_set - conseq, conseq, conf)
+            rules.append(rule)
+            log.debug('append rule: {}'.format(rule))
+            pruned_H.append(conseq)
+
+    return pruned_H
+
+
+def generate_rules(F, load_supp, min_confidence=0.5):
+    """Generates a set of candidate rules from a list of frequent itemsets.
+
+    For each frequent itemset, we calculate the confidence of using a
+    particular item as the rule consequent (right-hand-side of the rule). By
+    testing and merging the remaining rules, we recursively create a list of
+    pruned rules.
+
+    Parameters
+    ----------
+    F : list
+        A list of frequent itemsets.
+
+    support_data : dict
+        The corresponding support data for the frequent itemsets (L).
+
+    min_confidence : float
+        The minimum confidence threshold. Defaults to 0.5.
+
+    Returns
+    -------
+    rules : list
+        The list of candidate rules above the minimum confidence threshold.
+    """
     rules = []
-    len_dataset = len(next(iter(support_map.values())))
-    for freq_sets in freq_sets_ls[1:]:
-        for freq_set in freq_sets:
-            for right in freq_set:
-                right = frozenset([right])
-                left = freq_set - right
+    for i in range(1, len(F)):
+        for freq_set in F[i]:
+            H1 = [frozenset([itemset]) for itemset in freq_set]
+            if (i > 1):
+                rules_from_conseq(freq_set, H1, load_supp, rules,
+                                  min_confidence)
+            else:
+                calc_confidence(freq_set, H1, load_supp, rules,
+                                min_confidence)
 
-                generate_rules(
-                    left, right, rules, freq_set, support_map,
-                    single_item_supp_map,
-                    min_conf, len_dataset, n_rules_limit=10000, n_rules=0
-                )
     return rules
-
-
-def generate_rules(left, right, rules, freq_set, support_map,
-                   single_item_supp_map,
-                   min_conf, len_dataset, n_rules_limit, n_rules):
-    conf = load_supp(len_dataset, freq_set, support_map) /\
-        load_supp(len_dataset, left, support_map)
-
-    if conf >= min_conf:
-        rule = (left, right, conf)
-        rules.append(rule)
-        log.debug('append rule: {}'.format(rule))
-        n_rules += 1
-        if n_rules == n_rules_limit or len(left) == 1:
-            return
-
-        for item in left:
-            new_left = left.difference([item])
-            new_right = right.union([item])
-            generate_rules(
-                new_left, new_right, rules, freq_set, support_map,
-                single_item_supp_map,
-                min_conf, len_dataset, n_rules_limit, n_rules=n_rules
-            )
 
 
 def setup_log(log):
@@ -316,20 +412,17 @@ def setup_log(log):
     log.addHandler(ch)
 
 
-def main(min_hconf=0.1, min_conf=0.2):
+def main(min_hconf=0.2, min_conf=0.2):
     logging.basicConfig(filename='apriori_{:1.2f}.log'.format(min_conf),
                         level=logging.DEBUG)
     setup_log(log)
-    # dataset = np.random.exponential(scale=10, size=(1000, 10)).\
-    #     astype(np.int64)
     dataset = load_merck_data()
-    freq_sets_ls, support_map, single_item_supp_map =\
-        apriori(dataset, min_support=0.00009, min_hconf=min_hconf)
-    rules = mine_assoc_rules(
-        freq_sets_ls, support_map, single_item_supp_map, min_conf
-    )
+    freq_sets_ls, load_supp =\
+        apriori(dataset, min_support=0, min_hconf=min_hconf)
+    rules = generate_rules(freq_sets_ls, load_supp, min_conf)
     log.info('min_conf: {}'.format(min_conf))
     log.info(sum([len(_) for _ in freq_sets_ls]))
+    log.info(len(rules))
     # pprint.pprint(r[0])
 
 
@@ -339,10 +432,10 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.conf)
 
-    # import profile
-    # profile.run('main()', 'prof.txt')
-    # import pstats
-    # p = pstats.Stats("prof.txt")
-    # p.sort_stats("cumtime").print_stats()
+    import profile
+    profile.run('main()', 'prof.txt')
+    import pstats
+    p = pstats.Stats("prof.txt")
+    p.sort_stats("cumtime").print_stats()
 
-    main()
+    # main()
