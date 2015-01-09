@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 
-N_CANDIDATES_LIMITE = 200  # limit of each k pruned freq_sets
+N_CANDIDATES_LIMITE = 2000  # limit of each k pruned freq_sets
 N_RULES_LIMIT = 10000  # limit of number of all rules
 
 
@@ -57,12 +57,12 @@ def apriori(dataset, min_support=0.5, min_hconf=0.5):
     .. [1] R. Agrawal, R. Srikant, "Fast Algorithms for Mining Association
            Rules", 1994.
     """
-    C1 = create_candidates(dataset)
-    D = list(map(set, dataset))
-    support_map, item_supp_map = create_support_map(D, C1)
+    candidates = create_candidates(dataset)
+    trasactions = list(map(set, dataset))
+    support_map, item_supp_map = create_support_map(trasactions, candidates)
     load_supp = functools.partial(_load_supp, len(dataset), support_map,
                                   item_supp_map)
-    F1 = support_prune(C1, min_support, min_hconf, load_supp)
+    F1 = support_prune(candidates, min_support, min_hconf, load_supp)
     F = [F1]
     k = 2
     while (len(F[k - 2]) > 0):
@@ -284,23 +284,6 @@ def apriori_gen(freq_sets, k, load_supp, min_hconf):
     log.debug('generate {} candidates'.format(n_k_items))
 
 
-def load_b2b_data():
-    return pd.read_pickle('./data/b2b.pkl')
-
-
-def load_movie_data():
-    return pd.read_pickle('./data/ratings.pkl')
-
-
-def load_merck_data():
-    return pd.read_pickle('./data/merck.pkl')
-
-
-def load_random_data():
-    return np.random.exponential(scale=10, size=(1000, 10)).\
-        astype(np.int64)
-
-
 def rules_from_conseq(freq_set, H, load_supp, rules, min_confidence,
                       n_rules):
     """Generates a set of candidate rules.
@@ -448,6 +431,8 @@ def generate_rules(F, load_supp, min_confidence=0.5):
 
 
 def setup_log(log):
+    # logging.basicConfig(filename='apriori_{:1.2f}.log'.format(min_conf),
+    #                     level=logging.DEBUG)
     log.setLevel(logging.DEBUG)
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
@@ -458,11 +443,27 @@ def setup_log(log):
     log.addHandler(ch)
 
 
+def load_b2b_data():
+    return pd.read_pickle('./data/b2b.pkl')
+
+
+def load_movie_data():
+    return pd.read_pickle('./data/ratings.pkl')
+
+
+def load_merck_data():
+    return pd.read_pickle('./data/merck.pkl')
+
+
+def load_random_data():
+    return np.random.exponential(scale=10, size=(10000, 20)).\
+        astype(np.int64)
+
+
 def main(min_hconf=0.2, min_conf=0.2):
-    logging.basicConfig(filename='apriori_{:1.2f}.log'.format(min_conf),
-                        level=logging.DEBUG)
     setup_log(log)
-    dataset = load_b2b_data()
+    dataset = load_random_data()
+
     freq_sets_ls, load_supp =\
         apriori(dataset, min_support=0.00009, min_hconf=min_hconf)
     rules = generate_rules(freq_sets_ls, load_supp, min_conf)
@@ -480,10 +481,10 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.conf)
 
-    # import profile
-    # profile.run('main()', 'prof.txt')
-    # import pstats
-    # p = pstats.Stats("prof.txt")
-    # p.sort_stats("cumtime").print_stats()
+    import profile
+    profile.run('main()', 'prof.txt')
+    import pstats
+    p = pstats.Stats("prof.txt")
+    p.sort_stats("cumtime").print_stats()
 
-    main()
+    # main()
