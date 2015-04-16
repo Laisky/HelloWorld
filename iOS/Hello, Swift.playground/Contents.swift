@@ -170,7 +170,17 @@ func funcCanChangeArgs(inout #arg: String) {
 var origArg = "ohohoh"
 funcCanChangeArgs(arg: &origArg)
 
-func newExtendFunc(externalFunc: String ->nil){}
+func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
+    func stepForward(input: Int) -> Int { return input + 1 }
+    func stepBackward(input: Int) -> Int { return input - 1 }
+    return backwards ? stepBackward : stepForward
+}
+
+// closure
+var names = [1,4,5,2,3]
+var reversed = sorted( names, { (s1: String, s2: String) -> Bool in return s1 > s2 } )
+reversed = sorted(names, { s1, s2 in return s1 > s2 } )
+
 
 
 
