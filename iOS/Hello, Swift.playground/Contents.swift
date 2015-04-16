@@ -27,6 +27,9 @@ let hexadecimalInteger = 0x11     // 十六进制的17
 var myOptional: Int? = 404
 myOptional = nil
 assert(true, "something wrong")
+var myOptDict = [1: 2]
+myOptDict[3]
+//myOptDict[3]!   will raise ERROR
 
 // 可选绑定
 //var possibleNumber = "abc"
@@ -178,8 +181,42 @@ func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
 
 // closure
 var names = [1,4,5,2,3]
-var reversed = sorted( names, { (s1: String, s2: String) -> Bool in return s1 > s2 } )
+sorted(names)
+
+func backwards(s1: Int, s2: Int) -> Bool {
+    return s1 > s2
+}
+var reversed = sorted(names, backwards)
+reversed = sorted( names, { (s1: Int, s2: Int) -> Bool in return s1 > s2 } )
 reversed = sorted(names, { s1, s2 in return s1 > s2 } )
+reversed = sorted(names, { $0 > $1 } )
+reversed = sorted(names, >)
+reversed = sorted(names) { $0 > $1 }
+
+reversed.map {
+    // map 只有一个参数，所以可以直接用尾闭包，而不用加括号
+    ( var number ) -> String in
+    return String(number)
+}
+
+// Closure: capture value
+func makeIncrementor(forIncrement amount: Int) -> () -> Int {
+    var runningTotal = 0
+    func incrementor() -> Int {
+        runningTotal += amount
+        return runningTotal
+    }
+    return incrementor
+}
+let incrementor = makeIncrementor(forIncrement: 1)
+for _ in 1...3 { incrementor() }
+
+
+// Enumerate
+enum myEnum: Int {
+    case val1 = 1
+}
+myEnum.val1
 
 
 
