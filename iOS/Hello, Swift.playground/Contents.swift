@@ -218,6 +218,24 @@ enum myEnum: Int {
 }
 myEnum.val1
 
+// Class & Struct
+// 类是引用类型，结构体是值类型
+class MyClass {
+    var val = 10
+}
+struct MyStruct {
+    var val = 10
+}
+
+var myClassInst = MyClass()
+var myStructInst = MyStruct(val: 22)
+
+// Value & Reference
+var structCopy = myStructInst
+var classCopy = myClassInst
+myClassInst === classCopy
+
+
 
 
 
