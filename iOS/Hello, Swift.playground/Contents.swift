@@ -222,18 +222,62 @@ myEnum.val1
 // 类是引用类型，结构体是值类型
 class MyClass {
     var val = 10
+    static var staticClassVar = 10
+    class var computeClassVar: Int {
+        return 10
+    }
+    func myMethod() -> () {
+        println("Class Method")
+    }
+    func myFuncWithSelf(val: Int) {
+        self.val = val
+    }
 }
 struct MyStruct {
-    var val = 10
+    var val = 10 // 结构体的变量是不能改变的，除非使用 mutating
+    static var classVar = 10
+    lazy var lazyVar = 1
+    mutating func struFuncCanChangeVar() {
+        self.val = 3
+    }
 }
 
 var myClassInst = MyClass()
-var myStructInst = MyStruct(val: 22)
+var myStructInst = MyStruct()
+myClassInst.myFuncWithSelf(2)
+myClassInst.val
 
 // Value & Reference
 var structCopy = myStructInst
 var classCopy = myClassInst
 myClassInst === classCopy
+
+struct myPoint {
+    var x: Int
+    var y: Int
+}
+struct myPoints {
+    var p1: myPoint
+    var p2: myPoint
+    var center: myPoint {
+        get {
+            return myPoint(x:p1.x + p2.x, y:p1.y + p2.y)
+        }
+        set(newPoint) {
+            // var center 已经定义了类型
+            p1 = newPoint // 若未定义参数，可以用默认名 newValue
+            // center = myPoint(x: newPoint.x, y: newPoint.y)
+        }
+        // 属性观察期不能和 get set 同用
+        // willSet(val) {println("will set \(val)")}
+        // didSet {println("did set \(oldValue)")}
+    }
+}
+var p1 = myPoint(x:1, y:2)
+var p2 = myPoint(x:3, y:4)
+var ps = myPoints(p1:p1, p2:p2)
+ps.center
+ps.center = p1
 
 
 
