@@ -221,10 +221,18 @@ myEnum.val1
 // Class & Struct
 // 类是引用类型，结构体是值类型
 class MyClass {
-    var val = 10
-    static var staticClassVar = 10
-    class var computeClassVar: Int {
+    var val = 10  // 实例属性
+    var computeInstVar: Int {
+        // 计算属性
         return 10
+    }
+    static var staticClassVar = 10 // 类属性
+    static var computeClassVar: Int {
+        // 计算属性
+        return 10
+    }
+    class func ClassMethod() -> () {
+        println("class method")
     }
     func myMethod() -> () {
         println("Class Method")
@@ -238,6 +246,7 @@ struct MyStruct {
     static var classVar = 10
     lazy var lazyVar = 1
     mutating func struFuncCanChangeVar() {
+        // 结构体是值类型，不能直接修改，需要定义 mutating 方法
         self.val = 3
     }
 }
@@ -246,6 +255,10 @@ var myClassInst = MyClass()
 var myStructInst = MyStruct()
 myClassInst.myFuncWithSelf(2)
 myClassInst.val
+myClassInst.computeInstVar
+MyClass.staticClassVar
+MyClass.computeClassVar
+MyClass.ClassMethod()
 
 // Value & Reference
 var structCopy = myStructInst
