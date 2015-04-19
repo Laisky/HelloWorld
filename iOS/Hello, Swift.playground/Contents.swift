@@ -292,6 +292,34 @@ var ps = myPoints(p1:p1, p2:p2)
 ps.center
 ps.center = p1
 
+// subscript
+struct structToConstructDict {
+    subscript(index: Int) -> Int {
+        // 下标脚本的参数没有数量和类型的限制，可以任意构造
+        return index
+    }
+}
+var myDiyDict = structToConstructDict()
+myDiyDict[5]
+
+
+// inheritance
+class MyBaseClass {
+    var baseVar: Int { return 10 }
+    final var baseVarCanNotOverride = 20  // final 可以拒绝重载
+    func baseMethod(base: Int) {
+        println("parent method")
+    }
+}
+class MyChildClass: MyBaseClass {
+    // 重载属性
+    // 重载属性必须写明类型
+    override var baseVar: Int { return 20 }
+    // 重载函数
+    override func baseMethod(base: Int) {
+        println("child method")
+    }
+}
 
 
 
