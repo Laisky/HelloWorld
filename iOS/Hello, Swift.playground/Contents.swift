@@ -401,21 +401,23 @@ animal
 //类的可失败构造器只能在所有的类属性被初始化后和所有类之间的构造器之间的代理调用发生完后触发失败行为
 
 // 根本跑不通啊卧槽
-//class Product {
-//    let name: String!  // 因为构造有可能失败，所以将 name 声明为可选类型
-//    init?(name: String) {
-//        if name.isEmpty { return nil }
-//        self.name = name
-//    }
-//}
-//class CartItem: Product {
-//    let quantity: Int?
-//    init?(name: String, quantity: Int) {
-//        super.init(name: name)
-//        if quantity < 1 { return nil }
-//        self.quantity = quantity
-//    }
-//}
+class Product {
+    let name: String!  // 因为构造有可能失败，所以将 name 声明为可选类型
+    init?(name: String) {
+        self.name = name
+        if name.isEmpty { return nil }
+        // self.name = name  // 教材骗人
+    }
+}
+class CartItem: Product {
+    let quantity: Int!
+    init?(name: String, quantity: Int) {
+        self.quantity = quantity
+        super.init(name: name)
+        if quantity < 1 { return nil }
+        // self.quantity = quantity // 教材骗人
+    }
+}
 
 // deinitialization
 // 析构函数用 deinit 声明
@@ -426,6 +428,96 @@ class Paohui {
 }
 var paohui: Paohui? = Paohui()
 paohui = nil
+
+
+// 引用
+// 强引用 & 弱引用 & 无主引用（unowned reference）
+class Person {
+    let name: String
+    init(name: String) { self.name = name }
+    var apartment: Apartment!
+    deinit { println("\(name) is being deinitialized") }
+}
+class Apartment {
+    let number: Int
+    init(number: Int) { self.number = number }
+    weak var tenant: Person!
+    deinit { println("Apartment #\(number) is being deinitialized") }
+}
+
+var john: Person!
+var number73: Apartment!
+
+john = Person(name: "John Appleseed")
+number73 = Apartment(number: 73)
+
+john.apartment = number73
+number73.tenant = john
+
+// 无主引用和弱引用很相似，无主引用总是有值的，所以不用 optional，而弱引用必须用 optional
+// 用 unowned 声明
+class Customer {
+    let name: String
+    var card: CreditCard?
+    init(name: String) {
+        self.name = name
+    }
+    deinit { println("\(name) is being deinitialized") }
+}
+class CreditCard {
+    let number: Int
+    unowned let customer: Customer
+    init(number: Int, customer: Customer) {
+        self.number = number
+        self.customer = customer
+    }
+    deinit { println("Card #\(number) is being deinitialized") }
+}
+
+// 闭包循环引用
+class HTMLElement {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = {
+        // 在闭包中引用了 self，导致循环引用
+        if let text = self.text {
+            return "<\(self.name)>\(text)</\(self.name)>"
+        } else {
+            return "<\(self.name) />"
+        }
+    }
+        
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+}
+// 用捕获列表解决闭包循环引用
+// 捕获列表中的每个元素都是由weak或者unowned关键字和实例的引用（如self或someInstance）成对组成。每一对都在方括号中，通过逗号分开
+// Swift 有如下要求：只要在闭包内使用self的成员，就要用self.someProperty或者self.someMethod（而不只是someProperty或someMethod）。这提醒你可能会不小心就捕获了self
+class NewHTMLElement {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = {
+        // 闭包函数有参数时 [unowned self] (index: Int, stringToProcess: String) -> String in
+        // 闭包函数无参数时 [unowned self] in
+        [unowned self] in
+        if let text = self.text {
+            return "<\(self.name)>\(text)</\(self.name)>"
+        } else {
+            return "<\(self.name) />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+}
+
 
 
 
