@@ -168,10 +168,11 @@ func multiArgs(args: Int...) {
 multiArgs(1,2,3,4,5)
 
 func funcCanChangeArgs(inout #arg: String) {
+    // inout 会使得参数可在函数内被修改
     arg += ",ninini"
 }
 var origArg = "ohohoh"
-funcCanChangeArgs(arg: &origArg)
+funcCanChangeArgs(arg: &origArg) // inout 参数需要使用 &
 
 func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
     func stepForward(input: Int) -> Int { return input + 1 }
@@ -210,6 +211,14 @@ func makeIncrementor(forIncrement amount: Int) -> () -> Int {
 }
 let incrementor = makeIncrementor(forIncrement: 1)
 for _ in 1...3 { incrementor() }
+// 通过闭包来赋值
+class SomeClass {
+    let someProperty: Int = {
+        // 在这个闭包中给 someProperty 创建一个默认值
+        // someValue 必须和 SomeType 类型相同
+        return 10
+        }()
+}
 
 
 // Enumerate
@@ -225,6 +234,9 @@ class MyClass {
     var computeInstVar: Int {
         // 计算属性
         return 10
+    }
+    init (initVal: Int) {
+        val = initVal
     }
     static var staticClassVar = 10 // 类属性
     static var computeClassVar: Int {
@@ -251,11 +263,13 @@ struct MyStruct {
     }
 }
 
-var myClassInst = MyClass()
+var myClassInst = MyClass(initVal: 22)
 var myStructInst = MyStruct()
 myClassInst.myFuncWithSelf(2)
 myClassInst.val
+myClassInst.val = 11
 myClassInst.computeInstVar
+// myClassInst.computeInstVar = 11 // 常量属性
 MyClass.staticClassVar
 MyClass.computeClassVar
 MyClass.ClassMethod()
@@ -305,7 +319,11 @@ myDiyDict[5]
 
 // inheritance
 class MyBaseClass {
-    var baseVar: Int { return 10 }
+    var baseStoredVar: Int = 15
+    var baseVar: Int {
+        // 貌似只有计算型属性可以重载
+        return 10
+    }
     final var baseVarCanNotOverride = 20  // final 可以拒绝重载
     func baseMethod(base: Int) {
         println("parent method")
@@ -314,12 +332,91 @@ class MyBaseClass {
 class MyChildClass: MyBaseClass {
     // 重载属性
     // 重载属性必须写明类型
+//    override var baseStoredVar = 25
     override var baseVar: Int { return 20 }
     // 重载函数
     override func baseMethod(base: Int) {
         println("child method")
     }
 }
+
+// construct
+struct Size {
+    var width = 0.0, height = 0.0
+}
+struct Point {
+    var x = 0.0, y = 0.0
+}
+struct Rect {
+    var origin = Point()
+    var size = Size()
+    // 构造器
+    init() {}
+    init(origin: Point, size: Size) {
+        self.origin = origin
+        self.size = size
+    }
+    init(center: Point, size: Size) {
+        let originX = center.x - (size.width / 2)
+        let originY = center.y - (size.height / 2)
+        self.init(origin: Point(x: originX, y: originY), size: size)
+    }
+}
+
+// 指定构造器 & 便利构造器
+// 0. 如果子类没有定义任何指定构造器，它将自动继承所有父类的指定构造器。
+// 0. 如果子类提供了所有父类指定构造器的实现--不管是通过规则1继承过来的，还是通过自定义实现的--它将自动继承所有父类的便利构造器。
+class Food {
+    var name: String
+    init(name: String) {
+        self.name = name
+    }
+    convenience init() {
+        self.init(name: "[Unnamed]")
+    }
+}
+class RecipeIngredient: Food {
+    var quantity: Int
+    init(name: String, quantity: Int) {
+        self.quantity = quantity
+        super.init(name: name)
+    }
+    override convenience init(name: String) {
+        // 便利构造器
+        self.init(name: name, quantity: 1)
+    }
+}
+var myReciInst = RecipeIngredient(name: "Child")
+
+// 可失败构造器
+struct Animal {
+    let species: String
+    init?(species: String) {  // 可失败构造器用 init?
+        if species.isEmpty { return nil }  // 构造失败用 returnn nil
+        self.species = species
+    }
+}
+var animal = Animal(species: "")
+animal
+//类的可失败构造器只能在所有的类属性被初始化后和所有类之间的构造器之间的代理调用发生完后触发失败行为
+
+// 根本跑不通啊卧槽
+//class Product {
+//    let name: String!  // 因为构造有可能失败，所以将 name 声明为可选类型
+//    init?(name: String) {
+//        if name.isEmpty { return nil }
+//        self.name = name
+//    }
+//}
+//class CartItem: Product {
+//    let quantity: Int?
+//    init?(name: String, quantity: Int) {
+//        super.init(name: name)
+//        if quantity < 1 { return nil }
+//        self.quantity = quantity
+//    }
+//}
+
 
 
 
