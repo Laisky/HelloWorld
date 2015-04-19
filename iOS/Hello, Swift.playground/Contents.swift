@@ -417,6 +417,17 @@ animal
 //    }
 //}
 
+// deinitialization
+// 析构函数用 deinit 声明
+class Paohui {
+    deinit {
+        println("要死要死要死")
+    }
+}
+var paohui: Paohui? = Paohui()
+paohui = nil
+
+
 
 
 
