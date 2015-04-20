@@ -103,7 +103,7 @@ while myCount < 3 {
 }
 myCount = 0
 do {myCount++}
-while myCount < 3
+    while myCount < 3
 
 1..<3
 1...5
@@ -332,7 +332,7 @@ class MyBaseClass {
 class MyChildClass: MyBaseClass {
     // 重载属性
     // 重载属性必须写明类型
-//    override var baseStoredVar = 25
+    //    override var baseStoredVar = 25
     override var baseVar: Int { return 20 }
     // 重载函数
     override func baseMethod(base: Int) {
@@ -488,7 +488,7 @@ class HTMLElement {
             return "<\(self.name) />"
         }
     }
-        
+    
     init(name: String, text: String? = nil) {
         self.name = name
         self.text = text
@@ -516,7 +516,28 @@ class NewHTMLElement {
     init(name: String, text: String? = nil) {
         self.name = name
         self.text = text
+    }
 }
+var inst = NewHTMLElement(name: "a", text: "ad")
+
+
+// 可选链
+class NewPerson {
+    var residence: NewResidence?
+}
+
+class NewResidence {
+    var numberOfRooms = 1
+}
+
+let newJohn = NewPerson()
+newJohn.residence
+if let roomCount = newJohn.residence?.numberOfRooms {
+    println("John's residence has \(roomCount) room(s).")
+} else {
+    println("Unable to retrieve the number of rooms.")
+}
+
 
 
 
