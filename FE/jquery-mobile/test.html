@@ -9,11 +9,21 @@
     <link rel="stylesheet" href="vendor/jquery/jquery.mobile-1.4.5.css">
     <script src="vendor/jqeury.1.11.0.js"></script>
     <script src="vendor/jquery/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(function() {
+            $.mobile.page.prototype.options.domCache = true;
+        })
+    </script>
 </head>
 <body>
 
 <!-- Start of first page -->
 <div data-role="page" id="foo">
+    <div data-role="panel" data-position="left" data-display="reveal" id="mypanel">
+        <div class="ui-panel-inner">
+            Panel
+        </div><!-- panel content goes here -->
+    </div><!-- /panel -->
 
     <div data-role="header">
         <h1>Foo</h1>
@@ -22,6 +32,7 @@
     <div role="main" class="ui-content">
         <p>I'm first in the source order so I'm shown as the page.</p>
         <p>View internal page called <a href="#bar">bar</a></p>
+        <a href="#mypanel" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-btn-mini">侧栏</a>
     </div><!-- /content -->
 
     <div data-role="footer">
