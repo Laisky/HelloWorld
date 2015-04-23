@@ -14,7 +14,7 @@
 		<string>github.com:Laisky/HelloWorld.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>iOS/Hello, Swift.playground</string>
+	<string>swift/Hello, Swift.playground</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>DA432DA89705250567043DCC5C1E1EC3F1F02891</key>
