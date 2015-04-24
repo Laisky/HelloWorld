@@ -6,6 +6,10 @@ MAINTAINER "ppcelery@gmail.com"
 
 # Install
 RUN \
+    # set bash
+    rm /bin/sh && ln -s /bin/bash /bin/sh && \
+
+    # install
     sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     mkdir -p /var/run/sshd && \
     mkdir -p /var/log/supervisor && \
