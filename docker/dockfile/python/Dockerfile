@@ -30,6 +30,8 @@ RUN \
     source /root/.bashrc && \
 
     # install setuptools
+    easy_install pip && \
+    pip install --upgrade pip && \
     pip install --upgrade setuptools
 
 # Set environment variables.
