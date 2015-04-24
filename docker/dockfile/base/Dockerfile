@@ -1,4 +1,5 @@
 # build ubuntu essential
+# denpend on https://github.com/dockerfile/ubuntu
 
 FROM ubuntu:14.04
 MAINTAINER "ppcelery@gmail.com"
@@ -14,6 +15,11 @@ RUN \
     apt-get install -y gfortran libopenblas-dev liblapack-dev python-dev libsqlite3-dev libbz2-dev supervisor && \
     apt-get install -y software-properties-common byobu curl git htop man unzip vim wget && \
     rm -rf /var/lib/apt/lists/*
+
+# Add files.
+ADD root/.bashrc /root/.bashrc
+ADD root/.gitconfig /root/.gitconfig
+ADD root/.scripts /root/.scripts
 
 # Set environment variables.
 ENV HOME /root
