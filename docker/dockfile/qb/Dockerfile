@@ -18,6 +18,7 @@ RUN \
 
     # install
     pip install -r /root/qb/requirements.txt && \
+    cd /root/qb && \
     python /root/qb/setup.py develop
 
 # Set environment variables.
