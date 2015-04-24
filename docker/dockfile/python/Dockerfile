@@ -7,7 +7,7 @@ MAINTAINER "ppcelery@gmail.com"
 RUN \
     # install pyenv
     git clone git://github.com/yyuu/pyenv.git .pyenv && \
-    echo '# pyenv' >> /root/.bashrc && \
+    echo -e '\n\n# pyenv' >> /root/.bashrc && \
     echo 'export PYENV_ROOT="/home/laisky/.pyenv"' >> /root/.bashrc && \
     echo 'export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:/usr/texbin:$PATH"' >> /root/.bashrc && \
     echo 'eval "$(pyenv init -)"' >> /root/.bashrc && \
