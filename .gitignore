@@ -61,3 +61,6 @@ docs/_build/
 
 # VIM
 *.swp
+
+# ssh
+id_rsa
