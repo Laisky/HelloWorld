@@ -25,13 +25,9 @@ RUN \
     chown -R caigen100:caigen100 /var/www/qb && \
 
     # install
-    # pip install -r /var/www/qb/requirements.txt && \
+    pip install -r /var/www/qb/requirements.txt && \
     cd /var/www/qb && \
-    # python /var/www/qb/setup.py develop && \
-
-    # run supervisord
-    supervisord -c /etc/supervisor/supervisord.conf
-
+    python /var/www/qb/setup.py develop && \
 
 # Set environment variables.
 ENV HOME /root
@@ -40,5 +36,4 @@ ENV HOME /root
 WORKDIR /var/www/qb
 
 # Define default command.
-CMD ["bash"]
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]

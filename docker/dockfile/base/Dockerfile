@@ -16,7 +16,7 @@ RUN \
     apt-get -y upgrade && \
     apt-get install -y make gcc g++ automake autoconf libc6-dev build-essential libtool openssl libssl-dev libxslt-dev libxml2-dev && \
     apt-get install -y gfortran libopenblas-dev liblapack-dev python-dev libsqlite3-dev libbz2-dev supervisor && \
-    apt-get install -y software-properties-common byobu curl git htop man unzip vim wget && \
+    apt-get install -y software-properties-common byobu curl git htop man unzip vim wget openssh-server && \
     rm -rf /var/lib/apt/lists/*
 
 # Add files.
