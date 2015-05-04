@@ -22,6 +22,7 @@ RUN \
     # clone qb
     mkdir -p /var/www/ && \
     git clone git@github.com:caigen100/qb.git /var/www/qb && \
+    chown -R caigen100:caigen100 /var/www/qb && \
 
     # install
     # pip install -r /var/www/qb/requirements.txt && \
@@ -40,3 +41,4 @@ WORKDIR /var/www/qb
 
 # Define default command.
 CMD ["bash"]
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]

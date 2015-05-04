@@ -12,7 +12,6 @@ RUN \
     # install
     sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     mkdir -p /var/run/sshd && \
-    mkdir -p /var/log/supervisor && \
     apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y make gcc g++ automake autoconf libc6-dev build-essential libtool openssl libssl-dev libxslt-dev libxml2-dev && \
