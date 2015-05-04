@@ -29,6 +29,12 @@ RUN \
     cd /var/www/qb && \
     python /var/www/qb/setup.py develop && \
 
+    # ssh
+    mkdir -p /var/run/sshd && \
+    echo 'root:screencast' | chpasswd
+
+EXPOSE 22
+
 # Set environment variables.
 ENV HOME /root
 
