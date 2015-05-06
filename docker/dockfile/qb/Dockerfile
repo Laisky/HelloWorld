@@ -24,13 +24,10 @@ RUN \
     git clone git@github.com:caigen100/qb.git /var/www/qb && \
     chown -R caigen100:caigen100 /var/www/qb && \
 
-    # hosts
-    echo -e '\n\n#mongo host\n'${DBHOST}'\tdbhost' >> /etc/hosts && \
-
     # install
     pip install -r /var/www/qb/requirements.txt && \
     cd /var/www/qb && \
-    python /var/www/qb/setup.py develop && \
+    python /var/www/qb/setup.py develop
 
 EXPOSE 8000
 
