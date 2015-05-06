@@ -25,14 +25,14 @@ RUN \
     chown -R caigen100:caigen100 /var/www/qb && \
 
     # hosts
-    echo -e '\n\n#mongo host\n${DBHOST}\tdbhost' && \
+    echo -e '\n\n#mongo host\n'${DBHOST}'\tdbhost' >> /etc/hosts && \
 
     # install
     pip install -r /var/www/qb/requirements.txt && \
     cd /var/www/qb && \
     python /var/www/qb/setup.py develop && \
 
-EXPOSE 22
+EXPOSE 8000
 
 # Set environment variables.
 ENV HOME /root
