@@ -1,6 +1,6 @@
 # build project qb
 
-FROM ppcelery/python
+FROM ppcelery/dockerfile-python
 MAINTAINER "ppcelery@gmail.com"
 
 # Set environment variables.
