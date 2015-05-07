@@ -3,8 +3,11 @@
 FROM laisky/python
 MAINTAINER "ppcelery@gmail.com"
 
+# Set environment variables.
+ENV HOME /root
+
 # ADD Github Deploy Key
-ADD .ssh /root/.ssh
+ADD .ssh $HOME/.ssh
 
 # Add supervisord.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
@@ -12,12 +15,14 @@ ADD supervisord.conf /etc/supervisor/supervisord.conf
 # install qb
 RUN \
     # config ssh key
-    source /root/.bashrc && \
-    chmod -R 400 /root/.ssh && \
-    ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+    source $HOME/.bashrc && \
+    chmod -R 400 $HOME/.ssh && \
+    ssh-keyscan github.com >> $HOME/.ssh/known_hosts && \
 
     # add user
     useradd caigen100 -m -s /bin/bash -U && \
+    chmod 755 $HOME && \
+    chmod -R 755 $HOME/.pyenv && \
 
     # clone qb
     mkdir -p /var/www/ && \
@@ -31,8 +36,6 @@ RUN \
 
 EXPOSE 8000
 
-# Set environment variables.
-ENV HOME /root
 
 # Define working directory.
 WORKDIR /var/www/qb
