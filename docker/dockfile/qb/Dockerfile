@@ -1,6 +1,6 @@
 # build project qb
 
-FROM laisky/python
+FROM ppcelery/python
 MAINTAINER "ppcelery@gmail.com"
 
 # Set environment variables.
