@@ -1,6 +1,6 @@
 # build project qb
 
-FROM laisky/python
+FROM ppcelery/dockerfile-python
 MAINTAINER "ppcelery@gmail.com"
 
 # Set environment variables.
@@ -29,6 +29,10 @@ RUN \
     git clone git@github.com:caigen100/qb.git /var/www/qb && \
     chown -R caigen100:caigen100 /var/www/qb && \
 
+    # prepare dir
+    mkdir -p /srv/data/qb && \
+    chown -R caigen100:caigen100 /srv/data/qb && \
+
     # install
     pip install -r /var/www/qb/requirements.txt && \
     cd /var/www/qb && \
@@ -36,6 +40,7 @@ RUN \
 
 EXPOSE 8000
 
+VOLUME ["/tmp", "/srv/data/qb"]
 
 # Define working directory.
 WORKDIR /var/www/qb
