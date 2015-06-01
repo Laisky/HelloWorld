@@ -1,6 +1,6 @@
 # build python3 via pyenv
 
-FROM laisky/base
+FROM ppcelery/dockerfile-base
 MAINTAINER "ppcelery@gmail.com"
 
 # install pyenv
