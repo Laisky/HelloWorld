@@ -1,9 +1,10 @@
+{% load my_filter %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>123</title>
 </head>
 <body>
-    <p>hello, {{ name }}</p>
+    <p>hello, {{ name | my_lower }}</p>
 </body>
 </html>

@@ -1,30 +1,21 @@
+#! /usr/bin/env python
+# -*- coding: utf-8
+
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 
 urlpatterns = patterns(
     '',
-    url(
-        regex=r'^admin/',
-        view=include(admin.site.urls),
-        name='admin'
-    ),
+    url(r'^admin/', include(admin.site.urls), name='admin'),
 )
 
 urlpatterns += patterns(
     'mysite.views',
-    url(
-        regex=r'^time/plus/(\d{1,2})$',
-        view='current_datetime',
-        name='mysite.datetime'
-    ),
+    url(r'^time/plus/(\d{1,2})$', 'current_datetime', name='datetime'),
 )
 
 urlpatterns += patterns(
-    'app.views',
-    url(
-        regex=r'^template$',
-        view='template_demo',
-        name='app.template'
-    ),
+    '',
+    url(r'^app/', include('app.urls', namespace='app')),
 )

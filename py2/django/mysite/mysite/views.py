@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: utf-8
+
 import datetime
 
 from django.http import HttpResponse
