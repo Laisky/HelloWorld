@@ -1,3 +1,9 @@
+#! /usr/bin/env python
+# -*- coding: utf-8
+
+"""Django filter
+"""
+
 from django import template
 
 
