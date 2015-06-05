@@ -1,9 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8
+import logging
 
 from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
+from django.conf import settings
+
+
+logger = logging.getLogger(settings.LOG_NAME)
 
 
 class Registry(View):
@@ -16,8 +21,7 @@ class Registry(View):
 
     def post(self, request):
         username = request.POST.get('username')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
+        logger.debug('POST with {}'.format(request.POST))
 
         user = UserCreationForm(request.POST)
         if user.is_valid():
