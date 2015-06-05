@@ -3,10 +3,11 @@
 
 from django.conf.urls import patterns, url
 
-from .views import Registry
+from .views import Register, Login
 
 
 urlpatterns = patterns(
     '',
-    url(r'^register$', Registry.as_view(), name='register'),
+    url(r'^register/$', Register.as_view(), name='register'),
+    url(r'^login/$', Login.as_view(), name='login'),
 )

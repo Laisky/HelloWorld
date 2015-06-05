@@ -3,19 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>register</title>
+    <title>Login</title>
     <link rel="stylesheet" href="">
 </head>
 <body>
-    {% if usage == 'register' %}
+    {% if usage == 'login' %}
         <form action="", method="POST">{% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_table }}
             <input type="submit" value="Register">
         </form>
-    {% elif usage == 'welcome' %}
-        <p>welcome {{ username }}</p>
-    {% elif usage == 'error' %}
-        <p>wrong {{ username }}</p>
     {% endif %}
 </body>
 </html>
