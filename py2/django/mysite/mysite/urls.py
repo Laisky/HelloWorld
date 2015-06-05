@@ -15,7 +15,5 @@ urlpatterns += patterns(
     url(r'^time/plus/(\d{1,2})$', 'current_datetime', name='datetime'),
 )
 
-urlpatterns += patterns(
-    '',
-    url(r'^app/', include('app.urls', namespace='app')),
-)
+urlpatterns += patterns('', url(r'^app/', include('app.urls', namespace='app')))
+urlpatterns += patterns('', url(r'^rest/', include('rest.urls', namespace='rest')))

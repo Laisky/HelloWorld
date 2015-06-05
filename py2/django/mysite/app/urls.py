@@ -3,9 +3,10 @@
 
 from django.conf.urls import patterns, url
 
+from . import views
 
 urlpatterns = patterns(
     'app.views',
-    url(r'^template$', 'template_demo', name='template'),
-    url(r'^login$', 'login', name='login'),
+    url(r'^template$', views.template_demo, name='template'),
+    url(r'^login$', views.login, name='login'),
 )
