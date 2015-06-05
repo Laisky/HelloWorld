@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>register</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    {% if usage == 'register' %}
+        <form action="", method="POST">{% csrf_token %}
+            {{ register_content }}
+            <input type="submit" value="Register">
+        </form>
+    {% elif usage == 'welcome' %}
+        <p>welcome {{ username }}</p>
+    {% elif usage == 'error' %}
+        <p>wrong {{ username }}</p>
+    {% endif %}
+</body>
+</html>
