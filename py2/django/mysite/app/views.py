@@ -31,3 +31,4 @@ def login(request):
     # If we didn't post, send the test cookie along with the login form.
     request.session.set_test_cookie()
     return render_to_response('foo/login_form.html')
+
