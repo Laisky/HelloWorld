@@ -10,7 +10,7 @@
     {% if usage == 'login' %}
         <form action="", method="POST">{% csrf_token %}
             {{ form.as_table }}
-            <input type="submit" value="Register">
+            <input type="submit" value="Login">
         </form>
     {% endif %}
 </body>
