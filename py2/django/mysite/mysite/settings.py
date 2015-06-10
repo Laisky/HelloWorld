@@ -74,8 +74,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'nosql': {
+        'ENGINE': 'django_mongodb_engine',
+        'NAME': 'test',
+        'HOST': 'localhost',
+        'PORT': 27017,
     }
 }
+
+DATABASE_ROUTERS = ['mysite.routers.CustomRouter']
 
 # Const template
 TEMPLATE_CONTEXT_PROCESSORS = (

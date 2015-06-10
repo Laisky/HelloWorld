@@ -1,0 +1,9 @@
+<h1>Post List</h1>
+<p>Date: {{ now|date }}</p>
+<ul>
+    {% for post in object_list %}
+        <li>{{ post.post_modified_gmt|date }} - {{ post.post_title }}</li>
+        {% empty %}
+        <li>No posts yet.</li>
+    {% endfor %}
+</ul>

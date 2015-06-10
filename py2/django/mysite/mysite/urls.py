@@ -18,3 +18,4 @@ urlpatterns += patterns(
 urlpatterns += patterns('', url(r'^app/', include('app.urls', namespace='app')))
 urlpatterns += patterns('', url(r'^rest/', include('rest.urls', namespace='rest')))
 urlpatterns += patterns('', url(r'^user/', include('user.urls', namespace='user')))
+urlpatterns += patterns('', url(r'^nosql/', include('nosql.urls', namespace='nosql')))
