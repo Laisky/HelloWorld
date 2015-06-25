@@ -66,6 +66,7 @@ let myStr1 = "abc"
 let myStr2 = "abcde"
 myStr1 == myStr2
 myStr2.hasPrefix(myStr1)
+myStr2.hasSuffix("cde")
 myStr1.uppercaseString.lowercaseString
 myStr1.utf16
 for scalar in myStr1.unicodeScalars {
@@ -82,6 +83,7 @@ var myArr = [1,2,3]
 myArr.count
 myArr.append(4)
 myArr.insert(5, atIndex: myArr.count)
+
 for val in myArr {println("val: \(val)")}
 for (i, val) in enumerate(myArr) {
     println("i: \(i), val: \(val)")
