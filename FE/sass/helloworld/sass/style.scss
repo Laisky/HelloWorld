@@ -1,0 +1,23 @@
+$my-color: red;
+
+// 嵌套写法
+ul {
+    li {
+        color: $my-color;
+    }
+}
+
+// mixin
+@mixin formInDiv {
+    color: $my-color;
+}
+
+// mixin with arguments
+@mixin formInDivDiy($bgd-clr: $my-color) {
+    background-color: @bgd-clr;
+}
+
+// inheritant
+div {
+    @extend ul;
+}
