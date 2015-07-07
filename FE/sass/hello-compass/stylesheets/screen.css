@@ -66,3 +66,21 @@ a img {
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
+
+/* line 9, ../sass/screen.scss */
+.container {
+  padding: 10px;
+}
+/* line 12, ../sass/screen.scss */
+.container .box {
+  width: 100px;
+  height: 100px;
+  border: 1px solid red;
+  text-align: center;
+}
+/* line 18, ../sass/screen.scss */
+.container .box.radius {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
