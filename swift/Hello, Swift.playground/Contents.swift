@@ -541,9 +541,18 @@ if let roomCount = newJohn.residence?.numberOfRooms {
 }
 
 
+// 泛型
+// <T> 为类型占位符，表示某一类型
+func swapTwoValues<T>(inout a: T, inout b: T) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
 
-
-
+var a = 3
+var b = 4
+swapTwoValues(&a, &b)
+println([a, b])
 
 
 
