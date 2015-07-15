@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     # plugins
     'rest_framework',
     # app
-    'apis',
+    'quickstart',
+    'simple',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -8,5 +8,6 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include('apis.urls'), name='apis'),
+    url(r'^simple/', include('simple.urls'), name='simple'),
+    url(r'^quick/', include('quickstart.urls'), name='quick'),
 )
