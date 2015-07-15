@@ -1,0 +1,6 @@
+markdown
+
+# django & plugins
+django
+djangorestframework
+django-filter
