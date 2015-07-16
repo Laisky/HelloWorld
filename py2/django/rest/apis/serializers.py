@@ -9,8 +9,8 @@ from .models import MyModel
 
 
 class UserSerializer(serializers.ModelSerializer):
-    mymodels = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=MyModel.objects.all()
+    mymodels = serializers.HyperlinkedRelatedField(
+        many=True, queryset=MyModel.objects.all(), view_name='model-detail'
     )
 
     class Meta:
