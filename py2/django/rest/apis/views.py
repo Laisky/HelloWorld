@@ -3,8 +3,10 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.contrib.auth.models import User
-from rest_framework import generics, permissions, renderers
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions, viewsets, renderers
+from rest_framework.decorators import (
+    api_view, permission_classes, detail_route
+)
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
@@ -21,31 +23,20 @@ def api_root(request, format=None):
     })
 
 
-class DetailView(generics.RetrieveAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+
+class ModelViewSet(viewsets.ModelViewSet):
     queryset = MyModel.objects.all()
     serializer_class = MySerializer
-
-
-class ListView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    # renderer_classes = (renderers.StaticHTMLRenderer,)
 
-    queryset = MyModel.objects.all()
-    serializer_class = MySerializer
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
-class UserList(generics.ListCreateAPIView):
-    # renderer_classes = (renderers.StaticHTMLRenderer,)
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def plaintext(self, request, *args, **kwargs):
+        model = self.get_object()
+        return Response(repr(model))
