@@ -74,8 +74,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'nosql': {
+        'ENGINE': 'django_mongodb_engine',
+        'NAME': 'test',
+        'HOST': 'localhost',
+        'PORT': 27017,
     }
 }
+
+DATABASE_ROUTERS = ['mysite.routers.CustomRouter']
 
 # Const template
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -88,8 +96,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 
 # Internationalization

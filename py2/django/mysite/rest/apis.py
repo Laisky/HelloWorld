@@ -15,6 +15,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
+    import pdb
+    pdb.set_trace()
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -26,6 +28,6 @@ router.register(r'users', UserViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^', include(router.urls), name='rest'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
