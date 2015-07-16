@@ -1,0 +1,8 @@
+mysql-python
+markdown
+
+# django & plugins
+django
+djangorestframework
+django-filter
+django-extensions
