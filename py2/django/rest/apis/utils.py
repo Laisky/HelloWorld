@@ -7,7 +7,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 def jwt_response_payload_handler(token, user=None, request=None):
     return {
-        'token': token,
+        'jwt': token,
         'username': user.username
     }
 
