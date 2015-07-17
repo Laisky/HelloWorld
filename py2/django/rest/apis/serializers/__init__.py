@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'mymodels')
+
     mymodels = serializers.HyperlinkedRelatedField(
         many=True, queryset=MyModel.objects.all(), view_name='model-detail'
     )
