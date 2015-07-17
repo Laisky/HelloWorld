@@ -1,12 +1,6 @@
-"""
-Django settings for rest project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
+#! /usr/bin/env python
+# -*- coding: utf-8
+from __future__ import absolute_import, unicode_literals
 import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -152,3 +146,65 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# logging
+LOG_NAME = 'RESTfulApp'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+            'datefmt': '%d/%b/%Y %H:%M:%S',
+        },
+        'default': {
+            'format': '%(levelname)s %(asctime)s %(message)s',
+            'datefmt': '%d/%b/%Y %H:%M:%S',
+        },
+    },
+    'handlers': {
+        # Python2.7 才有 Nullhandler，服务器上是 Python 2.6
+        # 'null': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.NullHandler',
+        # },
+        'mail_admins': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'default',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/{}.log'.format(LOG_NAME),
+            'formatter': 'default',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+        LOG_NAME: {
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.db.backends': {  # 不要记录 SQL
+            'level': 'ERROR',
+        },
+    }
+}
