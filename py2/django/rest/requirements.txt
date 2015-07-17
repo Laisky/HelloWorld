@@ -6,3 +6,4 @@ django
 djangorestframework
 django-filter
 django-extensions
+djangorestframework-jwt

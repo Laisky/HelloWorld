@@ -24,7 +24,8 @@ router.register(r'users', views.UserViewSet)
 urlpatterns = patterns(
     '',
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'),
+    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^models/(?P<pk>[0-9]+)/$', model_detail, name='model-detail'),
     url(r'^models/(?P<pk>[0-9]+)/plain/$', modal_plain, name='model-plain'),
     url(r'^models/$', model_list, name='model-list'),
