@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello, Angular</title>
+    <link rel="stylesheet" >
+    <style>
+        div.app {
+            border-bottom: 1px solid black;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app" ng-app="first">
+        <h2>Your First AngularJS App</h2>
+        <input type="text" ng-model="firstUserInput">
+        <p>Hello, {{ firstUserInput }}!</p>
+    </div>
+    <h2>I am not inside an AngularJS app</h2>
+    <div class="app" ng-app="embeddedApp">
+        <h3>Inside an AngularJS app named embeddedApp</h3>
+    </div>
+</body>
+<script src="libs/angular/angular.min.js"></script>
+
+</html>
