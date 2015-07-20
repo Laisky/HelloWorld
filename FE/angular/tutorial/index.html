@@ -11,18 +11,28 @@
     <div class="container-fluid" ng-controller="PhoneListCtrl">
         <div class="row">
             <div class="col-md-2">
-                <!--Sidebar content-->
-                <p>
-                    Search:
-                </p>
-                <!-- 指定 query -->
-                <input ng-model="query">
+                <div class="row">
+                    <p>
+                        Search:
+                    </p>
+                    <!-- 指定 query -->
+                    <input ng-model="query">
+                </div>
+                <div class="row">
+                    <p>排序</p>
+                    <select ng-model="orderProp">
+                        <option value="name">Alphabetical</option>
+                        <option value="age">Newest</option>
+                    </select>
+                </div>
             </div>
             <div class="col-md-10">
                 <!--Body content-->
                 <ul class="phones">
                     <!-- 用 filter 来实现搜索 -->
-                    <li ng-repeat="phone in phones | filter:query">
+                    <!-- filter： 过滤 -->
+                    <!-- orderby： 排序 -->
+                    <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
                         <p>{{phone.name}}</p>
                         <p>{{phone.snippet}}</p>
                     </li>
