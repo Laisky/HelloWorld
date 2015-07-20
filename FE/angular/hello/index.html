@@ -27,6 +27,9 @@
     <div class="app" ng-app="scope" ng-controller="myFirstCtrl">
         <p>local scope var: {{ localVar }}</p>
         <p>global scope var: {{ globalVar }}</p>
+        <label for="">{{ number }}</label>
+        <button ng-click="add(1)">Add1</button>
+        <button ng-click="add(2)">Add2</button>
     </div>
 </body>
 <script src="libs/angular/angular.min.js"></script>
@@ -34,9 +37,15 @@
 (function() {
     var app = angular.module('myApp', []);
 
+    // Scope 分为局部的 $scope 和全局的 $rootScole
     app.controller("myFirstCtrl", function myFirstCtrl($scope, $rootScope) {
+        $scope.number = 0;
         $scope.localVar = "I am a local var";
         $rootScope.globalVar = "I am a global var";
+
+        $scope.add = function(step) {
+            $scope.number += step;
+        }
     });
 })()
 </script>
