@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="myApp">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Hello, Angular</title>
-    <link rel="stylesheet" >
+    <link rel="stylesheet">
     <style>
-        div.app {
-            border-bottom: 1px solid black;
-            margin-bottom: 5px;
-        }
+    div.app {
+        border-bottom: 1px solid black;
+        margin-bottom: 5px;
+    }
     </style>
 </head>
 
@@ -26,5 +26,10 @@
     </div>
 </body>
 <script src="libs/angular/angular.min.js"></script>
+<script>
+(function() {
+    var app = angular.module('myApp', []);
+})()
+</script>
 
 </html>
