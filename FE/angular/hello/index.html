@@ -24,11 +24,20 @@
     <div class="app" ng-app="embeddedApp">
         <h3>Inside an AngularJS app named embeddedApp</h3>
     </div>
+    <div class="app" ng-app="scope" ng-controller="myFirstCtrl">
+        <p>local scope var: {{ localVar }}</p>
+        <p>global scope var: {{ globalVar }}</p>
+    </div>
 </body>
 <script src="libs/angular/angular.min.js"></script>
 <script>
 (function() {
     var app = angular.module('myApp', []);
+
+    app.controller("myFirstCtrl", function myFirstCtrl($scope, $rootScope) {
+        $scope.localVar = "I am a local var";
+        $rootScope.globalVar = "I am a global var";
+    });
 })()
 </script>
 
