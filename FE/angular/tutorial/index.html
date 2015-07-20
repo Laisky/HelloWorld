@@ -1,0 +1,14 @@
+<html ng-app="phonecatApp">
+
+<body ng-controller="PhoneListCtrl">
+    <ul>
+        <li ng-repeat="phone in phones">
+            <span>{{phone.name}}</span>
+            <p>{{phone.snippet}}</p>
+        </li>
+    </ul>
+    <script src="bower_components/angularjs/angular.js"></script>
+    <script src="js/controllers.js"></script>
+</body>
+
+</html>
