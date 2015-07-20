@@ -42,10 +42,15 @@
         <p for="" ng-show="isShow" ng-repeat="mark in marks">{{ mark }}!!</p>
         <button ng-click="isShow = !isShow">Toggle</button>
     </div>
+    <!-- AngularJs Provider -->
+    <div class="app" ng-app="provider" ng-controller="providerCtrl">
+        <p for="" ng-repeat="date in dates">myDate {{ date }}</p>
+    </div>
 </body>
-<script src="libs/angular/angular.min.js"></script>
+<script src="libs/angular/angular.js"></script>
 <script>
 (function() {
+    "use strict"
     var app = angular.module('myApp', []);
 
     // Scope 分为局部的 $scope 和全局的 $rootScole
@@ -59,6 +64,39 @@
             $scope.number += step;
         }
     });
+
+    // provide.provider
+    // provide 类似于 $scope, $rootScope，会作为依赖注入进 controller
+    // 下面三个 provider & factory & service 的效果是完全一样的
+
+    // provider 注册一个完整对象，有属性有方法
+    app.provider('providerDate', {
+        $get: function() {
+            return new Date();
+        }
+    });
+
+    // provide.factory
+    // factory 只有 方法
+    app.factory('factoryDate', function() {
+        return new Date();
+    });
+
+    // provide.service
+    // service 直接返回一个对象的实例
+    app.service('serviceDate', function() {
+        return new Date();
+    });
+
+    app.controller("providerCtrl", function($scope, providerDate, factoryDate, serviceDate) {
+        console.log(serviceDate);
+        $scope.dates = {
+            providerDate: providerDate,
+            factoryDate: factoryDate,
+            serviceDate: serviceDate
+        };
+    });
+
 })()
 </script>
 
