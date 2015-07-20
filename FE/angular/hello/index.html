@@ -20,16 +20,27 @@
         <input type="text" ng-model="firstUserInput">
         <p>Hello, {{ firstUserInput }}!</p>
     </div>
+    <!-- app -->
     <h2>I am not inside an AngularJS app</h2>
     <div class="app" ng-app="embeddedApp">
         <h3>Inside an AngularJS app named embeddedApp</h3>
     </div>
+    <!-- 作用域 -->
     <div class="app" ng-app="scope" ng-controller="myFirstCtrl">
         <p>local scope var: {{ localVar }}</p>
         <p>global scope var: {{ globalVar }}</p>
         <label for="">{{ number }}</label>
         <button ng-click="add(1)">Add1</button>
         <button ng-click="add(2)">Add2</button>
+    </div>
+    <!-- 指令 -->
+    <!-- ng-init 初始化
+    ng-show 显示
+    ng-repeat 遍历
+    ng-click 点击事件 -->
+    <div class="app" ng-app="directives" ng-init="isShow = true;">
+        <p for="" ng-show="isShow" ng-repeat="mark in marks">{{ mark }}!!</p>
+        <button ng-click="isShow = !isShow">Toggle</button>
     </div>
 </body>
 <script src="libs/angular/angular.min.js"></script>
@@ -42,6 +53,7 @@
         $scope.number = 0;
         $scope.localVar = "I am a local var";
         $rootScope.globalVar = "I am a global var";
+        $rootScope.marks = ["a", "b", "c", "d"];
 
         $scope.add = function(step) {
             $scope.number += step;
