@@ -1,0 +1,50 @@
+<html ng-app="phonecatApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+</head>
+<div class="container">
+    <div class="container-fluid" ng-controller="PhoneListCtrl">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row">
+                    <p>
+                        Search:
+                    </p>
+                    <!-- 指定 query -->
+                    <input ng-model="query">
+                </div>
+                <div class="row">
+                    <p>排序</p>
+                    <select ng-model="orderProp">
+                        <option value="name">Alphabetical</option>
+                        <option value="age">Newest</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <!--Body content-->
+                <ul class="phones">
+                    <!-- 用 filter 来实现搜索 -->
+                    <!-- filter： 过滤 -->
+                    <!-- orderby： 排序 -->
+                    <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+                        <p>{{phone.name}}</p>
+                        <p>{{phone.snippet}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angularjs/angular.js"></script>
+<script src="js/controllers.js"></script>
+</body>
+
+</html>
