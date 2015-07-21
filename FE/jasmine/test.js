@@ -28,7 +28,10 @@ describe("A suite of jasmine's function", function() {
             expect(y).toBeUndefined();
             expect(x).toBeTruthy();
             expect(!x).toBeFalsy();
-
         });
+
+        it("ErrorCase", function() {
+            except("True").toEqual("False");
+        })
     });
 });
