@@ -31,7 +31,8 @@ describe("A suite of jasmine's function", function() {
         });
 
         it("ErrorCase", function() {
-            except("True").toEqual("False");
+            expect("True").toEqual("True");
+            // except("True").toEqual("False");
         })
     });
 });
