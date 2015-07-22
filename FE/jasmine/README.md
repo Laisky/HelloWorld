@@ -32,6 +32,7 @@ $ karma init
 - [https://github.com/jasmine/jasmine](https://github.com/jasmine/jasmine)
 - [http://jasmine.github.io/2.3/introduction.html](http://jasmine.github.io/2.3/introduction.html)
 - [http://karma-runner.github.io/0.13/index.html](http://karma-runner.github.io/0.13/index.html)
+- [https://github.com/gotwarlost/istanbul](https://github.com/gotwarlost/istanbul)
 - [jasmine行为驱动,测试先行](http://blog.fens.me/nodejs-jasmine-bdd/)
 - [Karma和Jasmine自动化单元测试](http://blog.fens.me/nodejs-karma-jasmine/)
 - [代码覆盖率工具 Istanbul 入门教程](http://www.ruanyifeng.com/blog/2015/06/istanbul.html)
