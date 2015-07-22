@@ -1,23 +1,89 @@
+// 变量
 $my-color: red;
+
+// 计算
+body {
+    $var: 10;
+    margin: (14px/2);
+    top: 50px + 100px;
+    right: $var * 10%;
+}
 
 // 嵌套写法
 ul {
     li {
         color: $my-color;
     }
+
 }
 
-// mixin
-@mixin formInDiv {
+// 没有参数的 mixin
+@mixin mixinWithNoArgs {
     color: $my-color;
 }
 
-// mixin with arguments
-@mixin formInDivDiy($bgd-clr: $my-color) {
-    background-color: @bgd-clr;
+// 有参数和默认值的 mixin
+@mixin mixinWithArgs($bgd-clr:$my-color) {
+    background-color: $bgd-clr;
+}
+
+// 调用 mixin
+div {
+    @include mixinWithNoArgs;
+    @include mixinWithArgs($bgd-clr: red);
 }
 
 // inheritant
 div {
     @extend ul;
+}
+
+// 条件语句
+p {
+    @if 1 + 1==2 {
+        border: 1px solid;
+    }
+
+    @if 5 < 3 {
+        border: 2px dotted;
+    }
+
+    @else {
+        border 1px dotted;
+    }
+
+}
+
+// for 循环
+// 变量的占位格式为 #{$i}
+@for $i from 1 to 10 {
+    .border-#{$i} {
+        border:#{$i}px solid blue;
+    }
+}
+
+// while 循环
+$i: 6;
+@while $i > 0 {
+    .item-#{$i} {
+        width: 2em * $i;
+    }
+
+    $i: $i - 2; // 变量赋值
+}
+
+// each 循环
+@each $member in a, b, c, d {
+　　.#{$member} {
+　　    background-image: url("/image/#{$member}.jpg");
+　　}
+}
+
+// mixin 还可以写函数
+@function double($n) {
+　　@return $n * 2;
+}
+
+#sidebar {
+　　width: double(5px);
 }
