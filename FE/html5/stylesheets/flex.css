@@ -15,6 +15,7 @@ body {
 /* line 12, ../sass/flex.scss */
 .row {
   width: 100%;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: row;
   flex-direction: row;

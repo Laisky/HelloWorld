@@ -11,7 +11,7 @@ body {
 
 .row {
     width: 100%;
-    display: flex;
+    @include display-flex(flex);
     @include flex-direction(row);
     @include justify-content(space-around);
 }
