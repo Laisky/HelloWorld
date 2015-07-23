@@ -3,6 +3,6 @@
 
 听说你还在用 jQeury 写 DOM ？
 
-## Refrence
+## Reference
 
 - Developer Guide [https://docs.angularjs.org/guide/concepts](https://docs.angularjs.org/guide/concepts)
