@@ -1,0 +1,30 @@
+/* line 3, ../sass/flex.scss */
+body {
+  background-color: #373737;
+  min-height: 100vh;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* line 12, ../sass/flex.scss */
+.row {
+  width: 100%;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+/* line 19, ../sass/flex.scss */
+.box {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+}

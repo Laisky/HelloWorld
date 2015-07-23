@@ -1,0 +1,36 @@
+/* line 4, ../sass/box-shadow.scss */
+.row:nth-child(1) .box:nth-child(1) {
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  -moz-box-shadow: 10px 20px 5px 1px red;
+  -webkit-box-shadow: 10px 20px 5px 1px red;
+  box-shadow: 10px 20px 5px 1px red;
+}
+/* line 8, ../sass/box-shadow.scss */
+.row:nth-child(1) .box:nth-child(2) {
+  /* offset-x | offset-y | color */
+  -moz-box-shadow: 10px 20px teal;
+  -webkit-box-shadow: 10px 20px teal;
+  box-shadow: 10px 20px teal;
+}
+/* line 12, ../sass/box-shadow.scss */
+.row:nth-child(1) .box:nth-child(3) {
+  /* offset-x | offset-y | blur-radius | color */
+  -moz-box-shadow: 10px 20px 5px yellow;
+  -webkit-box-shadow: 10px 20px 5px yellow;
+  box-shadow: 10px 20px 5px yellow;
+}
+
+/* line 19, ../sass/box-shadow.scss */
+.row:nth-child(2) .box:nth-child(1) {
+  /* inset | offset-x | offset-y | color */
+  -moz-box-shadow: inset 10px 20px gold;
+  -webkit-box-shadow: inset 10px 20px gold;
+  box-shadow: inset 10px 20px gold;
+}
+/* line 23, ../sass/box-shadow.scss */
+.row:nth-child(2) .box:nth-child(2) {
+  /* Any number of shadows, separated by commas */
+  -moz-box-shadow: 3px 3px red, -1em 0 0.4em olive;
+  -webkit-box-shadow: 3px 3px red, -1em 0 0.4em olive;
+  box-shadow: 3px 3px red, -1em 0 0.4em olive;
+}

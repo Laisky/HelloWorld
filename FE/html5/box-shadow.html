@@ -11,55 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Flex</title>
-    <link rel="stylesheet" href="">
-    <style>
-    body {
-        background-color: #373737;
-        display: flex;
-        min-height: 100vh;
-        align-items: center;
-        flex-direction: column;
-        justify-content: space-around;
-    }
-
-    .row {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-
-    .box {
-        width: 150px;
-        height: 150px;
-        background-color: white;
-    }
-
-    .row:nth-child(1) .box:nth-child(1) {
-        /* offset-x | offset-y | blur-radius | spread-radius | color */
-        box-shadow: 10px 20px 5px 1px red;
-    }
-
-    .row:nth-child(1) .box:nth-child(2) {
-        /* offset-x | offset-y | color */
-        box-shadow: 10px 20px teal;
-    }
-
-    .row:nth-child(1) .box:nth-child(3) {
-        /* offset-x | offset-y | blur-radius | color */
-        box-shadow: 10px 20px 5px yellow;
-    }
-
-    .row:nth-child(2) .box:nth-child(1) {
-        /* inset | offset-x | offset-y | color */
-        box-shadow: inset 10px 20px gold;
-    }
-
-    .row:nth-child(2) .box:nth-child(2) {
-        /* Any number of shadows, separated by commas */
-        box-shadow: 3px 3px red, -1em 0 0.4em olive;
-    }
-    </style>
+    <link rel="stylesheet" href="stylesheets/box-shadow.css">
 </head>
 
 <body>
