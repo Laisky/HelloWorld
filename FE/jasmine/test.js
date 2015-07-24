@@ -11,7 +11,7 @@ describe("A suite of basic functions", function() {
 
 });
 
-describe("A suite of jasmine's function", function() {
+xdescribe("A suite of jasmine's function", function() {
     describe("Expectations", function() {
         it("Expectations", function() {
             expect("AAA").toEqual("AAA");
@@ -36,3 +36,15 @@ describe("A suite of jasmine's function", function() {
         })
     });
 });
+
+// Matching
+xdescribe("Matching", function() {
+
+    it("stringMatching", function() {
+        var foo = {
+            a: "a",
+        };
+
+        expect(foo).toEqual({a: jasmine.stringMatching(/^a$/)});
+    })
+})

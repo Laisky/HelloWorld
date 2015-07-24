@@ -1,0 +1,14 @@
+<!-- 首先指定顶层的 app -->
+<html ng-app="myApp">
+<!-- 指定内部的 controller -->
+
+<body ng-controller="myController">
+    <!-- 每一个 controller 都会创建一个 $scope -->
+    <p>{{ greeting }} {{ username }}</p>
+    <!-- ng-model 数据绑定 -->
+    <input type="text" ng-model="username">
+    <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+</body>
+
+</html>
