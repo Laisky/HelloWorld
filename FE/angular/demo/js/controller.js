@@ -18,12 +18,12 @@
     // demo for service
     // 将自定义的 service 也添加进依赖注入（DI）的列表中
     myApp.controller("serviceDemo", ["$scope", "myService", function($scope, myService) {
-        $scope.serviceShow = function() {
-            myService($scope.userInput);
+        $scope.serviceShow = function(userInput) {
+            myService(userInput);
         };
     }]);
     // 创建 service
-    // service 返回的是一个函数
+    // service 返回的是一个函数（实例）
     myApp.factory("myService", ["$window", function($win) {
         return function (msg) {
             $win.alert(msg);

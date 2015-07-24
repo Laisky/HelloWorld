@@ -29,9 +29,11 @@
         <!-- 用 ng-click 绑定点击事件 -->
         <button ng-click="addDot()">addDot</button>
     </div>
+    <!-- service demo -->
     <div class="controller" ng-controller="serviceDemo">
+        <!-- 当点击按钮时，调用 serviceShow 并传入参数 userInput -->
         <input type="text" ng-model="userInput">
-        <button ng-click="serviceShow()">Alert</button>
+        <button ng-click="serviceShow(userInput)">Alert</button>
     </div>
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>
