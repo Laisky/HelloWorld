@@ -1,0 +1,36 @@
+<!-- controller.html -->
+<!-- 首先指定顶层的 app -->
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    .controller {
+        width: 100%;
+        border-bottom: 1px solid blue;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 指定 controller -->
+    <div class="controller" ng-controller="myController">
+        <!-- 每一个 controller 都会创建一个 $scope -->
+        <!-- 调用了 scope 中的 greeting 和 username -->
+        <!-- 用 ng-init 可以初始化变量 -->
+        <p ng-init="dot = '.'">{{ greeting }} {{ username }} {{ dot }}
+        </p>
+        <!-- ng-model 数据绑定 -->
+        <!-- 相当于设置 $scope.username = input.value -->
+        <input type="text" ng-model="username">
+        <!-- 用 ng-click 绑定点击事件 -->
+        <button ng-click="addDot()">addDot</button>
+        <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+        <script type="text/javascript" src="js/controller.js"></script>
+    </div>
+</body>
+
+</html>
