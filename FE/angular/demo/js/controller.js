@@ -46,5 +46,8 @@ var myApp;
                 return input + ".".repeat(Number(nDot));
             }
         })
+        myApp.controller("templateDemo", ["$scope", function($scope) {
+
+        }]);
     }
 })()
