@@ -82,5 +82,37 @@ var myApp;
                 }
             };
         });
+
+        // demo for async validators
+        myApp.directive('asyncinteger', function($q, $timeout) {
+            return {
+                require: 'ngModel',
+                link: function(scope, elm, attrs, ctrl) {
+
+                    ctrl.$asyncValidators.asyncinteger = function(modelValue, viewValue) {
+
+                        if (ctrl.$isEmpty(modelValue)) {
+                            return $q.when();
+                        }
+
+                        // 创建 defer 对象
+                        var def = $q.defer();
+
+                        $timeout(function() {
+                            if (INTEGER_REGEXP.test(viewValue)) {
+                                // 若通过，就调用 resolve
+                                def.resolve();
+                            } else {
+                                // 未通过就调用 reject
+                                def.reject();
+                            }
+                        }, 2000);
+
+                        // 必须返回 promise 对象
+                        return def.promise;
+                    };
+                }
+            };
+        });
     }
 })()

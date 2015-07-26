@@ -56,13 +56,19 @@
             <div>
                 <!-- 延迟生效 -->
                 <span>debounce 延迟</span>
-                <input type="text" ng-model="debounce" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
+                <input type="text" ng-model="user.debounce" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
                 <p>debounce: {{debounce}}</p>
             </div>
             <div>
                 <span>自定义 validators</span>
-                <input type="text" ng-model="integer" name="integer" integer>
+                <input type="text" ng-model="user.integer" name="integer" integer>
                 <p ng-show="myForm.integer.$error.integer">请输入整数！</p>
+            </div>
+            <div>
+                <span>自定义 async validators</span>
+                <input type="text" ng-model="user.asyncValidator" name="asyncValidator" asyncinteger>
+                <p ng-show="myForm.asyncValidator.$pending.asyncinteger">等待检查...</p>
+                <p ng-show="myForm.asyncValidator.$error.asyncinteger">请输入整数！！！</p>
             </div>
         </form>
         <span>Forms: </span><pre>{{ user | json }}</pre>
