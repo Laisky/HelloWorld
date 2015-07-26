@@ -12,6 +12,11 @@
         border-bottom: 1px solid blue;
         margin-bottom: 10px;
     }
+
+    div[contentEditable] {
+        background-color: grey;
+        cursor: pointer;
+    }
     </style>
 </head>
 
@@ -69,6 +74,16 @@
                 <input type="text" ng-model="user.asyncValidator" name="asyncValidator" asyncinteger>
                 <p ng-show="myForm.asyncValidator.$pending.asyncinteger">等待检查...</p>
                 <p ng-show="myForm.asyncValidator.$error.asyncinteger">请输入整数！！！</p>
+            </div>
+            <div>
+                <span>directives > type</span>
+                <!-- directives validator 的优先级高于 type -->
+                <input type="email" ng-model="user.email" name="email" integer>
+                <p ng-show="myForm.email.$error.integer">请输入整数！</p>
+            </div>
+            <div>
+                <p>自定义的表单</p>
+                <div ng-model="user.customField" contentEditable></div>
             </div>
         </form>
         <span>Forms: </span><pre>{{ user | json }}</pre>

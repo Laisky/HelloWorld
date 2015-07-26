@@ -114,5 +114,32 @@ var myApp;
                 }
             };
         });
+
+        // -----------------------------------
+        // 自定义表单
+        // custom form control
+        myApp.directive('contenteditable', function() {
+            return {
+                require: 'ngModel',
+                link: function(scope, elm, attrs, ctrl) {
+                    // 通过设置 $setViewValue 和 $render 实现双向绑定
+
+                    // view -> model
+                    // 监听元素的 blur 事件，然后将数据传递给 model
+                    elm.on('blur', function() {
+                        // 调用 $setViewValue 方法设置 model 数据
+                        ctrl.$setViewValue(elm.html());
+                    });
+
+                    // model -> view
+                    ctrl.$render = function() {
+                        elm.html(ctrl.$viewValue);
+                    };
+
+                    // load init value from DOM
+                    ctrl.$setViewValue(elm.html());
+                }
+            };
+        });
     }
 })()
