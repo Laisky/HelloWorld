@@ -28,6 +28,8 @@
         <input type="text" ng-model="username">
         <!-- 用 ng-click 绑定点击事件 -->
         <button ng-click="addDot()">addDot</button>
+        <label for="">Filter: {{ 'NiNiNi' | myFilter:10 }}</label>
+
     </div>
     <!-- service demo -->
     <div class="controller" ng-controller="serviceDemo">

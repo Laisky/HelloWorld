@@ -14,7 +14,7 @@ var myApp;
 
         // -----------------------------------
         // demo for controller
-        myApp.controller('myController', ["$scope", function($scope) {
+        myApp.controller("myController", ["$scope", function($scope) {
             // $scope 为该 controller 的命名空间
             // $scope 中也可以指定函数
             $scope.greeting = "Welcome";
@@ -38,5 +38,13 @@ var myApp;
                 $win.alert(msg);
             }
         }]);
+
+        // -----------------------------------
+        // demo for filter
+        myApp.filter("myFilter", function() {
+            return function(input, nDot) {
+                return input + ".".repeat(Number(nDot));
+            }
+        })
     }
 })()
