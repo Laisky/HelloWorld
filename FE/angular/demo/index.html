@@ -7,13 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-    .controller {
+    body > div {
         width: 100%;
-        border-bottom: 1px solid blue;
+        padding-bottom: 10px;
         margin-bottom: 10px;
+        border-bottom: 1px solid grey;
     }
 
-    div[contentEditable] {
+    div[contenteditable] {
         background-color: grey;
         cursor: pointer;
     }
@@ -40,6 +41,7 @@
         <input type="text" ng-model="userInput">
         <button ng-click="serviceShow(userInput)">Alert</button>
     </div>
+    <!-- template demo -->
     <div class="template" ng-controller="templateDemo">
         <label for="">Filter: {{ 'NiNiNi' | myFilter:10 }}</label>
         <!-- 指定 form 的 name -->
@@ -83,10 +85,25 @@
             </div>
             <div>
                 <p>自定义的表单</p>
-                <div ng-model="user.customField" contentEditable></div>
+                <div ng-model="user.customField" contenteditable></div>
             </div>
         </form>
         <span>Forms: </span><pre>{{ user | json }}</pre>
+    </div>
+    <!-- directives demo -->
+    <div ng-controller="directiveDemo">
+        <!-- custom directives -->
+        <div my-customer type="name"></div>
+        <!-- // isolate directives -->
+        <p>
+            <my-iso-customer info="naomi"></my-iso-customer>
+        </p>
+        <p>
+            <my-iso-customer info="vojta"></my-iso-customer>
+        </p>
+        <p><span>Timer: </span><input type="text" ng-model="timeNow" my-current-time></p>
+        <!-- demo for transclude -->
+        <span>customer: </span><p my-transclude>{{ customer.name }}</p>
     </div>
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>

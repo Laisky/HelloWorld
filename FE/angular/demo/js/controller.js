@@ -12,6 +12,10 @@ var myApp;
 
         var myApp = this.myApp;
 
+        myApp.paths = {
+            root: '/Users/laisky/repo/HelloWorld/FE/angular/demo/'
+        };
+
         // -----------------------------------
         // demo for controller
         myApp.controller("myController", ["$scope", function($scope) {
@@ -141,5 +145,95 @@ var myApp;
                 }
             };
         });
+        //-----------------------------------
+        // demo for directives
+        myApp.controller('directiveDemo', ['$scope', function($scope) {
+            $scope.customer = {
+                name: 'Laisky',
+                address: '1300 sjkfhjashfawe'
+            };
+            $scope.naomi = {
+                name: 'Naomi',
+                address: '1600 Amphitheatre'
+            };
+            $scope.vojta = {
+                name: 'Vojta',
+                address: '3456 Somewhere Else'
+            };
+        }]);
+        // 创建 directive
+        myApp.directive('myCustomer', function() {
+            return {
+                // inline template
+                template: "<p>Name: {{customer.name}} Address: {{customer.address}}.<p>",
+                // 推荐做法是引入 template 文件
+                // templateUrl: 'my-customer.html',
+                // templateUrl 也是以是函数，接受 ele 和 attr 两个参数
+                // templateUrl: function(ele, attr) {
+                //     return 'customer-' + attr.type + '.html';
+                // },
+                // 'A' - only matches attribute name
+                // 'E' - only matches element name
+                // 'C' - only matches class name
+                // default to 'AE'
+                restrict: 'A'
+            };
+        });
+        // 创建 isolate directive
+        myApp.directive('myIsoCustomer', function() {
+            return {
+                restrict: 'E',
+                scope: {
+                    // 用属性 info 的值给 customerInfo 赋值
+                    customerInfo: '=info'
+                },
+                // 模板内容为
+                // "Name: {{customerInfo.name}} Address: {{customerInfo.address}}"
+                // "<hr>" \
+                // "Name: {{vojta.name}} Address: {{vojta.address}}"
+                templateUrl: "/templates/my-iso-customer.html"
+            };
+        });
+        // my-current-time
+        myApp.directive("myCurrentTime", ["$interval", "dateFilter", function($interval, dateFilter) {
+            return {
+                link: function(scope, ele, attrs) {
+                    var timeoutId;
+
+                    // 修改 DOM
+                    function updateTime() {
+                        ele.val(dateFilter(new Date(), 'M/d/yy h:mm:ss a'));
+                    }
+
+                    // 当 element destroy 的时候会抛出这个事件
+                    // 注销掉计时器
+                    ele.on('$destroy', function() {
+                        $interval.cancel(timeoutId);
+                    });
+
+                    timeoutId = $interval(function() {
+                        updateTime(); // update DOM
+                    }, 1000);
+                }
+            }
+        }]);
+        // my-transclude
+        myApp.directive("myTransclude", function() {
+            return {
+                // 指定 transclude 后，expression 会使用 parent 的 scope
+                transclude: true,
+                // 若没有创建自己的 scope， link 内对 scope 的修改会应用到 parent
+                // 若制定了 scope，则 link 内的修改都应用到这个 scope
+                scope: {},
+                // 会将 directive 的 DOM 元素替换进模板中指定了 ng-transclude 的元素内
+                templateUrl: "templates/transclude.html",
+                link: function(scope, ele, attrs) {
+                    console.log(scope)
+                    scope.customer = {
+                        name: 'new man'
+                    };
+                }
+            }
+        })
     }
 })()
