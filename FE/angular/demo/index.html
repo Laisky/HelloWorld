@@ -92,7 +92,15 @@
     </div>
     <!-- directives demo -->
     <div ng-controller="directiveDemo">
+        <!-- custom directives -->
         <div my-customer type="name"></div>
+        <!-- // isolate directives -->
+        <p>
+            <my-iso-customer info="naomi"></my-iso-customer>
+        </p>
+        <p>
+            <my-iso-customer info="vojta"></my-iso-customer>
+        </p>
     </div>
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>

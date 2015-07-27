@@ -12,6 +12,10 @@ var myApp;
 
         var myApp = this.myApp;
 
+        myApp.paths = {
+            root: '/Users/laisky/repo/HelloWorld/FE/angular/demo/'
+        };
+
         // -----------------------------------
         // demo for controller
         myApp.controller("myController", ["$scope", function($scope) {
@@ -148,6 +152,14 @@ var myApp;
                 name: 'Naomi',
                 address: '1600 Amphitheatre'
             };
+            $scope.naomi = {
+                name: 'Naomi',
+                address: '1600 Amphitheatre'
+            };
+            $scope.vojta = {
+                name: 'Vojta',
+                address: '3456 Somewhere Else'
+            };
         }]);
         // 创建 directive
         myApp.directive('myCustomer', function() {
@@ -155,16 +167,31 @@ var myApp;
                 // inline template
                 template: "Name: {{customer.name}} Address: {{customer.address}}.",
                 // 推荐做法是引入 template 文件
-                templateUrl: 'my-customer.html',
+                // templateUrl: 'my-customer.html',
                 // templateUrl 也是以是函数，接受 ele 和 attr 两个参数
-                templateUrl: function(ele, attr) {
-                    return 'customer-' + attr.type + '.html';
-                },
+                // templateUrl: function(ele, attr) {
+                //     return 'customer-' + attr.type + '.html';
+                // },
                 // 'A' - only matches attribute name
                 // 'E' - only matches element name
                 // 'C' - only matches class name
                 // default to 'AE'
                 restrict: 'E'
+            };
+        });
+        // 创建 isolate directive
+        myApp.directive('myIsoCustomer', function() {
+            return {
+                restrict: 'E',
+                scope: {
+                    // 用属性 info 的值给 customerInfo 赋值
+                    customerInfo: '=info'
+                },
+                // 模板内容为
+                // "Name: {{customerInfo.name}} Address: {{customerInfo.address}}"
+                // "<hr>" \
+                // "Name: {{vojta.name}} Address: {{vojta.address}}"
+                templateUrl: "/templates/my-iso-customer.html"
             };
         });
     }
