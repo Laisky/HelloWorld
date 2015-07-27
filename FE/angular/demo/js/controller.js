@@ -141,5 +141,31 @@ var myApp;
                 }
             };
         });
+        //-----------------------------------
+        // demo for directives
+        myApp.controller('directiveDemo', ['$scope', function($scope) {
+            $scope.customer = {
+                name: 'Naomi',
+                address: '1600 Amphitheatre'
+            };
+        }]);
+        // 创建 directive
+        myApp.directive('myCustomer', function() {
+            return {
+                // inline template
+                template: "Name: {{customer.name}} Address: {{customer.address}}.",
+                // 推荐做法是引入 template 文件
+                templateUrl: 'my-customer.html',
+                // templateUrl 也是以是函数，接受 ele 和 attr 两个参数
+                templateUrl: function(ele, attr) {
+                    return 'customer-' + attr.type + '.html';
+                },
+                // 'A' - only matches attribute name
+                // 'E' - only matches element name
+                // 'C' - only matches class name
+                // default to 'AE'
+                restrict: 'E'
+            };
+        });
     }
 })()
