@@ -165,7 +165,7 @@ var myApp;
         myApp.directive('myCustomer', function() {
             return {
                 // inline template
-                template: "Name: {{customer.name}} Address: {{customer.address}}.",
+                template: "<p>Name: {{customer.name}} Address: {{customer.address}}.<p>",
                 // 推荐做法是引入 template 文件
                 // templateUrl: 'my-customer.html',
                 // templateUrl 也是以是函数，接受 ele 和 attr 两个参数
@@ -176,7 +176,7 @@ var myApp;
                 // 'E' - only matches element name
                 // 'C' - only matches class name
                 // default to 'AE'
-                restrict: 'E'
+                restrict: 'A'
             };
         });
         // 创建 isolate directive
@@ -194,5 +194,28 @@ var myApp;
                 templateUrl: "/templates/my-iso-customer.html"
             };
         });
+        // my-current-time
+        myApp.directive("myCurrentTime", ["$interval", "dateFilter", function($interval, dateFilter) {
+            return {
+                link: function(scope, ele, attrs, ctrl) {
+                    var timeoutId;
+
+                    // 修改 DOM
+                    function updateTime() {
+                        ele.val(dateFilter(new Date(), 'M/d/yy h:mm:ss a'));
+                    }
+
+                    // 当 element destroy 的时候会抛出这个事件
+                    // 注销掉计时器
+                    ele.on('$destroy', function() {
+                        $interval.cancel(timeoutId);
+                    });
+
+                    timeoutId = $interval(function() {
+                        updateTime(); // update DOM
+                    }, 1000);
+                }
+            }
+        }]);
     }
 })()
