@@ -197,7 +197,7 @@ var myApp;
         // my-current-time
         myApp.directive("myCurrentTime", ["$interval", "dateFilter", function($interval, dateFilter) {
             return {
-                link: function(scope, ele, attrs, ctrl) {
+                link: function(scope, ele, attrs) {
                     var timeoutId;
 
                     // 修改 DOM
@@ -227,7 +227,7 @@ var myApp;
                 scope: {},
                 // 会将 directive 的 DOM 元素替换进模板中指定了 ng-transclude 的元素内
                 templateUrl: "templates/transclude.html",
-                link: function(scope, ele, attrs, ctrl) {
+                link: function(scope, ele, attrs) {
                     console.log(scope)
                     scope.customer = {
                         name: 'new man'
