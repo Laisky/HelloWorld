@@ -20,7 +20,7 @@ var myApp;
         myApp.config(['$routeProvider', function($routeProvider) {
             $routeProvider
                 .when('/index', {
-                    templateUrl: 'demo.html',
+                    templateUrl: 'index.html',
                     controller: 'myController'
                 })
                 .when('/detail/:id', {
