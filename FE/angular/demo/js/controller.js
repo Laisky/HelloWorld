@@ -8,13 +8,32 @@ var myApp;
     myApp = new MyApp();
 
     function MyApp() {
-        this.myApp = angular.module('myApp', []);
+        this.myApp = angular.module('myApp', ["ngRoute"]);
 
         var myApp = this.myApp;
 
         myApp.paths = {
             root: '/Users/laisky/repo/HelloWorld/FE/angular/demo/'
         };
+
+        // route
+        myApp.config(['$routeProvider', function($routeProvider) {
+            $routeProvider
+                .when('/index', {
+                    templateUrl: 'demo.html',
+                    controller: 'myController'
+                })
+                .when('/detail/:id', {
+                    templateUrl: 'views/detail.html',
+                    controller: 'routeDetailCtrl'
+                })
+                .otherwise({
+                    redirectTo: '/index'
+                });
+        }]);
+        myApp.controller("routeDetailCtrl", ["$scope", "$routeParams", function($scope, $routeParams) {
+            $scope.id = $routeParams.id;
+        }]);
 
         // -----------------------------------
         // demo for controller
