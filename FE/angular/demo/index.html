@@ -105,7 +105,7 @@
         </p>
         <p><span>Timer: </span><input type="text" ng-model="timeNow" my-current-time></p>
         <!-- demo for transclude -->
-        <span>customer: </span><p my-transclude>{{ customer.name }}</p>
+        <span my-iso-customer>Out myTransclude: {{ customer.name }}</span><my-transclude><p>In myTransclude: {{ customer.name }}</p></my-transclude>
     </div>
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>

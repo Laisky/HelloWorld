@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <style type="text/css">
+    div.demo {
+        padding-bottom: 10px;
+        border-bottom: 1px solid grey;
+    }
+    </style>
+</head>
+
+<body ng-app="myApp">
+    <div ng-controller="transcludeDemo">
+        <div class="demo">
+            <p>正常的：{{ customer.name }}</p>
+        </div>
+        <div class="demo" my-iso-demo>
+            <p>隔离的： {{ customer.name }}</p>
+        </div>
+        <div class="demo">
+            <p>my-transclude-demo</p>
+            <div my-transclude-demo>
+                <p>transclude 的：{{ customer.name }}</p>
+            </div>
+        </div>
+        <div class="demo">
+            <p>my-transclude-element-demo</p>
+            <div my-transclude-element-demo>
+                <p>transclude element 的：{{ customer.name }}</p>
+            </div>
+        </div>
+        <div class="demo">
+            <p>my-transclude-element-replace-demo</p>
+            <div my-transclude-element-replace-demo>
+                <p>transclude element replace 的：{{ customer.name }}</p>
+            </div>
+        </div>
+        <div class="demo">
+            <p>my-transclude-demo-with-replace</p>
+            <div my-transclude-demo-with-replace>
+                <p>transclude replace 的：{{ customer.name }}</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript">
+    (function() {
+        myApp = angular.module('myApp', [])
+            // 定义 controller
+            .controller("transcludeDemo", ["$scope", function($scope) {
+                $scope.customer = {
+                    name: "Laisky"
+                };
+            }])
+            // 通过定义 scope 来隔离 directive
+            .directive('myIsoDemo', function() {
+                return {
+                    restrict: 'EA',
+                    scope: {},
+                    template: "隔离的 template： {{ customer.name }}"
+                };
+            })
+            // 加入 transclude 字段会使得 scope 原型继承于 parent
+            .directive('myTranscludeDemo', function() {
+                return {
+                    restrict: 'EA',
+                    scope: {},
+                    transclude: true,
+                    templateUrl: "templates/transclude.html"
+                };
+            })
+            .directive('myTranscludeElementDemo', function() {
+                return {
+                    restrict: 'EA',
+                    scope: {},
+                    transclude: 'element',
+                    templateUrl: "templates/transclude.html"
+                };
+            })
+            .directive('myTranscludeElementReplaceDemo', function() {
+                return {
+                    restrict: 'EA',
+                    scope: {},
+                    transclude: 'element',
+                    replace: true,
+                    templateUrl: "templates/transclude.html"
+                };
+            })
+            .directive('myTranscludeDemoWithReplace', function() {
+                return {
+                    restrict: 'EA',
+                    scope: {},
+                    transclude: true,
+                    replace: true,
+                    templateUrl: "templates/transclude.html"
+                };
+            })
+    })()
+    </script>
+</body>
+
+</html>

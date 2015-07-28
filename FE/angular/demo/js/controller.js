@@ -201,7 +201,7 @@ var myApp;
         // 创建 isolate directive
         myApp.directive('myIsoCustomer', function() {
             return {
-                restrict: 'E',
+                restrict: 'EA',
                 scope: {
                     // 用属性 info 的值给 customerInfo 赋值
                     customerInfo: '=info'
@@ -239,15 +239,11 @@ var myApp;
         // my-transclude
         myApp.directive("myTransclude", function() {
             return {
-                // 指定 transclude 后，expression 会使用 parent 的 scope
                 transclude: true,
-                // 若没有创建自己的 scope， link 内对 scope 的修改会应用到 parent
-                // 若制定了 scope，则 link 内的修改都应用到这个 scope
                 scope: {},
-                // 会将 directive 的 DOM 元素替换进模板中指定了 ng-transclude 的元素内
+                // replace: true,
                 templateUrl: "templates/transclude.html",
                 link: function(scope, ele, attrs) {
-                    console.log(scope)
                     scope.customer = {
                         name: 'new man'
                     };
