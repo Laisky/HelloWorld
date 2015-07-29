@@ -21,10 +21,19 @@
         <div class="demo" my-iso-demo>
             <p>隔离的： {{ customer.name }}</p>
         </div>
+        <div class="demo" myIsoInheritDemo>
+            <p>隔离继承的： {{ customer.name }}</p>
+        </div>
         <div class="demo">
             <p>my-transclude-demo</p>
             <div my-transclude-demo>
                 <p>transclude 的：{{ customer.name }}</p>
+            </div>
+        </div>
+        <div class="demo">
+            <p>my-transclude-demo-with-replace</p>
+            <div my-transclude-demo-with-replace>
+                <p>transclude replace 的：{{ customer.name }}</p>
             </div>
         </div>
         <div class="demo">
@@ -39,12 +48,6 @@
                 <p>transclude element replace 的：{{ customer.name }}</p>
             </div>
         </div>
-        <div class="demo">
-            <p>my-transclude-demo-with-replace</p>
-            <div my-transclude-demo-with-replace>
-                <p>transclude replace 的：{{ customer.name }}</p>
-            </div>
-        </div>
     </div>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <script type="text/javascript">
@@ -56,45 +59,65 @@
                     name: "Laisky"
                 };
             }])
-            // 通过定义 scope 来隔离 directive
+            // 隔离的 directive
+            // scope: {} 为 directive 创建了自己的空 scope
+            // 所以 DOM 中的 {{ customer }} 会取到 undefined
             .directive('myIsoDemo', function() {
                 return {
-                    restrict: 'EA',
+                    restrict: 'A',
                     scope: {},
                     template: "隔离的 template： {{ customer.name }}"
                 };
             })
-            // 加入 transclude 字段会使得 scope 原型继承于 parent
+            // 通过定义 scope 为 true，
+            // 会原型继承于 parent（即上一层 controller） 的 scope
+            // DOM 中的 {{ customer }} 等于的 scope
+            .directive('myIsoInheritDemo', function() {
+                return {
+                    restrict: 'A',
+                    scope: true,
+                    template: "隔离继承的 template： {{ customer.name }}"
+                };
+            })
+            // transclude 会创建自己的 scope
+            // 默认情况下是继承于 parent 的 scope
+            // transclude 语句的作用是将标记了该 directive 的语句插入到 template 中标记了 ng-transclude 的 DOM 之内
+            // 默认情况下只插入该 directive DOM 的内容插入 ng-transclude
+            // 并且会保留 transclude DOM
             .directive('myTranscludeDemo', function() {
                 return {
-                    restrict: 'EA',
+                    restrict: 'A',
                     scope: {},
                     transclude: true,
                     templateUrl: "templates/transclude.html"
                 };
             })
-            .directive('myTranscludeElementDemo', function() {
+            // 加上 replace 后会替换掉 directive DOM
+            .directive('myTranscludeDemoWithReplace', function() {
                 return {
-                    restrict: 'EA',
+                    restrict: 'A',
                     scope: {},
-                    transclude: 'element',
-                    templateUrl: "templates/transclude.html"
-                };
-            })
-            .directive('myTranscludeElementReplaceDemo', function() {
-                return {
-                    restrict: 'EA',
-                    scope: {},
-                    transclude: 'element',
+                    transclude: true,
                     replace: true,
                     templateUrl: "templates/transclude.html"
                 };
             })
-            .directive('myTranscludeDemoWithReplace', function() {
+            // 将 transclude 指定为 element，而没有指定 replace 的话会注释掉该 element
+            .directive('myTranscludeElementDemo', function() {
                 return {
-                    restrict: 'EA',
+                    restrict: 'A',
                     scope: {},
-                    transclude: true,
+                    transclude: 'element',
+                    templateUrl: "templates/transclude.html"
+                };
+            })
+            // 设置 replace 为 true，并将 transclude 设置为 element
+            // 会将 directive DOM 本身也插入
+            .directive('myTranscludeElementReplaceDemo', function() {
+                return {
+                    restrict: 'A',
+                    scope: {},
+                    transclude: 'element',
                     replace: true,
                     templateUrl: "templates/transclude.html"
                 };
