@@ -89,7 +89,7 @@
                     restrict: 'A',
                     scope: {},
                     transclude: true,
-                    templateUrl: "templates/transclude.html"
+                    templateUrl: "transclude-template"
                 };
             })
             // 加上 replace 后会替换掉 directive DOM
@@ -99,7 +99,7 @@
                     scope: {},
                     transclude: true,
                     replace: true,
-                    templateUrl: "templates/transclude.html"
+                    templateUrl: "transclude-template"
                 };
             })
             // 将 transclude 指定为 element，而没有指定 replace 的话会注释掉该 element
@@ -108,7 +108,7 @@
                     restrict: 'A',
                     scope: {},
                     transclude: 'element',
-                    templateUrl: "templates/transclude.html"
+                    templateUrl: "transclude-template"
                 };
             })
             // 设置 replace 为 true，并将 transclude 设置为 element
@@ -119,10 +119,18 @@
                     scope: {},
                     transclude: 'element',
                     replace: true,
-                    templateUrl: "templates/transclude.html"
+                    templateUrl: "transclude-template"
                 };
             })
     })()
+    </script>
+    <script type="text/ng-template" id="transclude-template">
+        <div class="outside">
+            <div ng-transclude>
+                <div class="inside">
+                </div>
+            </div>
+        </div>
     </script>
 </body>
 
