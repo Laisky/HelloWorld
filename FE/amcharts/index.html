@@ -23,149 +23,160 @@
     <script type="text/javascript" src="bower_components/amcharts/dist/amcharts/exporting/rgbcolor.js"></script>
     <script type="text/javascript" src="bower_components/amcharts/dist/amcharts/exporting/filesaver.js"></script>
     <script type="text/javascript">
-    var chart = AmCharts.makeChart("chartdiv", {
-        "type": "serial",
-        "theme": "light",
-        "marginRight": 50,
-        "autoMarginOffset": 20,
-        "dataDateFormat": "YYYY-MM-DD",
-        "valueAxes": [{
-            "id": "v1",
-            "axisAlpha": 0,
-            "position": "left"
-        }],
-        "balloon": {
-            "borderThickness": 1,
-            "shadowAlpha": 0
-        },
-        "graphs": [{
-            "id": "g1",
-            "lineColor": "green",
-            "bullet": "round",
-            "bulletBorderAlpha": 1,
-            "bulletColor": "#FFFFFF",
-            "bulletSize": 5,
-            "hideBulletsCount": 50,
-            "lineThickness": 1,
-            "title": "Title1",
-            "useLineColorForBulletBorder": true,
-            "valueField": "v1",
-            "balloonText": "<div style='margin:2px; font-size:14px;'>[[v1]]</div>"
-        }, {
-            "id": "g2",
-            "lineColor": "red",
-            "bullet": "round",
-            "bulletBorderAlpha": 1,
-            "bulletColor": "#FFFFFF",
-            "bulletSize": 5,
-            "hideBulletsCount": 50,
-            "lineThickness": 1,
-            "title": "Title2",
-            "useLineColorForBulletBorder": true,
-            "valueField": "v2",
-            "balloonText": "<div style='margin:2px; font-size:14px;'>[[v2]]</div>"
-        }, {
-            "id": "g3",
-            "lineColor": "black",
-            "bullet": "round",
-            "bulletBorderAlpha": 1,
-            "bulletColor": "#FFFFFF",
-            "bulletSize": 5,
-            "hideBulletsCount": 50,
-            "lineThickness": 4,
-            "title": "Total",
-            "useLineColorForBulletBorder": true,
-            "valueField": "vt",
-            "balloonText": "<div style='margin:2px; font-size:14px;'>[[vt]]</div>"
-        }],
-        "chartScrollbar": {
-            "graph": "g3",
-            "oppositeAxis": true,
-            "offset": 30,
-            "scrollbarHeight": 40,
-            "backgroundAlpha": 0,
-            "selectedBackgroundAlpha": 0.1,
-            "selectedBackgroundColor": "#888888",
-            "graphFillAlpha": 0,
-            "graphLineAlpha": 0.5,
-            "selectedGraphFillAlpha": 0,
-            "selectedGraphLineAlpha": 1,
-            "autoGridCount": true,
-            "color": "#AAAAAA"
-        },
-        "chartCursor": {
-            "pan": true,
-            "valueLineEnabled": true,
-            "valueLineBalloonEnabled": true,
-            "cursorAlpha": 0,
-            "valueLineAlpha": 0.2
-        },
-        "categoryField": "date",
-        "categoryAxis": {
-            "parseDates": true,
-            "dashLength": 1,
-            "minorGridEnabled": true
-        },
-        "export": {
-            "enabled": true
-        },
-        "dataProvider": generationData()
-    });
+    (function() {
+        setTimeout(drawChart, 1000);
 
-    chart.addListener("rendered", zoomChart);
-    chart.amExport = {
-        top: 0,
-        right: 50,
-        exportJPG: true,
-        exportPNG: true,
-        exportSVG: true,
-        userCFG: {
-            menuItems: [{
-                icon: "bower_components/amcharts/dist/amcharts/images/export.png",
-                items: [{
-                    title: 'JPG',
-                    format: 'jpg'
+        function drawChart() {
+            var chart = AmCharts.makeChart("chartdiv", {
+                "type": "serial",
+                "theme": "light",
+                "marginRight": 80,
+                "autoMarginOffset": 20,
+                "dataDateFormat": "YYYY-MM-DD",
+                "legend": {
+                    "equalWidths": false,
+                    "useGraphSettings": true,
+                    "valueAlign": "left",
+                    "valueWidth": 120
+                },
+                "valueAxes": [{
+                    "id": "v1",
+                    "axisAlpha": 0,
+                    "position": "left"
+                }],
+                "balloon": {
+                    "borderThickness": 1,
+                    "shadowAlpha": 0
+                },
+                "graphs": [{
+                    "id": "g1",
+                    "lineColor": "green",
+                    "bullet": "round",
+                    "bulletBorderAlpha": 1,
+                    "bulletColor": "#FFFFFF",
+                    "bulletSize": 5,
+                    "hideBulletsCount": 50,
+                    "lineThickness": 1,
+                    "title": "Title1",
+                    "useLineColorForBulletBorder": true,
+                    "valueField": "v1",
+                    "balloonText": "<div style='margin:2px; font-size:14px;'>[[v1]]</div>"
                 }, {
-                    title: 'PNG',
-                    format: 'png'
+                    "id": "g2",
+                    "lineColor": "red",
+                    "bullet": "round",
+                    "bulletBorderAlpha": 1,
+                    "bulletColor": "#FFFFFF",
+                    "bulletSize": 5,
+                    "hideBulletsCount": 50,
+                    "lineThickness": 1,
+                    "title": "Title2",
+                    "useLineColorForBulletBorder": true,
+                    "valueField": "v2",
+                    "balloonText": "<div style='margin:2px; font-size:14px;'>[[v2]]</div>"
                 }, {
-                    title: 'SVG',
-                    format: 'svg'
-                }]
-            }]
+                    "id": "g3",
+                    "type": "column",
+                    "lineColor": "black",
+                    lineThickness: 2,
+                    lineColor: "#373737",
+                    fillAlphas: 0.1,
+                    lineAlpha: 0,
+                    "bullet": "round",
+                    "bulletBorderAlpha": 1,
+                    "bulletColor": "#FFFFFF",
+                    "bulletSize": 5,
+                    "hideBulletsCount": 50,
+                    "title": "Total",
+                    "useLineColorForBulletBorder": true,
+                    "valueField": "vt",
+                    "balloonText": "<div style='margin:2px; font-size:14px;'>[[vt]]</div>"
+                }],
+                "chartScrollbar": {
+                    "graph": "g3",
+                    "oppositeAxis": true,
+                    "offset": 30,
+                    "scrollbarHeight": 40,
+                    "backgroundAlpha": 0,
+                    "selectedBackgroundAlpha": 0.1,
+                    "selectedBackgroundColor": "#888888",
+                    "graphFillAlpha": 0,
+                    "graphLineAlpha": 0.5,
+                    "selectedGraphFillAlpha": 0,
+                    "selectedGraphLineAlpha": 1,
+                    "autoGridCount": true,
+                    "color": "#AAAAAA"
+                },
+                "chartCursor": {
+                    "pan": true,
+                    "valueLineEnabled": true,
+                    "valueLineBalloonEnabled": true,
+                    "cursorAlpha": 0,
+                    "valueLineAlpha": 0.2
+                },
+                "categoryField": "date",
+                "categoryAxis": {
+                    "parseDates": true,
+                    "dashLength": 1,
+                    "minorGridEnabled": true
+                },
+                "export": {
+                    "enabled": true,
+                },
+                "dataProvider": generationData()
+            });
+
+            chart.addListener("rendered", zoomChart);
+            chart.amExport = {
+                top: 50,
+                right: 50,
+                exportJPG: true,
+                exportPNG: true,
+                exportSVG: true,
+                userCFG: {
+                    menuItems: [{
+                        icon: "bower_components/amcharts/dist/amcharts/images/export.png",
+                        items: [{
+                            title: 'JPG',
+                            format: 'jpg'
+                        }, {
+                            title: 'PNG',
+                            format: 'png'
+                        }, {
+                            title: 'SVG',
+                            format: 'svg'
+                        }]
+                    }]
+                }
+            }
+
+            zoomChart();
+            // zoom
+            function zoomChart() {
+                chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
+            }
+
+
+            function generationData() {
+                var dates = [];
+                var dayLong = 1000 * 3600 * 24;
+                Math.round2 = function(num) {
+                    return Math.round(num * 100) / 100;
+                }
+
+                for (var i = 0; i < 100; i++) {
+                    var d = {
+                        date: new Date(i * dayLong),
+                        v1: Math.round2(Math.random() * 100),
+                        v2: Math.round2(Math.random() * 100)
+                    };
+                    d["vt"] = Math.round2(d["v1"] + d["v2"]);
+                    dates.push(d)
+                }
+                return dates;
+            }
         }
-    }
-
-    zoomChart();
-    // legend
-    var legend = new AmCharts.AmLegend();
-    chart.addLegend(legend);
-
-    // zoom
-    function zoomChart() {
-        chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
-    }
-
-
-    function generationData() {
-        var dates = [];
-        var dayLong = 1000 * 3600 * 24;
-        Math.round2 = function(num) {
-            return Math.round(num * 100) / 100;
-        }
-
-        for (var i = 0; i < 10; i++) {
-            var d = {
-                date: new Date(i * dayLong),
-                v1: Math.round2(Math.random() * 100),
-                v2: Math.round2(Math.random() * 100)
-            };
-            d["vt"] = Math.round2(d["v1"] + d["v2"]);
-            dates.push(d)
-        }
-
-        return dates;
-    }
+    }())
     </script>
 </body>
 
