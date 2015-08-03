@@ -8,9 +8,15 @@ from flask import (
 )
 
 
+# configuration
+DATABASE = '/tmp/flaskr.db'
+DEBUG = True
+SECRET_KEY = os.urandom(24)  # for session
+USERNAME = 'admin'
+PASSWORD = 'default'
 # app settings
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # for session
+app.config.from_object(__name__)
 
 
 @app.route('/index')
