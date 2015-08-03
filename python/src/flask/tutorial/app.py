@@ -42,6 +42,32 @@ def retrieve_posts(pid):
     return 'You got the post {}'.format(pid)
 
 
+@app.route('/template', methods=['GET'])
+def template_demo():
+    return render_template('demo.html')
+
+
+# filter
+@app.template_filter('reverse')
+def reverse_filter(s):
+    return s[::-1]
+
+
+# 在 template 中插入自定义变量
+# 变量可以是函数
+@app.context_processor
+def inject_cust_variable():
+    return dict(my_var=13)
+
+
+@app.context_processor
+def inject_cust_func():
+    def my_template_func(num):
+        return num * 10
+
+    return dict(my_func=my_template_func)
+
+
 def main():
     app.run(port=27855, debug=True)
 
