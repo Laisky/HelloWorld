@@ -1,11 +1,10 @@
 import os
-import sys
-import logging
 
 from flask import (
     Flask, render_template, request, url_for,
     make_response, session, flash,
 )
+from flask.views import View, MethodView
 
 
 # configuration
@@ -16,10 +15,10 @@ USERNAME = 'admin'
 PASSWORD = 'default'
 # app settings
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_object('settings.DebugConfig')
 
 
-@app.route('/index')
+@app.route('/index/')
 def index():
     resp = make_response(render_template('index.html'))
     resp.set_cookie('username', 'laisky')
@@ -37,7 +36,7 @@ def pagenotfound(error):
 
 
 # 类型可选为 int, float, path
-@app.route('/t/<int:pid>', methods=['GET'])
+@app.route('/t/<int:pid>/', methods=['GET'])
 def retrieve_posts(pid):
     return 'You got the post {}'.format(pid)
 
@@ -48,7 +47,7 @@ def template_demo():
 
 
 # filter
-@app.template_filter('reverse')
+@app.template_filter('reverse/')
 def reverse_filter(s):
     return s[::-1]
 
@@ -68,7 +67,29 @@ def inject_cust_func():
     return dict(my_func=my_template_func)
 
 
+# pluggable view
+# 继承 View 的话需要自己实现 method
+class MyView(View):
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self):
+        if request.method == 'GET':
+            return 'GET View'
+
+
+# 也可以用 MethodView，flask 已经处理好了 method
+class MyMethodView(MethodView):
+
+    def get(self):
+        return 'GET MethodView'
+
+    def post(self):
+        pass
+
+
 def main():
+    app.add_url_rule('/view/', view_func=MyView.as_view('view'))
+    app.add_url_rule('/mview/', view_func=MyMethodView.as_view('methodview'))
     app.run(port=27855, debug=True)
 
 
