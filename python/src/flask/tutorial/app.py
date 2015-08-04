@@ -1,10 +1,13 @@
 import os
+from functools import wraps
 
 from flask import (
     Flask, render_template, request, url_for,
-    make_response, session, flash,
+    make_response, session, flash, g
 )
 from flask.views import View, MethodView
+
+from appdemo.urls import urlpattern
 
 
 # configuration
@@ -77,12 +80,23 @@ class MyView(View):
             return 'GET View'
 
 
+def login_required(f):
+    """Checks whether user is logged in or raises error 401."""
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        if not g.get('current_user'):
+            return 'login required!', 401
+        return f(*args, **kwargs)
+    return decorator
+
+
 # 也可以用 MethodView，flask 已经处理好了 method
 class MyMethodView(MethodView):
 
     def get(self):
         return 'GET MethodView'
 
+    @login_required
     def post(self):
         pass
 
@@ -90,6 +104,7 @@ class MyMethodView(MethodView):
 def main():
     app.add_url_rule('/view/', view_func=MyView.as_view('view'))
     app.add_url_rule('/mview/', view_func=MyMethodView.as_view('methodview'))
+    app.register_blueprint(urlpattern, url_prefix='/appdemo')
     app.run(port=27855, debug=True)
 
 
