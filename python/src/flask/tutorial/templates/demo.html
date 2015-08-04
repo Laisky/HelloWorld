@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block container %}
+<p>Config: {{ config }}</p>
+<p>Request: {{ request }}</p>
+<p>Session: {{ session }}</p>
+<p>g: {{ g }}</p>
+
+<hr>
+
+<p>tojson: {{ {'a': 'b'} | tojson }}</p>
+
+<hr>
+    {% set ele = '<span style="color: red;">XSR</span>' %}
+<p>{{ ele }}</p>
+{% autoescape false %}
+<p>{{ ele }}</p>
+{% endautoescape %}
+
+{% endblock %}
