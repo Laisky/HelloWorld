@@ -2,14 +2,15 @@ import datetime
 
 import pytz
 import werkzeug
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_restful import (
     Resource, Api, reqparse,
-    fields, marshal_with
+    fields, marshal_with,
 )
 
 app = Flask(__name__)
-api = Api(app)
+api_bp = Blueprint('api', __name__)
+api = Api(api_bp)
 
 
 class PostHandler(Resource):
@@ -67,7 +68,6 @@ class RespObj():
 class SimpleDateField(fields.Raw):
 
     def format(self, dt):
-        print(dt)
         return datetime.datetime.strftime(dt, '%Y-%m-%d')
 
 
@@ -89,6 +89,7 @@ class ResourceHandler(Resource):
 
 api.add_resource(PostHandler, '/p/<int:pid>/', '/p/')
 api.add_resource(ResourceHandler, '/t/<string:pid>/', '/t/')
+app.register_blueprint(api_bp, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run(
