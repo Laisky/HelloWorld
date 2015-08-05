@@ -65,6 +65,6 @@ docs/_build/
 # ssh
 id_rsa
 
-# test
-/*/app.py
-abc
+# sass
+*.scssc
+
