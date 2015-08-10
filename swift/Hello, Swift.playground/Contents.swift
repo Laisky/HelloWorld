@@ -10,9 +10,9 @@ typealias myInt = Int;
 print(myInt.min)
 
 // 类型推断
-var myInt = 10
-//myInt + 3.1
-
+var myInt2 = 10
+//myInt2 + 3.1
+assert(myInt2 > 5, "Assert Error!")
 
 // Number
 let minValue = UInt8.min  // minValue 为 0，是 UInt8 类型的最小值
@@ -59,11 +59,38 @@ var myOptDict = [1: 2]
 myOptDict[3]
 //myOptDict[3]!   will raise ERROR
 
-
+// ------------------------------
+// 运算符
 // operator
 myOptional ?? 1
 
-// range
+10 / 2
+10 + 2
+10 - 2
+10 % 3
+10 * 2
+-10
+myInt2++
+++myInt2
+myInt2 += 2
+8 % 2.5  // 浮点数求余
+
+// 比较运算符
+10 > 2
+10 >= 2
+10 == 2
+10 != 2
+
+// 三元运算符
+var myInt3 = 10 > 20 ? 5: 3
+
+// 空合运算符
+var myOption2: Int? = nil
+myOption2 ?? 3
+
+// 区间运算符
+// 1...3
+// 1..<3
 for i in 1...3 {
     // 1, 2, 3 闭区间
     println(i)
@@ -74,13 +101,19 @@ for i in 1..<3 {
     println(i)
 }
 
-// bool
+// 逻辑运算符
 var myBool = true
 !myBool
 false && true
 false || true
 
-// String
+// ------------------------------
+// 字符串
+var myStr: String = "abc"
+var myChar: Character = "a"
+myStr += "123"  // 字符串是可变的
+// 虽然字符串是可变的，但其是值类型，可变的行为是通过值拷贝来实现的
+"".isEmpty
 println("myCont \(myCont) & myVar \(Int(Double(myVar)))")
 let myStr1 = "abc"
 let myStr2 = "abcde"
@@ -89,11 +122,17 @@ myStr2.hasPrefix(myStr1)
 myStr2.hasSuffix("cde")
 myStr1.uppercaseString.lowercaseString
 myStr1.utf16
+
+for scalar in myStr {
+    print(scalar)
+}
+
 for scalar in myStr1.unicodeScalars {
     print(scalar)
 }
 
 
+// ------------------------------
 // collection
 // 元组
 var myTuple = ("NotFound", 404)
@@ -102,16 +141,19 @@ var myNamedTuple = (msg: "OK", statusCode: 200)
 var (msg, statusCode) = myTuple
 println("\(msg), \(statusCode)")
 
-
 // Array 数组
+// 数组的初始化
 var myArr1 = [Int]()
 var myArr2 = [Int](count: 3, repeatedValue: 4)
+var myArr3: [Int] = [1, 2, 3]
 myArr2
 var myArr = [1,2,3]
 myArr.count
 myArr.append(4)
 myArr.insert(5, atIndex: myArr.count)
 
+
+// http://wiki.jikexueyuan.com/project/swift/chapter2/03_Strings_and_Characters.html#7f6c02d96265dd1d37b1101de1101541
 
 // for 循环
 for val in myArr {println("val: \(val)")}
