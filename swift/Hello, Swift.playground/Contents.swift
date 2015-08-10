@@ -1,7 +1,18 @@
+// Variable
+
 let myCont = 3
 var myVar = 4
 
 println("myCont \(myCont) & myVar \(myVar)")
+print("123")
+
+typealias myInt = Int;
+print(myInt.min)
+
+// 类型推断
+var myInt = 10
+//myInt + 3.1
+
 
 // Number
 let minValue = UInt8.min  // minValue 为 0，是 UInt8 类型的最小值
@@ -25,20 +36,29 @@ let hexadecimalInteger = 0x11     // 十六进制的17
 "123".toInt()
 "abc".toInt()
 var myOptional: Int? = 404
-myOptional = nil
+print("\(myOptional!)")  // optional! 为强制解析
+myOptional = nil  // 可选类型可以被设置为 nil
 assert(true, "something wrong")
-var myOptDict = [1: 2]
-myOptDict[3]
-//myOptDict[3]!   will raise ERROR
+
+// 隐式可选
+var myImplicitly: Int! = 200
+var myNewImpl = myImplicitly // 不需要感叹号
 
 // 可选绑定
 //var possibleNumber = "abc"
 var possibleNumber = "123"
 if var actualNumber = possibleNumber.toInt() {
+    // 如果 possibleNumber 有值的话就执行这段
     println(actualNumber)
 } else {
     println("optional is nil")
 }
+
+// dict
+var myOptDict = [1: 2]
+myOptDict[3]
+//myOptDict[3]!   will raise ERROR
+
 
 // operator
 myOptional ?? 1
@@ -75,7 +95,15 @@ for scalar in myStr1.unicodeScalars {
 
 
 // collection
-// Array
+// 元组
+var myTuple = ("NotFound", 404)
+// 元组也可以命名
+var myNamedTuple = (msg: "OK", statusCode: 200)
+var (msg, statusCode) = myTuple
+println("\(msg), \(statusCode)")
+
+
+// Array 数组
 var myArr1 = [Int]()
 var myArr2 = [Int](count: 3, repeatedValue: 4)
 myArr2
@@ -84,10 +112,13 @@ myArr.count
 myArr.append(4)
 myArr.insert(5, atIndex: myArr.count)
 
+
+// for 循环
 for val in myArr {println("val: \(val)")}
 for (i, val) in enumerate(myArr) {
     println("i: \(i), val: \(val)")
 }
+
 // dict
 var emptyDict = Dictionary<String, String>()
 var myDict: [String: String] = ["key": "val"]
@@ -97,12 +128,15 @@ myDict["notExistsKey"]
 for (k, val) in myDict {
     println("key: \(k), val: \(val)")
 }
-// loop
+
+// while 循环
 var myCount = 0
 while myCount < 3 {
     myCount++
     println(myCount)
 }
+
+// do 循环
 myCount = 0
 do {myCount++}
     while myCount < 3
