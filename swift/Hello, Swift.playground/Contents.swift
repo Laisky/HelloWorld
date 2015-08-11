@@ -131,8 +131,24 @@ for scalar in myStr1.unicodeScalars {
     print(scalar)
 }
 
+// unicode 
+let sparklingHeart: String = "\u{1F496}"
+let combinedEAcute: Character = "\u{65}\u{301}"
+
+print("\(count(sparklingHeart))")  // count 计算的是 unicode 标量
+print(sparklingHeart.utf16)
+
+// 索引
+print(sparklingHeart.startIndex)
+print(sparklingHeart.endIndex)
+
+// 插入 & 删除
+myStr.insert("a", atIndex: myStr.endIndex)
+myStr.hasPrefix("abc")
+myStr.hasSuffix("a")
 
 // ------------------------------
+// http://wiki.jikexueyuan.com/project/swift/chapter2/04_Collection_Types.html
 // collection
 // 元组
 var myTuple = ("NotFound", 404)
