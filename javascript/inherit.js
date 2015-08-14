@@ -19,10 +19,10 @@ describe('inherit', function() {
         // 实例互相隔离
         // 每个实例都是一个全新的拷贝
         cat.species = 'cat';
-        cat.name = 'damao';  // dog.name 并不会改变
-        expect(cat.name).not.toEqual(dog.name);
-        expect(cat.eat).not.toEqual(dog.eat);
-        expect(cat.species).not.toEqual(dog.species);
+        cat.name = 'damao'; // dog.name 并不会改变
+        expect(cat.name).not.toBe(dog.name);
+        expect(cat.eat).not.toBe(dog.eat);
+        expect(cat.species).not.toBe(dog.species);
     });
 
     /*
@@ -40,8 +40,8 @@ describe('inherit', function() {
         var dog = new Animal;
 
         // prototype 是在实例间共享的
-        expect(cat.species).toEqual('cat');
-        expect(cat.species).toEqual(dog.species);
+        expect(cat.species).toBe('cat');
+        expect(cat.species).toBe(dog.species);
         // 可以判断继承关系
         expect(Animal.prototype.isPrototypeOf(cat)).toBeTruthy();
         expect(Animal.prototype.isPrototypeOf(dog)).toBeTruthy();
@@ -50,7 +50,7 @@ describe('inherit', function() {
         cat.position = 'god';
         expect(cat.hasOwnProperty('position')).toBeTruthy();
         expect(cat.hasOwnProperty('name')).toBeTruthy();
-        expect(cat.hasOwnProperty('species')).toBeFalsy();  // prototype 的属性不属于 OwnProperty
+        expect(cat.hasOwnProperty('species')).toBeFalsy(); // prototype 的属性不属于 OwnProperty
 
         // 判断属性
         expect('name' in cat).toBeTruthy();
@@ -75,8 +75,59 @@ describe('inherit', function() {
         }
 
         var cat = new Cat();
-        expect(cat.constructor).toEqual(Cat.prototype.constructor);
-        expect(cat.constructor).not.toEqual(Animal.prototype.constructor);
+        expect(cat.constructor).toBe(Cat.prototype.constructor);
+        expect(cat.constructor).not.toBe(Animal.prototype.constructor);
+    });
+
+    /**
+     * 使用 prototype 来继承
+     */
+    it('prototype 继承', function() {
+        function Animal() {
+            this.name = 'anime';
+        }
+
+        function Cat() {}
+        Cat.prototype = new Animal(); // 缺点是每次都会构建一个 Animal 实例
+        Cat.prototype.constructor = Cat;
+
+        var cat = new Cat();
+        expect(cat.constructor).toBe(Cat.prototype.constructor);
+        expect(cat.constructor).not.toBe(Animal.prototype.constructor);
+    })
+
+    /**
+     * 轻量版的 prototype 继承
+     */
+    it('prototype 轻量继承', function() {
+        // 使用中间空对象来继承父对象的 protorype（而不是父对象实例）
+        // 使用中间空对象的目的是防止子对象直接指向父对象 prototype
+        function Animal() {
+            this.name = 'animal';
+        }
+
+        function tmpMiddle() {}
+        tmpMiddle.prototype = Animal.prototype;
+
+        function Cat() {}
+        Cat.prototype = new tmpMiddle(); // 现在只需要实例化一个空函数
+        Cat.prototype.constructor = Cat;
+
+        var cat = new Cat();
+        expect(cat.constructor).toBe(Cat.prototype.constructor);
+        expect(cat.constructor).not.toBe(Animal.prototype.constructor);
+
+        // 可以将上面的代码封装进一个函数之中
+        function extend(Child, Parent) {
+            var tmpMiddle = function() {};　　　　
+            tmpMiddle.prototype = Parent.prototype;　　　　
+            Child.prototype = new tmpMiddle();　　　　
+            Child.prototype.constructor = Child;　　　　
+            // 这是一个约定的属性
+            // 使用 uber 直接指向父类的 prototype
+            // 相当于 python 的 super
+            Child.uber = Parent.prototype;
+        }
     });
 
 });
