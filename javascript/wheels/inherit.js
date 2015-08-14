@@ -5,7 +5,7 @@
 
 describe('inherit', function() {
 
-    /*
+    /**
      * 简单的使用 构造函数 & new 实现的继承
      */
     it('简单的 new 继承', function() {
@@ -25,7 +25,7 @@ describe('inherit', function() {
         expect(cat.species).not.toBe(dog.species);
     });
 
-    /*
+    /**
      * 使用 prototype 来实现实例间共享属性
      */
     it('prototype 共享对象', function() {
@@ -101,7 +101,7 @@ describe('inherit', function() {
      */
     it('prototype 轻量继承', function() {
         // 使用中间空对象来继承父对象的 protorype（而不是父对象实例）
-        // 使用中间空对象的目的是防止子对象直接指向父对象 prototype
+        // 使用中间空对象的目的是防止子对象篡改父辈的 prototype
         function Animal() {
             this.name = 'animal';
         }
@@ -130,4 +130,46 @@ describe('inherit', function() {
         }
     });
 
+    /**
+     * 使用非构造函数实现继承
+     */
+    it('对象继承', function() {
+        /**
+         * 使用 prototype链 来实现对象的继承
+         */
+        var Chinese = {
+            nation: 'chinese'
+        };
+
+        function object(o) {
+            function F() {}　　　　
+            F.prototype = o;　　　　
+            return new F();
+        }
+        var Doctor = object(Chinese);
+        expect(Doctor.nation).toBe(Chinese.nation);
+
+        /**
+         * 使用深拷贝来实现继承
+         * 不使用浅拷贝是为了防止父辈被子类篡改
+         */
+        function deepCopy(p, c) {　　　　
+            var c = c || {};　　　　
+            for (var i in p) {　　　　　　
+                if (typeof p[i] === 'object') {　　　　　　　　
+                    c[i] = (p[i].constructor === Array) ? [] : {};　　　　　　　　
+                    deepCopy(p[i], c[i]);　　　　　　
+                } else {　　　　　　　　　
+                    c[i] = p[i];　　　　　　
+                }　　　　
+            }　　　　
+            return c;　　
+        }
+
+        Chinese.chickens = ['alice', 'bob'];
+        var Doctor = deepCopy(Chinese);
+        Doctor.chickens.push('Caro');
+        expect(Doctor.nation).toBe(Chinese.nation);
+        expect(Doctor.chickens).not.toBe(Chinese.chickens);
+    })
 });
