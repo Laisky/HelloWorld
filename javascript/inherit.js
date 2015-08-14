@@ -1,15 +1,27 @@
-describe("test inherit", function() {
+/**
+ * 学习一下 JavaScript 的继承  Laisky
+ * Fri Aug 14 13:36:00 2015
+ */
+
+describe('test inherit', function() {
 
     /*
      * 简单的使用 构造函数 & new 实现的继承
      */
     it('简单的 new 继承', function() {
-        function Animal() {}
+        function Animal() {
+            this.name = 'animal';
+            this.eat = function() {};
+        }
         var dog = new Animal();
         var cat = new Animal();
 
         // 实例互相隔离
+        // 每个实例都是一个全新的拷贝
         cat.species = 'cat';
+        cat.name = 'damao';  // dog.name 并不会改变
+        expect(cat.name).not.toEqual(dog.name);
+        expect(cat.eat).not.toEqual(dog.eat);
         expect(cat.species).not.toEqual(dog.species);
 
     })
@@ -18,17 +30,33 @@ describe("test inherit", function() {
      * 使用 prototype 来实现实例间共享属性
      */
     it('prototype 继承', function() {
-        // 这个属性包含一个对象（以下简称"prototype对象"），
-        // 所有实例对象需要共享的属性和方法，都放在这个对象里面；
-        // 那些不需要共享的属性和方法，就放在构造函数里面。
-        function Animal() {}
+        // 每个够咱函数都有一个 prototype 属性
+        // 这个属性指向一个对象，在实例间共享
+        function Animal() {
+            this.name = 'animal';
+        }
         Animal.prototype.species = 'cat';
 
-        var animal1 = new Animal;
-        var animal2 = new Animal;
+        var cat = new Animal;
+        var dog = new Animal;
 
-        expect(animal1.species).toEqual('cat');
-        expect(animal1.species).toEqual(animal2.species);
+        // prototype 是在实例间共享的
+        expect(cat.species).toEqual('cat');
+        expect(cat.species).toEqual(dog.species);
+        // 可以判断继承关系
+        expect(Animal.prototype.isPrototypeOf(cat)).toBeTruthy();
+        expect(Animal.prototype.isPrototypeOf(dog)).toBeTruthy();
+
+        // hasOwnProperty 用来检测属性是属于实例自己还是来自于 prototype
+        cat.position = 'god';
+        expect(cat.hasOwnProperty('position')).toBeTruthy();
+        expect(cat.hasOwnProperty('name')).toBeTruthy();
+        expect(cat.hasOwnProperty('species')).toBeFalsy();  // prototype 的属性不属于 OwnProperty
+
+        // 判断属性
+        expect('name' in cat).toBeTruthy();
+        expect('species' in cat).toBeTruthy();
+        expect('position' in cat).toBeTruthy();
     })
 
 });
