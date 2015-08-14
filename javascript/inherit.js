@@ -3,7 +3,7 @@
  * Fri Aug 14 13:36:00 2015
  */
 
-describe('test inherit', function() {
+describe('inherit', function() {
 
     /*
      * 简单的使用 构造函数 & new 实现的继承
@@ -23,13 +23,12 @@ describe('test inherit', function() {
         expect(cat.name).not.toEqual(dog.name);
         expect(cat.eat).not.toEqual(dog.eat);
         expect(cat.species).not.toEqual(dog.species);
-
-    })
+    });
 
     /*
      * 使用 prototype 来实现实例间共享属性
      */
-    it('prototype 继承', function() {
+    it('prototype 共享对象', function() {
         // 每个够咱函数都有一个 prototype 属性
         // 这个属性指向一个对象，在实例间共享
         function Animal() {
@@ -57,6 +56,27 @@ describe('test inherit', function() {
         expect('name' in cat).toBeTruthy();
         expect('species' in cat).toBeTruthy();
         expect('position' in cat).toBeTruthy();
-    })
+    });
+
+    /**
+     * 使用 apply 应用父对象的构造函数
+     * 这也是最简单的继承方法
+     */
+    it('apply 继承', function() {
+        function Animal() {
+            this.name = 'anime';
+        }
+
+        function Cat() {
+            // 原理：
+            // 直接调用构造函数时，构造函数内部的 this 相当于当前构造函数的 this
+            Animal.apply(this, arguments);
+            this.species = 'cat';
+        }
+
+        var cat = new Cat();
+        expect(cat.constructor).toEqual(Cat.prototype.constructor);
+        expect(cat.constructor).not.toEqual(Animal.prototype.constructor);
+    });
 
 });
