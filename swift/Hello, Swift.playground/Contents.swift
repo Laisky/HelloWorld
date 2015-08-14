@@ -147,9 +147,6 @@ myStr.insert("a", atIndex: myStr.endIndex)
 myStr.hasPrefix("abc")
 myStr.hasSuffix("a")
 
-// ------------------------------
-// http://wiki.jikexueyuan.com/project/swift/chapter2/04_Collection_Types.html
-// collection
 // 元组
 var myTuple = ("NotFound", 404)
 // 元组也可以命名
@@ -157,28 +154,32 @@ var myNamedTuple = (msg: "OK", statusCode: 200)
 var (msg, statusCode) = myTuple
 println("\(msg), \(statusCode)")
 
+// ------------------------------
+// 集合类型 Array & Set & Dictionary
 // Array 数组
 // 数组的初始化
 var myArr1 = [Int]()
 var myArr2 = [Int](count: 3, repeatedValue: 4)
 var myArr3: [Int] = [1, 2, 3]
+let myContArr: [Int] = [1, 2]
 myArr2
 var myArr = [1,2,3]
 myArr.count
 myArr.append(4)
 myArr.insert(5, atIndex: myArr.count)
-
-
-// http://wiki.jikexueyuan.com/project/swift/chapter2/03_Strings_and_Characters.html#7f6c02d96265dd1d37b1101de1101541
-
-// for 循环
-for val in myArr {println("val: \(val)")}
-for (i, val) in enumerate(myArr) {
-    println("i: \(i), val: \(val)")
-}
+myArr + myArr2
+myArr1.count
+// 常量数组无法修改（插入、删除、更改）
+// myContArr.append(2)
+// myContArr[1] = 3
 
 // dict
+// 字典的 key 必须是 hashable 的
+// 创建一个空字典
 var emptyDict = Dictionary<String, String>()
+var emptyDict2 = [Int: String]()
+
+var mySmartDict = [1:2, 2:3, 3:4]  // 根据字面量来创建字典
 var myDict: [String: String] = ["key": "val"]
 myDict["key"]
 myDict["newKey"] = "newVal"
@@ -186,6 +187,61 @@ myDict["notExistsKey"]
 for (k, val) in myDict {
     println("key: \(k), val: \(val)")
 }
+myDict = [:]  // 又成为了一个空字典
+
+// 字典的遍历
+mySmartDict.keys
+mySmartDict.values
+for (k, val) in mySmartDict {
+    println("key: \(k), val: \(val)")
+}
+
+
+// set
+// 集合是无序不可重复
+// 根据 hashValue 来判断是否重复，所以每一个值都必须是 hashable 的
+myStr.hashValue
+var mySet = Set<String>()
+mySet.insert("a")
+var myLiterSet: Set<Int> = [1, 2, 3, 4, 5, 6]
+// 如果能确保集合的元素类型都相同的话，可以使用类型推断
+var mySmartSet: Set = [5, 5, 5, 6]
+mySet.contains("a")
+for (k, val) in enumerate(mySmartSet) {
+    println("key: \(k), val: \(val)")
+}
+// 集合的运算
+// intersects & exclusiveOr & union & subtract
+// isSubsetOf & isSupersetOf & isStrictSubsetOf & isStrictSupersetOf & isDisjointWith
+var mySet1: Set = [1, 2, 3]
+var mySet2: Set = [2, 3]
+var mySet3: Set = [4]
+
+mySet1.union(mySet3)
+mySet1.isSupersetOf(mySet2)
+
+// ------------------------------
+
+// 控制转移语句
+//continue
+//break
+//fallthrough
+//return
+//throw
+
+// 控制流
+// for - in 循环
+for val in myArr {println("val: \(val)")}
+// 遍历数组
+for (i, val) in enumerate(myArr) {
+    println("i: \(i), val: \(val)")
+}
+// 普通 for 循环
+var i: Int
+for i = 0; i < 3; ++i {
+    print(i)
+}
+print(i)  // 最后 i = 3
 
 // while 循环
 var myCount = 0
@@ -194,33 +250,51 @@ while myCount < 3 {
     println(myCount)
 }
 
-// do 循环
+// do - while 循环
 myCount = 0
-do {myCount++}
-    while myCount < 3
+do {
+    myCount++
+    print(myCount)
+} while myCount < 3
 
-1..<3
-1...5
+// repeat - while 循环
+// 文档有，但是 XCode 还不支持
+//myCount = 0
+//repeat {
+//    myCount++
+//    print(myCount)
+//} while myCount < 3
 
+1..<3  // 开区间
+1...5  // 闭区间
+
+// if
 if true {} else if true {} else {}
 
+// switch
+// switch 默认不贯穿，所以不用写 break
+// switch 执行第一个匹配的 case，然后就自行跳出
+// 使用 fallthrough 会执行调用下一个 case 的代码（而不会检查条件）
 var myCondition = "a"
 switch myCondition {
-case "a", "b":
-    println()
+case "aq", "b":
+    println("ab")
     // swift 不需要 break
+case _:  // 匹配任意
+    print("before all")
+    fallthrough  // 贯穿
+    print("after all")
 case _:
-    // 匹配任意
-    fallthrough
+    print("ho")
 default:
-    println()
+    println("oh")
 }
 
 var myCondition2 = (1, 2)
 switch myCondition2 {
 case (1,2):
     break
-case (var x, 2):
+case (var x, 2):  // 值绑定
     break
 case (var x, var y) where x < y:
     break
@@ -232,6 +306,14 @@ default:
     break
 }
 
+// guard
+// Xcode 还不支持
+//guard let myGuardVar = 2 else {
+//    print("💊")
+//}
+
+// ------------------------------
+// 函数
 // function
 func sayHello(yourName: String) -> String {
     let message = "Hello, \(yourName)"
