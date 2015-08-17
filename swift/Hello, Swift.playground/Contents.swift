@@ -322,6 +322,13 @@ func sayHello(yourName: String) -> String {
 }
 sayHello("Laisky")
 
+// 返回多参数
+func funcWithMultiReturnArgs() -> (String, String) {
+    return ("Hello", "World")
+}
+funcWithMultiReturnArgs()
+
+// 修改参数名字
 func sayHelloWithNamedArgs(yourName Name: String) -> String {
     let message = "Hello, \(Name)"
     println(message)
@@ -329,6 +336,7 @@ func sayHelloWithNamedArgs(yourName Name: String) -> String {
 }
 sayHelloWithNamedArgs(yourName: "Laisky")
 
+// 有默认参数的函数
 func sayHelloWithDefaultAegs(#yourName: String = "Laisky") -> String {
     let message = "Hello, \(yourName)"
     println(message)
@@ -336,6 +344,7 @@ func sayHelloWithDefaultAegs(#yourName: String = "Laisky") -> String {
 }
 sayHelloWithDefaultAegs()
 
+// 默认多参数
 func multiArgs(args: Int...) {
     for i in args {
         println(i)
