@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Handlebars Demo</title>
+  <style type="text/css">
+  div.app {
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  div.demo {
+    min-width: 600px;
+    min-height: 100px;
+    padding: 10px;
+    background-color: #DEDCDC;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>demo for expression</h1>
+    <div class="demo" id="exp-1"></div>
+  </div>
+  <div class="app">
+    <h1>demo for escape</h1>
+    <div class="demo" id="escape-1"></div>
+  </div>
+  <!-- apps -->
+  <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script id="tpl-exp" type="text/x-handlebars-template">
+    <p>Hello, {{ name }}, Welcome to {{ info.location }}.</p>
+    <p>arm: {{weapons.[1]}}</p>
+  </script>
+  <!-- libs -->
+  <script id="tpl-escape" type="text/x-handlebars-template">
+    <p>Hello, {{{ name }}}, Welcome to {{ info/location }}.</p>
+  </script>
+  <!-- templates -->
+  <script type="text/javascript" src="src.js"></script>
+</body>
+
+</html>
