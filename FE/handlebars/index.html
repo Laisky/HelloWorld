@@ -16,13 +16,15 @@
   div.demo {
     min-width: 600px;
     min-height: 100px;
-    padding: 10px;
     background-color: #DEDCDC;
+    padding: 10px;
+    margin-bottom: 5px;
   }
   </style>
 </head>
 
 <body>
+  <!-- apps -->
   <div class="app">
     <h1>demo for expression</h1>
     <div class="demo" id="exp-1"></div>
@@ -31,18 +33,43 @@
     <h1>demo for escape</h1>
     <div class="demo" id="escape-1"></div>
   </div>
-  <!-- apps -->
+  <div class="app">
+    <h1>demo for helper</h1>
+    <div class="demo" id="helper"></div>
+    <div class="demo" id="helper-wrapper"></div>
+    <div class="demo" id="helper-with"></div>
+    <div class="demo" id="helper-each"></div>
+  </div>
+  <!-- libs -->
   <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- templates -->
   <script id="tpl-exp" type="text/x-handlebars-template">
     <p>Hello, {{ name }}, Welcome to {{ info.location }}.</p>
     <p>arm: {{weapons.[1]}}</p>
   </script>
-  <!-- libs -->
   <script id="tpl-escape" type="text/x-handlebars-template">
     <p>Hello, {{{ name }}}, Welcome to {{ info/location }}.</p>
   </script>
-  <!-- templates -->
+  <script id="tpl-helper" type="text/x-handlebars-template">
+    <p>{{#my-helper}}{{body}}{{/my-helper}}</p>
+  </script>
+  <script id="tpl-helper-wrapper" type="text/x-handlebars-template">
+    {{#my-helper-wrapper}}{{name}}{{/my-helper-wrapper}}
+  </script>
+  <script id="tpl-helper-with" type="text/x-handlebars-template">
+    {{#my-helper-with}}
+    <h1>{{title}}</h1> {{#with content}}
+    <p>name: {{ name }}</p>
+    <p>sex: {{ sex }}</p>
+    {{/with}} {{/my-helper-with}}
+  </script>
+  <script id="tpl-helper-each" type="text/x-handlebars-template">
+    {{#each weapons}}
+    <p>{{ this }}</p>
+    {{/each}}
+  </script>
+  <!-- custom js -->
   <script type="text/javascript" src="src.js"></script>
 </body>
 
