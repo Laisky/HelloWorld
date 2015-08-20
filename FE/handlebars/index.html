@@ -65,9 +65,9 @@
     {{/with}} {{/my-helper-with}}
   </script>
   <script id="tpl-helper-each" type="text/x-handlebars-template">
-    {{#each weapons}}
-    <p>{{ this }}</p>
-    {{/each}}
+    {{#my-helper-each weapons}}
+    <p>{{ content }}</p>
+    {{/my-helper-each}}
   </script>
   <!-- custom js -->
   <script type="text/javascript" src="src.js"></script>
