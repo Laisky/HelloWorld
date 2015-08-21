@@ -95,6 +95,6 @@
     renderTemplate('tpl-helper-hash', 'helper-hash');
 
     // helper condition
-
+    renderTemplate('tpl-helper-condition', 'helper-condition');
 
 })();
