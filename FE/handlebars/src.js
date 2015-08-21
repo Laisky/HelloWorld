@@ -7,7 +7,9 @@
             'title': 'king',
             'location': 'kings landing'
         },
-        weapons: ['knife', 'gun']
+        weapons: ['knife', 'gun'],
+        isKing: true,
+        isDead: false
     };
 
     /**
@@ -40,7 +42,7 @@
     // 简单的 helper
     Handlebars.registerHelper('my-helper', function(options) {
         return options.fn({
-            body: '毛也没有'
+            body: '我会显示哦'
         });
     });
     renderTemplate('tpl-helper', 'helper');
@@ -64,13 +66,11 @@
     });
     renderTemplate('tpl-helper-with', 'helper-with');
 
-    /**
-     * helper each
-     * helper 可以有参数，有参数的时候，options 是最后一个参数
-     * 实现 each 的思路：
-     *   options.fn 会返回 filter 包含的区域，
-     *   所以在一个循环内调用 options.fn，就可以创建一个简单的 iterator 了。
-     */
+    // helper each
+    // helper 可以有参数，有参数的时候，options 是最后一个参数
+    // 实现 each 的思路：
+    //   options.fn 会返回 filter 包含的区域，
+    //   所以在一个循环内调用 options.fn，就可以创建一个简单的 iterator 了。
     Handlebars.registerHelper('my-helper-each', function(context, options) {
         let ret = '';
         for (let i = 0; i < context.length; i++) {
@@ -81,5 +81,20 @@
         return ret;
     });
     renderTemplate('tpl-helper-each', 'helper-each');
+
+    // helper hash
+    Handlebars.registerHelper('my-helper-hash', function(context, options) {
+        let content = '';
+        for (let key in options.hash) {
+            content += '<p>' + key + ': ' + options.hash[key] + '</p>';
+        }
+        return options.fn({
+            content: content
+        })
+    })
+    renderTemplate('tpl-helper-hash', 'helper-hash');
+
+    // helper condition
+
 
 })();

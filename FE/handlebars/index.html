@@ -39,6 +39,8 @@
     <div class="demo" id="helper-wrapper"></div>
     <div class="demo" id="helper-with"></div>
     <div class="demo" id="helper-each"></div>
+    <div class="demo" id="helper-hash"></div>
+    <div class="demo" id="helper-condition"></div>
   </div>
   <!-- libs -->
   <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
@@ -68,6 +70,16 @@
     {{#my-helper-each weapons}}
     <p>{{ content }}</p>
     {{/my-helper-each}}
+  </script>
+  <script id="tpl-helper-hash" type="text/x-handlebars-template">
+    {{#my-helper-hash hash site='ehentai' locate='japan'}} {{{ content }}} {{/my-helper-hash}}
+  </script>
+  <script id="tpl-helper-condition" type="text/x-handlebars-template">
+    {{#if idDead}}
+    <p>死咯</p>
+    {{else if isKing}}
+    <p>万税万税万万税</p>
+    {{/if}}
   </script>
   <!-- custom js -->
   <script type="text/javascript" src="src.js"></script>
