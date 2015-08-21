@@ -5,4 +5,5 @@ Handlebars
 
 ## Reference
 
+- http://blog.laisky.com/p/handlebars/
 - http://handlebarsjs.com
