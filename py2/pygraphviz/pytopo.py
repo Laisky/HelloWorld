@@ -3,7 +3,9 @@
 
 
 """
-Generate network topological graph by pygraphviz.
+Generate network topological graph by pygraphviz_1.3rc.
+
+Created_at: Mon Aug 24 16:21:10 2015
 """
 
 
@@ -35,6 +37,7 @@ class TopoGraph(object):
             rankdir='LR',
             strict=True,
             encoding='UTF-8',
+            compound=True,  # 可以让箭头指向 cluster
             size='{width},{height}'.format(width=GRAPH_SIZE.width, height=GRAPH_SIZE.height)
         )
         self.g = g
@@ -123,4 +126,3 @@ class LinkproofNode(Node):
 
     def __init__(self, node_name, label='LinkProof', image='./img/link_proof.jpg', graph=None):
         super(LinkproofNode, self).__init__(node_name, label, image, graph)
-
