@@ -10,11 +10,11 @@ Generate network topological graph by pygraphviz.
 from __future__ import unicode_literals, division
 from collections import namedtuple
 
-import pygraphviz
+import pygraphviz as pgv
 
 
 BOX_SIZE = namedtuple('boxsize', ('width', 'height'))
-GRAPH_SIZE = BOX_SIZE(50, 50)
+GRAPH_SIZE = BOX_SIZE(400, 400)
 NODE_SIZE = BOX_SIZE(50, 50)
 
 
@@ -30,8 +30,9 @@ def gen_label(label=None, image=None):
 class TopoGraph(object):
 
     def __init__(self):
-        g = pygraphviz.AGraph(
+        g = pgv.AGraph(
             directed=True,
+            rankdir='LR',
             strict=True,
             encoding='UTF-8',
             size='{width},{height}'.format(width=GRAPH_SIZE.width, height=GRAPH_SIZE.height)
@@ -49,6 +50,9 @@ class TopoGraph(object):
         assert source in self.nodes, 'source not existed!'
         assert target in self.nodes, 'target not existed!'
         self.g.add_edge(source, target, *attrs, **kw)
+
+    def set_same_rank(self, nodes, *args, **kw):
+        self.g.add_subgraph(nodes, rank='same', *args, **kw)
 
     def draw(self, path):
         self.g.layout('dot')
@@ -101,3 +105,15 @@ class SwitchNode(Node):
 
     def __init__(self, node_name, label='交换机', image='./img/switch.jpg', graph=None):
         super(SwitchNode, self).__init__(node_name, label, image, graph)
+
+
+class FirewallNode(Node):
+
+    def __init__(self, node_name, label='防火墙', image='./img/firewall.jpg', graph=None):
+        super(FirewallNode, self).__init__(node_name, label, image, graph)
+
+
+class S5700Node(Node):
+
+    def __init__(self, node_name, label='S5700', image='./img/s5700.jpg', graph=None):
+        super(S5700Node, self).__init__(node_name, label, image, graph)
