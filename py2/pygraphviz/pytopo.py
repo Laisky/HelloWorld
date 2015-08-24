@@ -117,3 +117,10 @@ class S5700Node(Node):
 
     def __init__(self, node_name, label='S5700', image='./img/s5700.jpg', graph=None):
         super(S5700Node, self).__init__(node_name, label, image, graph)
+
+
+class LinkproofNode(Node):
+
+    def __init__(self, node_name, label='LinkProof', image='./img/link_proof.jpg', graph=None):
+        super(LinkproofNode, self).__init__(node_name, label, image, graph)
+
