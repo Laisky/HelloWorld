@@ -1,8 +1,10 @@
 还是那该死的拓扑图
 ===
 
-![](http://7xjvpy.dl1.z0.glb.clouddn.com/topo.jpg)
+![](http://laisky-blog.qiniudn.com/topo.jpg)
 
 ## Reference
 
 - https://github.com/pygraphviz/pygraphviz
+- http://www.graphviz.org/doc/info/attrs.html
+- http://www.graphviz.org/doc/info/shapes.html

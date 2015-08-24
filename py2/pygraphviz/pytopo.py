@@ -35,7 +35,6 @@ class TopoGraph(object):
         g = pgv.AGraph(
             directed=True,
             rankdir='LR',
-            strict=True,
             encoding='UTF-8',
             compound=True,  # 可以让箭头指向 cluster
             size='{width},{height}'.format(width=GRAPH_SIZE.width, height=GRAPH_SIZE.height)
