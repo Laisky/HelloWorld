@@ -10,6 +10,10 @@ aiohttp
 
 # web
 tornado
+flask
+
+# graph
+networkx
 
 # tools
 ipython
@@ -26,6 +30,7 @@ python-nvd3>=0.13.3
 # science toolkit
 numpy
 scipy
+cython
 scikit-learn
 matplotlib
 pandas
