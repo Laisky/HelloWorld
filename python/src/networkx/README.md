@@ -1,7 +1,7 @@
 NetworkX
 ===
 
-刚折腾完 PyGraphviz 就听说还有这个玩意儿
+刚折腾完 PyGraphviz 就听说还有这个玩意儿。原来是做复杂网络分析的，不是画图的。
 
 
 ## Refernce
