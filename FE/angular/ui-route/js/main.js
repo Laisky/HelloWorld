@@ -17,7 +17,7 @@
                 url: "/list",
                 templateUrl: "state1.list.html",
                 controller: function($scope) {
-                    $scope.items = ["A", "List", "Of", "Items"];
+                    $scope.items = ['a', 'b', 'c', 'd'];
                 }
             })
             .state('state2', {
@@ -28,7 +28,7 @@
                 url: "/list",
                 templateUrl: "state2.list.html",
                 controller: function($scope) {
-                    $scope.things = ["A", "Set", "Of", "Things"];
+                    $scope.things = ['d', 'c', 'b', 'a'];
                 }
             });
     });
