@@ -68,3 +68,5 @@ id_rsa
 # sass
 *.scssc
 
+# pyenv
+.python-version
