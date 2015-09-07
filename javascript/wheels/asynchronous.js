@@ -74,7 +74,18 @@ describe('定时器', function() {
         expect(result).toEqual(5); // 现在就能得到正确的值
     });
 
-
+    it('添加到下一次事件循环', function() {
+        // setInterval & setTimeout 都是利用 event loop
+        // 将 function 添加到下一次事件循环的队列尾端
+        var result = '';
+        setTimeout(function() {
+            result += 'bing';
+        }, 0);
+        result += 'bong';
+        jasmine.clock().tick(5);
+        // setTimeout 在后一次事件循环中执行
+        expect(result).toEqual('bongbing');
+    });
 });
 
 
