@@ -1,6 +1,11 @@
 /**
  * 学习一下 javascript 和 jquery 里的各种异步
  * Mon Sep  7 10:56:17 2015
+ * -------------------------------------
+ * 1. setTimeout & setInterval
+ * 2. $.Deffered
+ * 3. Promise
+ * 4. Generator
  */
 
 
@@ -185,5 +190,45 @@ describe('Promise', function() {
             done();
         }, 1)
     });
+
+});
+
+
+/**
+ * Generators
+ */
+describe('Generators', function() {
+
+    it('常见用法', function() {
+        function* simpleGen() {
+            for(var i=0; i < 5; i++) {
+                yield i;
+            }
+        }
+
+        var gen = simpleGen();
+        expect(gen.next().value).toEqual(0);
+        expect(gen.next().value).toEqual(1);
+        expect(gen.next().value).toEqual(2);
+        expect(gen.next().value).toEqual(3);
+        expect(gen.next().value).toEqual(4);
+    });
+
+    it('send', function() {
+        // Chrome 45 还不支持 send，用 next(val) 来实现
+        function* sendToGen() {
+            var tmp = yield 'go';
+            yield tmp;
+        }
+
+        var gen = sendToGen();
+        expect(gen.next().value).toEqual('go');
+        console.log(gen)
+        expect(gen.next('final').value).toEqual('final');
+    });
+
+    // it('封装自动运行', function() {
+
+    // });
 
 });

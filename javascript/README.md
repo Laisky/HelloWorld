@@ -13,4 +13,4 @@ JavaScript
 - [JavaScript 面向对象编程（三）：非构造函数的继承](http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html)
 - [定时器](http://javascript.ruanyifeng.com/bom/timer.html)
 - [MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-
+- [用Generators解决callback金字塔](http://segmentfault.com/a/1190000002963487)
