@@ -109,8 +109,8 @@ describe('Deffered', function() {
                 // resolve 会调用 done
                 // reject 会调用 fail
                 dtd.resolve('ok!');
-            }, 1000);
-            return dtd.promise();  // 返回一个 promise 对象
+            }, 100);
+            return dtd.promise(); // 返回一个 promise 对象
         }
 
         var result = '';
@@ -120,12 +120,70 @@ describe('Deffered', function() {
                 result = msg;
             });
 
-        jasmine.clock().tick(1001);
+        jasmine.clock().tick(101);
         expect(result).toEqual('ok!');
     });
 });
 
 
+/**
+ * 类似于 jQuery 的 Deffered，但是是 ES6 的原生实现
+ */
 describe('Promise', function() {
+
+    beforeEach(function() {
+        jasmine.clock().install();
+    });
+
+    afterEach(function() {
+        jasmine.clock().uninstall();
+    });
+
+    it('promise 常用用法', function(done) {
+        function longTimeOper(isSuccess) {
+            var promise = new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    if (isSuccess) {
+                        resolve('ok!');
+                    } else {
+                        reject('fail!');
+                    }
+                }, 100);
+            });
+
+            return promise;
+        }
+
+        var successResult = '';
+        var failResult = '';
+        longTimeOper(true)
+            .then(function(msg) {
+                expect(msg).toEqual('ok!');
+                done();
+            });
+
+        jasmine.clock().tick(101);
+    });
+
+    /**
+     * 因为 Promise 是将任务添加到当前事件循环的队列尾
+     * 而 setTimeout 是将任务添加到下一个事件循环的队列尾
+     * 所以 Promise 会比 setTimeout 先执行
+     */
+    it('添加到当前时间循环的队列尾', function(done) {
+        jasmine.clock().uninstall();
+        var result = '';
+        setTimeout(function() {
+            result += 'ping';
+        }, 0);
+        Promise.resolve().then(function() {
+            console.log(result);
+            result += 'pong';
+        });
+        setTimeout(function() {
+            expect(result).toEqual('pongping');
+            done();
+        }, 1)
+    });
 
 });
