@@ -91,9 +91,41 @@ describe('定时器', function() {
 
 describe('Deffered', function() {
 
+    beforeEach(function() {
+        jasmine.clock().install();
+    });
+
+    afterEach(function() {
+        jasmine.clock().uninstall();
+    });
+
+    it('Deffered 常用用法', function() {
+        /**
+         * 假设有一个特别耗时的操作
+         */
+        function longTimeOper() {
+            var dtd = $.Deferred();
+            setTimeout(function() {
+                // resolve 会调用 done
+                // reject 会调用 fail
+                dtd.resolve('ok!');
+            }, 1000);
+            return dtd.promise();  // 返回一个 promise 对象
+        }
+
+        var result = '';
+        longTimeOper()
+            // 就可以使用链式语法了
+            .done(function(msg) {
+                result = msg;
+            });
+
+        jasmine.clock().tick(1001);
+        expect(result).toEqual('ok!');
+    });
 });
 
 
-describe('Promisse', function() {
+describe('Promise', function() {
 
 });
