@@ -201,7 +201,7 @@ describe('Generators', function() {
 
     it('常见用法', function() {
         function* simpleGen() {
-            for(var i=0; i < 5; i++) {
+            for (var i = 0; i < 5; i++) {
                 yield i;
             }
         }

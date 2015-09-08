@@ -1,4 +1,6 @@
 Hello, World
 ===
 
-玩各种好玩的东西
+|![](http://7xjvpy.dl1.z0.glb.clouddn.com/tokamak.jpg)|
+|:--:|
+|玩各种好玩的东西|
