@@ -223,12 +223,7 @@ describe('Generators', function() {
 
         var gen = sendToGen();
         expect(gen.next().value).toEqual('go');
-        console.log(gen)
         expect(gen.next('final').value).toEqual('final');
     });
-
-    // it('封装自动运行', function() {
-
-    // });
 
 });
