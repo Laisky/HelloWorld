@@ -21,4 +21,16 @@
 
     // 清除矩形
     ctx.clearRect(100, 10, 20, 500);
+
+    // 绘制文本
+    // 设置字体
+    ctx.font = "Bold 20px Arial";
+    // 设置对齐方式
+    ctx.textAlign = "left";
+    // 设置填充颜色
+    ctx.fillStyle = "#008600";
+    // 设置字体内容，以及在画布上的位置
+    ctx.fillText("Hello!", 20, 270);
+    // 绘制空心字
+    ctx.strokeText("Hello!", 120, 270);
 })()
