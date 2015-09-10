@@ -54,4 +54,11 @@
     myGradient.addColorStop(1, 'blue');
     ctx.fillStyle = myGradient;
     ctx.fillRect(20, 600, 180, 50)
+
+    // 阴影
+    ctx.shadowOffsetX = 10; // 设置水平位移
+    ctx.shadowOffsetY = 10; // 设置垂直位移
+    ctx.shadowBlur = 5; // 设置模糊度
+    ctx.shadowColor = 'grey'; // 设置阴影颜色
+    ctx.fillRect(20, 600, 180, 50)
 })()
