@@ -49,6 +49,7 @@
 
     // 渐变色
     // CanvasGradient ctx.createLinearGradient(x0, y0, x1, y1);
+    ctx.beginPath();
     var myGradient = ctx.createLinearGradient(20, 600, 200, 650);
     myGradient.addColorStop(0, 'red');
     myGradient.addColorStop(1, 'blue');
@@ -56,9 +57,34 @@
     ctx.fillRect(20, 600, 180, 50)
 
     // 阴影
+    var originShadowColor = 'grey';
+    ctx.beginPath();
     ctx.shadowOffsetX = 10; // 设置水平位移
     ctx.shadowOffsetY = 10; // 设置垂直位移
     ctx.shadowBlur = 5; // 设置模糊度
-    ctx.shadowColor = 'grey'; // 设置阴影颜色
+    ctx.shadowColor = originShadowColor; // 设置阴影颜色
     ctx.fillRect(20, 600, 180, 50)
+    ctx.shadowColor = 'transparent'; // 否则会应用到后续所有的组件上
+
+    // 图片
+    // void ctx.drawImage(image, dx, dy);
+    // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
+    // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+    ctx.beginPath();
+    image = new Image();
+    image.onload = function() {
+        ctx.drawImage(image, 20, 700, 50, 50);
+    }
+    image.src = './head.jpg';
+
+    // Canvas 方法
+    // getImageData
+    // ImageData ctx.getImageData(sx, sy, sw, sh);
+    var canvasData = ctx.getImageData(0, 0, 600, 800);
+    console.log(canvasData)
+
+    // putImageData
+    //void ctx.putImageData(imagedata, dx, dy);
+// void ctx.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
+
 })()
