@@ -1,0 +1,21 @@
+{
+  "name": "jquery",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Laisky/HelloWorld",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11",
+    "jquery-ui": "~1.11.4",
+    "jqueryui-timepicker-addon": "jQuery-Timepicker-Addon#~1.5.5"
+  }
+}
