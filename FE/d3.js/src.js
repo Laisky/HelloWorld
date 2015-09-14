@@ -53,4 +53,16 @@
         })
         .attr('height', rectHeight - 2)
         .attr('fill', 'grey');
+
+
+    /**
+     * 坐标轴 d3.axis
+     */
+    var axis = d3.svg.axis()
+        .scale(linear) // 指定比例尺
+        .orient('bottom')
+        .ticks(7) // 刻度
+    svg.append('g')
+    .attr("transform","translate(20,100)")
+        .call(axis);
 })()
