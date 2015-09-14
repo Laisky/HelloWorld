@@ -63,6 +63,7 @@
         .orient('bottom')
         .ticks(7) // 刻度
     svg.append('g')
-    .attr("transform","translate(20,100)")
+        .attr('class', 'axis')
+        .attr('transform', 'translate(20,100)')
         .call(axis);
 })()
