@@ -133,18 +133,35 @@
      * mouseup：鼠标按钮被松开。
      * dblclick：鼠标双击。
      */
-    function mouseMoveHandler() {
-        x = d3.event.offsetX;
-        y = d3.event.offsetY;
+    circle.on('mouseover', function() {
         d3.select(this)
-            // .transition()
-            .attr({
-                cx: x,
-                cy: y
-            });
+            .transition()
+            .duration(500)
+            .style({
+                fill: 'gold'
+            })
+    });
+    circle.on('mouseout', function() {
+        d3.select(this)
+            .transition()
+            .duration(500)
+            .style({
+                fill: 'green'
+            })
+    })
 
+    /**
+     * drag
+     */
+    var drag = d3.behavior.drag()
+        .on("drag", dragmove);
+
+    function dragmove(d) {
+        var $this = d3.select(this);
+        $this
+            .attr("cx", $this.cx = d3.event.x)
+            .attr("cy", $this.cy = d3.event.y);
     }
-
-    circle.on('mousemove', mouseMoveHandler);
+    circle.call(drag);
 
 })()
