@@ -102,4 +102,24 @@
             fill: 'red'
         });
 
+    /**
+     * update & enter & exit
+     * update 表示元素和数据匹配的部分
+     * enter 表示数据比元素多的部分
+     * exit 表示数据比元素多的部分
+     */
+    var dataset = [1, 2, 3];
+    var p = d3.select('section.update').selectAll('p');
+    // 获取 update
+    var update = p.data(dataset);
+    var enter = update.enter();
+    var exit = update.exit();
+    // 处理
+    update.text(function(d) {
+        return 'update ' + d;
+    })
+    enter.append('p').text(function(d) {
+        return 'enter ' + d;
+    })
+    exit.remove();
 })()
