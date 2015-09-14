@@ -122,4 +122,29 @@
         return 'enter ' + d;
     })
     exit.remove();
+
+    /**
+     * 事件
+     * click：鼠标单击某元素时，相当于 mousedown 和 mouseup 组合在一起。
+     * mouseover：光标放在某元素上。
+     * mouseout：光标从某元素上移出来时。
+     * mousemove：鼠标被移动的时候。
+     * mousedown：鼠标按钮被按下。
+     * mouseup：鼠标按钮被松开。
+     * dblclick：鼠标双击。
+     */
+    function mouseMoveHandler() {
+        x = d3.event.offsetX;
+        y = d3.event.offsetY;
+        d3.select(this)
+            // .transition()
+            .attr({
+                cx: x,
+                cy: y
+            });
+
+    }
+
+    circle.on('mousemove', mouseMoveHandler);
+
 })()
