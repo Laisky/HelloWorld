@@ -4,22 +4,22 @@
      * Demo
      */
     var dataset = [250, 210, 170, 130, 90]; //数据（表示矩形的宽度）
-    var svg = d3.select('svg');
+    var svg = d3.select('svg.app1');
     var rectHeight = 25;
 
-    // svg.selectAll('rect')
-    //     .data(dataset)
-    //     .enter()
-    //     .append('rect')
-    //     .attr('x', 20)
-    //     .attr('y', function(d, i) {
-    //         return i * rectHeight;
-    //     })
-    //     .attr('width', function(d) {
-    //         return d;
-    //     })
-    //     .attr('height', rectHeight - 2)
-    //     .attr('fill', 'steelblue');
+    svg.selectAll('rect')
+        .data(dataset)
+        .enter()
+        .append('rect')
+        .attr('x', 20)
+        .attr('y', function(d, i) {
+            return i * rectHeight;
+        })
+        .attr('width', function(d) {
+            return d;
+        })
+        .attr('height', rectHeight - 2)
+        .attr('fill', 'steelblue');
 
     /**
      * 比例尺工具
@@ -39,14 +39,14 @@
     var ordinal = d3.scale.ordinal()
         .domain(dataset)
         .range(colors);
-
+    var svg = d3.select('svg.app2');
     svg.selectAll('rect')
         .data(dataset)
         .enter()
         .append('rect')
         .attr('x', 20)
         .attr('y', function(d, i) {
-            return i * rectHeight + 150;
+            return i * rectHeight;
         })
         .attr('width', function(d) {
             return linear(d);
