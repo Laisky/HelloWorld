@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SVG Demo</title>
+  <style type="text/css" media="screen">
+  .axis line {
+    stroke: black;
+  }
+
+  .dataset line {
+    stroke: blue;
+  }
+  </style>
+</head>
+
+<body>
+  <svg width="350" height="160">
+    <g class="layer" transform="translate(60,10)">
+      <circle r="5" cx="0" cy="105" />
+      <circle r="5" cx="90" cy="90" />
+      <circle r="5" cx="180" cy="60" />
+      <circle r="5" cx="270" cy="0" />
+      <g class="dataset">
+        <line x1="0" y1="105" x2="90" y2="90"></line>
+        <line x1="90" y1="90" x2="180" y2="60"></line>
+        <line x1="180" y1="60" x2="270" y2="0"></line>
+      </g>
+      <g class="y axis">
+        <line x1="0" y1="0" x2="0" y2="120" />
+        <text x="-40" y="105" dy="5">$10</text>
+        <text x="-40" y="0" dy="5">$80</text>
+      </g>
+      <g class="x axis" transform="translate(0, 120)">
+        <line x1="0" y1="0" x2="270" y2="0" />
+        <text x="-30" y="20">January 2014</text>
+        <text x="240" y="20">April</text>
+      </g>
+    </g>
+  </svg>
+</body>
+
+</html>
