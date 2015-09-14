@@ -2,6 +2,13 @@
     /**
      * 简单
      * Demo
+     *
+     * 矩形 <rect>
+     * 圆形 <circle>
+     * 椭圆 <ellipse>
+     * 线段 <line>
+     * 折线 <polyline>
+     * 多边形 <polygon>
      */
     var dataset = [250, 210, 170, 130, 90]; //数据（表示矩形的宽度）
     var svg = d3.select('svg.app1');
@@ -66,4 +73,33 @@
         .attr('class', 'axis')
         .attr('transform', 'translate(20,100)')
         .call(axis);
+
+    /**
+     * transition
+     */
+    var svg = d3.select('svg.app3');
+    var circle = svg.append('circle')
+        .attr({
+            cx: 40,
+            cy: 20,
+            r: 20
+        })
+        .style({
+            fill: 'green'
+        });
+    // 移动变化
+    circle.transition()
+        .duration(1500)
+        .attr({
+            cx: 200
+        })
+        // linear：普通的线性变化
+        // circle：慢慢地到达变换的最终状态
+        // elastic：带有弹跳的到达最终状态
+        // bounce：在最终状态处弹跳几次
+        .ease("bounce")
+        .style({
+            fill: 'red'
+        });
+
 })()
