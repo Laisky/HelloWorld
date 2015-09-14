@@ -31,7 +31,6 @@
         // domain 参数的数量和 range 对应
         .domain([d3.min(dataset), d3.max(dataset)])
         .range([0, 300]);
-    console.log(linear(150));
     // 112.5
     //
     // 序数比例尺
@@ -40,6 +39,7 @@
         .domain(dataset)
         .range(colors);
     var svg = d3.select('svg.app2');
+
     svg.selectAll('rect')
         .data(dataset)
         .enter()
