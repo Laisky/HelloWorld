@@ -3,9 +3,12 @@
 
 
 """
-Generate network topological graph by pygraphviz_1.3rc.
-
-Created_at: Mon Aug 24 16:21:10 2015
+@description: Generate network topological graph by pygraphviz_1.3rc.
+@created_at: Mon Aug 24 16:21:10 2015
+@author: Laisky
+@copyright: 2015/Laisky
+@license: MIT/Apache
+@demo: https://github.com/Laisky/HelloWorld/blob/master/py2/pygraphviz/pytopo.ipynb
 """
 
 
@@ -41,6 +44,7 @@ class TopoGraph(object):
         )
         self.g = g
         self.nodes = set([])
+        self.edges = set([])
 
     def add_node(self, node):
         assert node.node_name not in self.nodes
@@ -49,9 +53,13 @@ class TopoGraph(object):
         return node.node_name
 
     def add_edge(self, source, target, *attrs, **kw):
-        assert source in self.nodes, 'source not existed!'
-        assert target in self.nodes, 'target not existed!'
+        assert source in self.nodes, 'source not exists!'
+        assert target in self.nodes, 'target not exists!'
+        nodes_name_ = (source, target)
+        edge_name_ = ('{}-{}'.format(min(nodes_name_), max(nodes_name_)))
+        assert edge_name_ not in self.edges, 'edges already exists!'
         self.g.add_edge(source, target, *attrs, **kw)
+        self.edges.add(edge_name_)
 
     def set_same_rank(self, nodes, *args, **kw):
         self.g.add_subgraph(nodes, rank='same', *args, **kw)
