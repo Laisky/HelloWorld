@@ -97,6 +97,16 @@
         )
     );
 
+    myDiagram.groupTemplate =
+        $(go.Group, "Auto",
+            new go.Binding('angle', 'angle').makeTwoWay(), {
+                layout: $(go.TreeLayout, {
+                    angle: 90,
+                    nodeSpacing: 20,
+                    layerSpacing: 20
+                }),
+            });
+
     var nodeDataArray = [
         // layer 1 switch
         {
@@ -121,29 +131,50 @@
         // kernel
         {
             key: 'C2-6800',
-            scale: 2,
+            scale: 1.5,
             image: 'images/switch.jpg'
         }, {
             key: 'SS7706',
-            scale: 2,
+            scale: 1.5,
+            group: 'S7706-Group',
             image: 'images/switch.jpg'
         }, {
             key: 'VS-NeiWang',
-            scale: 2,
+            scale: 1.5,
+            // group: 'S7706-Group',
             image: 'images/switch.jpg'
         }, {
             key: 'CE-12808-01',
-            scale: 2,
+            scale: 1.5,
+            // group: 'S7706-Group',
             image: 'images/switch.jpg'
         }, {
             key: 'E1-Switch',
-            scale: 1.5,
+            scale: 1.2,
+            group: 'S7706-Group',
             image: 'images/switch.jpg'
         }, {
             key: 'E2-Switch',
-            scale: 1.5,
+            scale: 1.2,
+            group: 'S7706-Group',
             image: 'images/switch.jpg'
-        }
+        },
+        // sub switch
+        {
+            key: 'F1-S1-CE5850',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F2-S1-CE5850',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F3-S1-CE5850',
+            image: 'images/switch.jpg'
+        },
+        // s7706 group
+        {
+            key: 'S7706-Group',
+            isGroup: true
+        },
     ];
 
 
@@ -152,7 +183,7 @@
         {
             from: 'C2-5800',
             to: 'C2-6800'
-            // stroke: 'black'
+                // stroke: 'black'
 
         }, {
             from: 'C3-5800',
@@ -173,8 +204,7 @@
         }, {
             from: 'C7-5800',
             to: 'C2-6800'
-        },
-        {
+        }, {
             from: 'C2-6800',
             to: 'VS-NeiWang'
         },
@@ -193,7 +223,18 @@
         }, {
             from: 'SS7706',
             to: 'E2-Switch'
-        }
+        },
+        // sub
+        {
+            from: 'VS-NeiWang',
+            to: 'F1-S1-CE5850'
+        }, {
+            from: 'VS-NeiWang',
+            to: 'F2-S1-CE5850'
+        }, {
+            from: 'VS-NeiWang',
+            to: 'F3-S1-CE5850'
+        },
     ];
 
     myDiagram.model = $(go.GraphLinksModel, {
