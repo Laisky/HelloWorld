@@ -3,7 +3,12 @@
     var myDiagram =
         $(go.Diagram, 'myDiagramDiv', {
             initialContentAlignment: go.Spot.Center, // center Diagram contents
-            'undoManager.isEnabled': true // enable Ctrl-Z to undo and Ctrl-Y to redo
+            'undoManager.isEnabled': true, // enable Ctrl-Z to undo and Ctrl-Y to redo
+            layout: $(go.TreeLayout, {
+                angle: 90,
+                nodeSpacing: 30,
+                layerSpacing: 30
+            })
         });
 
     // the template we defined earlier
@@ -34,10 +39,10 @@
             // 绕线
             routing: go.Link.AvoidsNodes,
             corner: 10
-            // 直线
-            // curve: go.Link.Bezier,
-            // adjusting: go.Link.Stretch,
-            // reshapable: true
+                // 直线
+                // curve: go.Link.Bezier,
+                // adjusting: go.Link.Stretch,
+                // reshapable: true
         },
         new go.Binding('curviness', 'curviness'),
         new go.Binding('points').makeTwoWay(),
