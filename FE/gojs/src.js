@@ -4,16 +4,27 @@
         $(go.Diagram, 'myDiagramDiv', {
             initialContentAlignment: go.Spot.Center, // center Diagram contents
             'undoManager.isEnabled': true, // enable Ctrl-Z to undo and Ctrl-Y to redo
-            layout: $(go.TreeLayout, {
-                angle: 90,
-                nodeSpacing: 30,
-                layerSpacing: 30
+            // layout: $(go.TreeLayout, {
+            //         angle: 0,
+            //         nodeSpacing: 50,
+            //         layerSpacing: 50
+            //     })
+            // layout: $(go.LayeredDigraphLayout)
+            // layout: $(go.GridLayout, {
+            //     comparer: go.GridLayout.smartComparer
+            // })
+            layout: $(go.LayeredDigraphLayout, {
+                direction: 0
             })
         });
 
     // the template we defined earlier
-    myDiagram.nodeTemplate = $(go.Node, 'Vertical', {
+    myDiagram.nodeTemplate = $(go.Node, 'Vertical',
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding('scale', 'scale').makeTwoWay(), {
             cursor: 'pointer',
+            // fromLinkable: true,
+            // toLinkable: true
             // background: '#44CCFF'
         },
         $(go.Picture, {
@@ -21,13 +32,15 @@
                 width: 50,
                 height: 50,
             },
-            new go.Binding('source')),
-        $(go.TextBlock, 'Default Text', {
+            new go.Binding('source', 'image').makeTwoWay()
+        ),
+        $(go.TextBlock, '', {
                 margin: 2,
                 stroke: 'blue',
-                font: 'bold 16px sans-serif'
+                font: 'bold 16px sans-serif',
             },
-            new go.Binding('text', 'name'))
+            new go.Binding('text', 'key').makeTwoWay()
+        )
     );
 
     // replace the default Link template in the linkTemplateMap
@@ -35,14 +48,15 @@
         {
             // 跳线
             // routing: go.Link.Orthogonal,
-            // curve: go.Link.JumpOver
+            // curve: go.Link.JumpOver,
+            corner: 10,
             // 绕线
             routing: go.Link.AvoidsNodes,
-            corner: 10
-                // 直线
-                // curve: go.Link.Bezier,
-                // adjusting: go.Link.Stretch,
-                // reshapable: true
+            // corner: 10
+            // 直线
+            // curve: go.Link.Bezier,
+            // adjusting: go.Link.Stretch,
+            // reshapable: true
         },
         new go.Binding('curviness', 'curviness'),
         new go.Binding('points').makeTwoWay(),
@@ -53,15 +67,23 @@
             },
             new go.Binding('stroke', 'stroke').makeTwoWay()
         ),
-        $(go.Shape, // the arrowhead
-            {
-                toArrow: 'standard',
-                stroke: 'black'
-            },
-            new go.Binding('stroke', 'stroke').makeTwoWay(),
-            new go.Binding('fill', 'stroke').makeTwoWay()
-        ),
-        $(go.TextBlock, 'text', // the label
+        // $(go.Shape, // the arrowhead
+        //     {
+        //         toArrow: 'standard',
+        //         stroke: 'black'
+        //     },
+        //     new go.Binding('stroke', 'stroke').makeTwoWay(),
+        //     new go.Binding('fill', 'stroke').makeTwoWay()
+        // ),
+        // $(go.Shape, // the arrowtail
+        //     {
+        //         fromArrow: 'backward',
+        //         stroke: 'black'
+        //     },
+        //     new go.Binding('stroke', 'stroke').makeTwoWay(),
+        //     new go.Binding('fill', 'stroke').makeTwoWay()
+        // ),
+        $(go.TextBlock, '', // the label
             {
                 segmentOffset: new go.Point(0, -10),
                 textAlign: 'center',
@@ -75,49 +97,107 @@
         )
     );
 
+    var nodeDataArray = [
+        // layer 1 switch
+        {
+            key: 'C2-5800',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'C3-5800',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'C4-5800',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'C5-5800',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'C6-5800',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'C7-5800',
+            image: 'images/switch.jpg'
+        },
+        // kernel
+        {
+            key: 'C2-6800',
+            scale: 2,
+            image: 'images/switch.jpg'
+        }, {
+            key: 'SS7706',
+            scale: 2,
+            image: 'images/switch.jpg'
+        }, {
+            key: 'VS-NeiWang',
+            scale: 2,
+            image: 'images/switch.jpg'
+        }, {
+            key: 'CE-12808-01',
+            scale: 2,
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E1-Switch',
+            scale: 1.5,
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E2-Switch',
+            scale: 1.5,
+            image: 'images/switch.jpg'
+        }
+    ];
 
 
-    var nodeDataArray = [{
-        key: '1',
-        name: 'Don Meow',
-        source: 'images/switch.jpg'
-    }, {
-        key: '2',
-        name: 'Demeter',
-        source: 'images/router.jpg'
-    }, {
-        key: '3',
-        name: 'Copricat',
-        source: 'images/router.jpg'
-    }, {
-        key: '4',
-        name: 'Jellylorum',
-        source: 'images/router.jpg'
-    }, {
-        key: '5',
-        name: 'Alonzo',
-        source: 'images/server.jpg'
-    }, {
-        key: '6',
-        name: 'Munkustrap',
-        source: 'images/server.jpg'
-    }];
-    var linkDataArray = [{
-        from: '1',
-        to: '2',
-        text: 'aaa',
-        stroke: 'red'
-    }, {
-        from: '1',
-        to: '3',
-        text: 'bbb',
-        stroke: 'blue'
-    }, {
-        from: '1',
-        to: '4',
-        text: 'ccc',
-        stroke: 'black'
-    }];
+    var linkDataArray = [
+        // layer 1 link
+        {
+            from: 'C2-5800',
+            to: 'C2-6800'
+            // stroke: 'black'
 
-    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+        }, {
+            from: 'C3-5800',
+            to: 'C2-6800'
+
+        }, {
+            from: 'C4-5800',
+            to: 'C2-6800'
+
+        }, {
+            from: 'C5-5800',
+            to: 'C2-6800'
+
+        }, {
+            from: 'C6-5800',
+            to: 'C2-6800'
+
+        }, {
+            from: 'C7-5800',
+            to: 'C2-6800'
+        },
+        {
+            from: 'C2-6800',
+            to: 'VS-NeiWang'
+        },
+        // VS-NeiWang
+        {
+            from: 'VS-NeiWang',
+            to: 'CE-12808-01'
+        }, {
+            from: 'VS-NeiWang',
+            to: 'SS7706'
+        },
+        // S7706
+        {
+            from: 'SS7706',
+            to: 'E1-Switch'
+        }, {
+            from: 'SS7706',
+            to: 'E2-Switch'
+        }
+    ];
+
+    myDiagram.model = $(go.GraphLinksModel, {
+        nodeDataArray: nodeDataArray,
+        linkDataArray: linkDataArray
+    });
 })()
