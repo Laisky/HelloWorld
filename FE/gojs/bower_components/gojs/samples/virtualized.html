@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Virtualized Sample with no Layout</title>
+  <!-- Copyright 1998-2015 by Northwoods Software Corporation. -->
+  <meta charset="UTF-8">
+  <script src="go.js"></script>
+  <link href="../assets/css/goSamples.css" rel="stylesheet" type="text/css" />  <!-- you don't need to use this -->
+  <script src="goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
+  <script id="code">
+    function init() {
+      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+      var $ = go.GraphObject.make;  // for conciseness in defining templates
+
+      // The Diagram just shows what should be visible in the viewport.
+      // Its model does NOT include node data for everything, but only that
+      // which might be visible in the viewport.
+      myDiagram =
+        $(go.Diagram, "myDiagram",
+          {
+            contentAlignment: go.Spot.Center,
+            initialDocumentSpot: go.Spot.Center,
+            initialViewportSpot: go.Spot.Center,
+
+            // Assume there's no Layout
+
+            // Define the template for Nodes, used by virtualization.
+            nodeTemplate:
+              $(go.Node, "Auto",
+                new go.Binding("position", "bounds", function(b) { return b.position; })
+                              .makeTwoWay(function(p, d) { d.bounds.position = p; return d.bounds; }),
+                { width: 70, height: 20 },  // in cooperation with the load function, below
+                $(go.Shape, "Rectangle",
+                  new go.Binding("fill", "c")),
+                $(go.TextBlock,
+                  { margin: 2 },
+                  new go.Binding("text", "c")),
+                {
+                  toolTip:
+                    $(go.Adornment, "Auto",
+                      $(go.Shape, { fill: "lightyellow" }),
+                      $(go.TextBlock, { margin: 3 },
+                        new go.Binding("text", "",
+                                       function(d) { return "key: " + d.key + "\nbounds: " + d.bounds.toString(); }))
+                    )
+                }
+              ),
+
+            // Define the template for Links
+            linkTemplate:
+              $(go.Link,
+                $(go.Shape),
+                $(go.Shape, { toArrow: "OpenTriangle" })
+              ),
+
+            "animationManager.isEnabled": false,
+            "undoManager.isEnabled": true
+          });
+
+      // This model includes all of the data
+      myWholeModel =
+        $(go.GraphLinksModel);  // must match the model used by the Diagram, below
+
+      // Do not set myDiagram.model = myWholeModel -- that would create a zillion Nodes and Links!
+      // In the future Diagram may have built-in support for virtualization.
+      // For now, we have to implement virtualization ourselves by having the Diagram's model
+      // be different than the "real" model.
+      myDiagram.model =
+        $(go.GraphLinksModel);  // must match the model, above
+
+      // This is a status message
+      myLoading =
+        $(go.Part,  // this has to set the location or position explicitly
+          { location: new go.Point(0, 0) },
+          $(go.TextBlock, "loading...",
+            { stroke: "red", font: "20pt sans-serif" }));
+
+      // temporarily add the status indicator
+      myDiagram.add(myLoading);
+
+      // Allow the myLoading indicator to be shown now,
+      // but allow objects added in load to also be considered part of the initial Diagram.
+      // If you are not going to add temporary initial Parts, don't call delayInitialization.
+      myDiagram.delayInitialization(load);
+    }
+
+    function load() {
+      // create a lot of data for myWholeModel
+      var total = 123456;
+      var sqrt = Math.sqrt(total);
+      var data = [];
+      for (var i = 0; i < total; i++) {
+        data.push({
+          key: i,  // this node data's key
+          c: go.Brush.randomColor(),  // the node's color
+          //!!!???@@@ this needs to be customized to account for your chosen Node template
+          bounds: new go.Rect((i%sqrt)*100, (i/sqrt)*100, 70, 20)
+        });
+      }
+      myWholeModel.nodeDataArray = data;
+
+      // can't depend on regular bounds computation that depends on all Nodes existing
+      myDiagram.fixedBounds = computeDocumentBounds(myWholeModel);
+
+      // for now, we have to implement virtualization ourselves
+      myDiagram.addDiagramListener("ViewportBoundsChanged", onViewportChanged);
+
+      // remove the status indicator
+      myDiagram.remove(myLoading);
+    }
+
+    // make sure the Parts (Nodes and Links) exist as the user scrolls or zooms
+    function onViewportChanged(e) {
+      // make sure there are Nodes for each node data that is in the viewport
+      // or that is connected to such a Node
+      var viewb = myDiagram.viewportBounds;  // the new viewportBounds
+      var model = myDiagram.model;
+
+      var tdata = myWholeModel.nodeDataArray;
+      for (var i = 0; i < tdata.length; i++) {
+        var d = tdata[i];
+        if (!d.bounds) continue;
+        if (d.bounds.intersectsRect(viewb)) {
+          if (!model.containsNodeData(d)) {
+            model.addNodeData(d);
+          }
+          // make sure links to all parent nodes appear
+          var parent = d._parent;
+          while (parent && !model.containsNodeData(parent)) {
+            model.addNodeData(parent);
+            parent = parent._parent;
+          }
+          // make sure links to children appear
+          var childarr = d._children;
+          if (childarr) {
+            for (var j = 0; j <  childarr.length; j++) {
+              var child = childarr[j];
+              if (!model.containsNodeData(child)) {
+                model.addNodeData(child);
+              }
+            }
+          }
+        }
+      }
+
+      if (myRemoveTimer === null) {
+        // only remove offscreen nodes after a delay
+        myRemoveTimer = setTimeout(removeOffscreen, 3000);
+      }
+
+      updateCounts();  // only for this sample
+    }
+
+    // occasionally remove Parts that are offscreen from the Diagram
+    var myRemoveTimer = null;
+
+    function removeOffscreen() {
+      myRemoveTimer = null;
+
+      var viewb = myDiagram.viewportBounds;
+      var remove = [];  // collect for later removal
+      var it = myDiagram.nodes;
+      while (it.next()) {
+        var n = it.value;
+        var d = n.data;
+        if (d === null) continue;
+        if (!n.actualBounds.intersectsRect(viewb) && !n.isSelected) {
+          // even if the node is out of the viewport, keep it if it is selected or
+          // if any link connecting with the node is still in the viewport
+          if (!n.linksConnected.any(function(l) { return l.actualBounds.intersectsRect(viewb); })) remove.push(d);
+        }
+      }
+
+      myDiagram.model.removeNodeDataCollection(remove);
+
+      updateCounts();  // only for this sample
+    }
+
+    // This function is only used in this sample to demonstrate the effects of the virtualization.
+    // In a real application you would delete this function and all calls to it.
+    function updateCounts() {
+      document.getElementById("myMessage1").textContent = myWholeModel.nodeDataArray.length;
+      document.getElementById("myMessage2").textContent = myDiagram.nodes.count;
+    }
+
+    // The normal mechanism for determining the size of the document depends on all of the
+    // Nodes and Links existing, so we need to use a function that depends only on the model data.
+    function computeDocumentBounds(model) {
+      var b = new go.Rect();
+      var tdata = model.nodeDataArray;
+      for (var i = 0; i < tdata.length; i++) {
+        var d = tdata[i];
+        if (!d.bounds) continue;
+        if (i === 0) {
+          b.set(d.bounds);
+        } else {
+          b.unionRect(d.bounds);
+        }
+      }
+      return b;
+    }
+  </script>
+</head>
+<body onload="init()">
+<div id="sample">
+  <div id="myDiagram" style="background-color: white; border: solid 1px blue; width: 100%; height: 600px"></div>
+  <div id="description">
+  <p>
+  This uses a <a>GraphLinksModel</a> but not any <a>Layout</a>.
+  </p>
+  Node data in Model: <span id="myMessage1"></span>.
+  Actual Nodes in Diagram: <span id="myMessage2"></span>.
+  </div>
+</div>
+</body>
+</html>

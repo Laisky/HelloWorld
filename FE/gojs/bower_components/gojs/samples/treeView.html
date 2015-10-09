@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>GoJS Tree View</title>
+  <!-- Copyright 1998-2015 by Northwoods Software Corporation. -->
+  <meta charset="UTF-8">
+  <script src="go.js"></script>
+  <link href="../assets/css/goSamples.css" rel="stylesheet" type="text/css" />  <!-- you don't need to use this -->
+  <script src="goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
+  <script id="code">
+    function init() {
+      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+      var $ = go.GraphObject.make;  // for conciseness in defining templates
+
+      myDiagram =
+        $(go.Diagram, "myDiagram",
+          {
+            allowMove: false,
+            allowCopy: false,
+            allowDelete: false,
+            allowHorizontalScroll: false,
+            layout:
+              $(go.TreeLayout,
+                {
+                  alignment: go.TreeLayout.AlignmentStart,
+                  angle: 0,
+                  compaction: go.TreeLayout.CompactionNone,
+                  layerSpacing: 16,
+                  layerSpacingParentOverlap: 1,
+                  nodeIndent: 2,
+                  nodeIndentPastParent: 0.88,
+                  nodeSpacing: 0,
+                  setsPortSpot: false,
+                  setsChildPortSpot: false
+                })
+        });
+
+      myDiagram.nodeTemplate =
+        $(go.Node,
+          // no Adornment: instead change panel background color by binding to Node.isSelected
+          { selectionAdorned: false },
+          $("TreeExpanderButton",
+            {
+              width: 14,
+              "ButtonBorder.fill": "whitesmoke",
+              "ButtonBorder.stroke": null,
+              "_buttonFillOver": "rgba(0,128,255,0.25)",
+              "_buttonStrokeOver": null
+            }),
+          $(go.Panel, "Horizontal",
+            { position: new go.Point(16, 0) },
+            new go.Binding("background", "isSelected", function (s) { return (s ? "lightblue" : "white"); }).ofObject(),
+            $(go.Picture,
+              {
+                width: 14, height: 14,
+                margin: new go.Margin(0, 4, 0, 0),
+                imageStretch: go.GraphObject.Uniform,
+                source: "images/50x40.png"
+              }),
+            $(go.TextBlock,
+              new go.Binding("text", "key", function(s) { return "item " + s; }))
+          )  // end Horizontal Panel
+        );  // end Node
+
+      // without lines
+      myDiagram.linkTemplate = $(go.Link);
+
+//      // with lines
+//      myDiagram.linkTemplate =
+//        $(go.Link,
+//          { selectable: false,
+//            routing: go.Link.Orthogonal,
+//            fromEndSegmentLength: 4,
+//            toEndSegmentLength: 4,
+//            fromSpot: new go.Spot(0.001, 1, 7, 0),
+//            toSpot: go.Spot.Left },
+//          $(go.Shape,
+//            { stroke: "lightgray" }));
+
+      var nodeDataArray = [{ key: 0 }];
+      var max = 499;
+      var count = 0;
+      while (count < max) {
+        count = makeTree(3, count, max, nodeDataArray, nodeDataArray[0]);
+      }
+      myDiagram.model = new go.TreeModel(nodeDataArray);
+    }
+
+    function makeTree(level, count, max, nodeDataArray, parentdata) {
+      var numchildren = Math.floor(Math.random() * 10);
+      for (var i = 0; i < numchildren; i++) {
+        if (count >= max) return count;
+        count++;
+        var childdata = { key: count, parent: parentdata.key };
+        nodeDataArray.push(childdata);
+        if (level > 0 && Math.random() > 0.5) {
+          count = makeTree(level - 1, count, max, nodeDataArray, childdata);
+        }
+      }
+      return count;
+    }
+  </script>
+</head>
+<body onload="init()">
+<div id="sample">
+  <p>
+    This shows how to create a traditional "TreeView" in a <b>GoJS</b> diagram.
+    There are 500 nodes in the tree.
+  </p>
+  <p>
+    Look at this page's source code to see how the <a>TreeLayout</a> is customized.
+  </p>
+  <p>
+    The node template makes use of a "TreeExpanderButton" panel to implement the expand/collapse button.
+  </p>
+  <p>
+    See the <a href="../intro/buttons.html">Intro page on Buttons</a> for more GoJS button information.
+  </p>
+  <div id="myDiagram" style="border: 1px solid blue; width: 300px; height: 500px"></div>
+</div>
+</body>
+</html>
