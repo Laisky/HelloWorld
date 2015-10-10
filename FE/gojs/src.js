@@ -37,7 +37,7 @@
         $(go.TextBlock, '', {
                 margin: 2,
                 stroke: 'blue',
-                font: 'bold 16px sans-serif',
+                font: 'bolder 14px sans-serif',
             },
             new go.Binding('text', 'key').makeTwoWay()
         )
