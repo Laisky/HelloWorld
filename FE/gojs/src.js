@@ -1,24 +1,15 @@
 (function() {
     var $ = go.GraphObject.make;
+
+    // 创建图标
     var myDiagram =
         $(go.Diagram, 'myDiagramDiv', {
-            initialContentAlignment: go.Spot.Center, // center Diagram contents
-            'undoManager.isEnabled': true // enable Ctrl-Z to undo and Ctrl-Y to redo
-                // layout: $(go.TreeLayout, {
-                //         angle: 0,
-                //         nodeSpacing: 50,
-                //         layerSpacing: 50
-                //     })
-                // layout: $(go.LayeredDigraphLayout)
-                // layout: $(go.GridLayout, {
-                //     comparer: go.GridLayout.smartComparer
-                // })
-                // layout: $(go.LayeredDigraphLayout, {
-                //     direction: 0
-                // })
+            initialContentAlignment: go.Spot.Center,
+            'undoManager.isEnabled': true
         });
 
-    // the template we defined earlier
+
+    // 节点模板
     myDiagram.nodeTemplate = $(go.Node, 'Vertical',
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify), {
             cursor: 'pointer',
@@ -41,18 +32,11 @@
             },
             new go.Binding('text', 'key').makeTwoWay()
         )
-        // $(go.TextBlock, '', {
-        //         margin: 2,
-        //         stroke: 'blue',
-        //         font: 'bold 16px sans-serif',
-        //     },
-        //     new go.Binding('text', 'key').makeTwoWay()
-        // )
     );
 
-    // replace the default Link template in the linkTemplateMap
-    myDiagram.linkTemplate = $(go.Link, // the whole link panel
-        {
+
+    // 连接模板
+    myDiagram.linkTemplate = $(go.Link, {
             // 跳线
             // routing: go.Link.Orthogonal,
             // curve: go.Link.JumpOver,
@@ -74,8 +58,7 @@
             },
             new go.Binding('stroke', 'stroke').makeTwoWay()
         ),
-        $(go.TextBlock, '',
-            {
+        $(go.TextBlock, '', {
                 segmentOffset: new go.Point(0, -10),
                 textAlign: 'center',
                 font: '10pt helvetica, arial, sans-serif',
@@ -88,6 +71,7 @@
         )
     );
 
+    // 节点数据
     var nodeDataArray = [
         // layer 1 switch
         {
@@ -164,6 +148,7 @@
     ];
 
 
+    // 连接数据
     var linkDataArray = [
         // layer 1 link
         {
