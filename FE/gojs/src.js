@@ -21,6 +21,9 @@
                 margin: 0,
                 width: 50,
                 height: 50,
+                // portId: '',
+                // fromSpot: go.Spot.Right,
+                // toSpot: go.Spot.Left
             },
             new go.Binding('scale', 'scale').makeTwoWay(),
             new go.Binding('source', 'image').makeTwoWay()
@@ -37,23 +40,26 @@
 
     // 连接模板
     myDiagram.linkTemplate = $(go.Link, {
+            // routing: go.Link.Orthogonal,
+            // curve: go.Link.JumpGap,
+            // 弧线
+            // curve: go.Link.Bezier,
             // 跳线
             // routing: go.Link.Orthogonal,
             // curve: go.Link.JumpOver,
             // corner: 10,
             // 绕线
             routing: go.Link.AvoidsNodes,
-            corner: 10
-                // 直线
-                // curve: go.Link.Bezier,
-                // adjusting: go.Link.Stretch,
-                // reshapable: true
+            // 直线
+            // curve: go.Link.Bezier,
+            // adjusting: go.Link.Stretch,
+            // reshapable: true
         },
         new go.Binding('curviness', 'curviness'),
         new go.Binding('points').makeTwoWay(),
         $(go.Shape, // the link shape
             {
-                strokeWidth: 1.5,
+                strokeWidth: 0.5,
                 stroke: 'black'
             },
             new go.Binding('stroke', 'stroke').makeTwoWay()
@@ -142,20 +148,108 @@
             loc: '500 550',
             image: 'images/switch.jpg'
         },
-        // sub switch
+        // sub
         {
             key: 'F1-S1-CE5850',
+            scale: 1,
             loc: '800 0',
             image: 'images/switch.jpg'
         }, {
-            key: 'F2-S1-CE5850',
-            loc: '800 100',
+            key: 'E9-S1-CE5850',
+            scale: 1,
+            loc: '800 75',
             image: 'images/switch.jpg'
         }, {
-            key: 'F3-S1-CE5850',
-            loc: '800 200',
+            key: 'F2-S1-CE5850',
+            scale: 1,
+            loc: '800 150',
             image: 'images/switch.jpg'
-        },
+        }, {
+            key: 'E10-S1-CE5850',
+            scale: 1,
+            loc: '800 225',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F3-S2-CE6850',
+            scale: 1,
+            loc: '800 300',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F3-S1-CE6850',
+            scale: 1,
+            loc: '800 375',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'HX-S5700',
+            scale: 1,
+            loc: '800 450',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E7-S5700-SW2',
+            scale: 1,
+            loc: '800 525',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F4-CE5850-S1',
+            scale: 1,
+            loc: '800 600',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E8-S5700-02',
+            scale: 1,
+            loc: '800 675',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F5-CE5850-S1',
+            scale: 1,
+            loc: '800 750',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F5-CE5850-S2',
+            scale: 1,
+            loc: '800 825',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E7-S5700-01',
+            scale: 1,
+            loc: '800 900',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E8-S5700-01',
+            scale: 1,
+            loc: '800 975',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F6-S5700',
+            scale: 1,
+            loc: '800 1050',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F7-S5700',
+            scale: 1,
+            loc: '800 1125',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F8-S5700',
+            scale: 1,
+            loc: '800 1200',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F9-S5700',
+            scale: 1,
+            loc: '800 1275',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'F10-S5700',
+            scale: 1,
+            loc: '800 1350',
+            image: 'images/switch.jpg'
+        }, {
+            key: 'E18-S1-CE5850',
+            scale: 1,
+            loc: '800 1425',
+            image: 'images/switch.jpg'
+        }
     ];
 
 
@@ -165,24 +259,18 @@
         {
             from: 'C2-5800',
             to: 'C2-6800'
-                // stroke: 'black'
-
         }, {
             from: 'C3-5800',
             to: 'C2-6800'
-
         }, {
             from: 'C4-5800',
             to: 'C2-6800'
-
         }, {
             from: 'C5-5800',
             to: 'C2-6800'
-
         }, {
             from: 'C6-5800',
             to: 'C2-6800'
-
         }, {
             from: 'C7-5800',
             to: 'C2-6800'
@@ -209,14 +297,89 @@
         // sub
         {
             from: 'VS-NeiWang',
+            loc: '750 0',
             to: 'F1-S1-CE5850'
         }, {
             from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E9-S1-CE5850'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
             to: 'F2-S1-CE5850'
         }, {
             from: 'VS-NeiWang',
-            to: 'F3-S1-CE5850'
-        },
+            loc: '750 0',
+            to: 'E10-S1-CE5850'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F3-S2-CE6850'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F3-S1-CE6850'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'HX-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E7-S5700-SW2'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F4-CE5850-S1'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E8-S5700-02'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F5-CE5850-S1'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F5-CE5850-S2'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E7-S5700-01'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E8-S5700-01'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F6-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F7-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F8-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F9-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'F10-S5700'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'CE12808-01'
+        }, {
+            from: 'VS-NeiWang',
+            loc: '750 0',
+            to: 'E18-S1-CE5850'
+        }
     ];
 
     myDiagram.model = $(go.GraphLinksModel, {
