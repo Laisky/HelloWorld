@@ -31,7 +31,7 @@
         $(go.TextBlock, '', {
                 margin: 2,
                 stroke: 'blue',
-                font: 'bolder 14px sans-serif',
+                font: 'bolder 12px sans-serif',
             },
             new go.Binding('text', 'key').makeTwoWay()
         )
@@ -43,13 +43,13 @@
             // routing: go.Link.Orthogonal,
             // curve: go.Link.JumpGap,
             // 弧线
-            // curve: go.Link.Bezier,
+            curve: go.Link.Bezier,
             // 跳线
             // routing: go.Link.Orthogonal,
             // curve: go.Link.JumpOver,
             // corner: 10,
             // 绕线
-            routing: go.Link.AvoidsNodes,
+            // routing: go.Link.AvoidsNodes,
             // 直线
             // curve: go.Link.Bezier,
             // adjusting: go.Link.Stretch,
@@ -59,7 +59,7 @@
         new go.Binding('points').makeTwoWay(),
         $(go.Shape, // the link shape
             {
-                strokeWidth: 0.5,
+                strokeWidth: 0.2,
                 stroke: 'black'
             },
             new go.Binding('stroke', 'stroke').makeTwoWay()
@@ -70,7 +70,7 @@
                 font: '10pt helvetica, arial, sans-serif',
                 stroke: 'red',
                 margin: 0,
-                editable: true
+                editable: false
             },
             new go.Binding('text', 'text').makeTwoWay(),
             new go.Binding('stroke', 'stroke').makeTwoWay()
@@ -120,134 +120,134 @@
         {
             key: 'C2-6800',
             scale: 1.5,
-            loc: '300 250',
+            loc: '150 250',
             image: 'images/switch.jpg'
         }, {
             key: 'SS7706',
             scale: 1.5,
-            loc: '450 400',
+            loc: '300 400',
             image: 'images/switch.jpg'
         }, {
             key: 'VS-NeiWang',
             scale: 1.5,
-            loc: '450 250',
+            loc: '300 250',
             image: 'images/switch.jpg'
         }, {
             key: 'CE-12808-01',
             scale: 1.5,
-            loc: '450 0',
+            loc: '300 0',
             image: 'images/switch.jpg'
         }, {
             key: 'E1-Switch',
             scale: 1.2,
-            loc: '400 550',
+            loc: '250 550',
             image: 'images/switch.jpg'
         }, {
             key: 'E2-Switch',
             scale: 1.2,
-            loc: '500 550',
+            loc: '350 550',
             image: 'images/switch.jpg'
         },
         // sub
         {
             key: 'F1-S1-CE5850',
             scale: 1,
-            loc: '800 0',
+            loc: '500 0',
             image: 'images/switch.jpg'
         }, {
             key: 'E9-S1-CE5850',
             scale: 1,
-            loc: '800 75',
+            loc: '500 75',
             image: 'images/switch.jpg'
         }, {
             key: 'F2-S1-CE5850',
             scale: 1,
-            loc: '800 150',
+            loc: '500 150',
             image: 'images/switch.jpg'
         }, {
             key: 'E10-S1-CE5850',
             scale: 1,
-            loc: '800 225',
+            loc: '500 225',
             image: 'images/switch.jpg'
         }, {
             key: 'F3-S2-CE6850',
             scale: 1,
-            loc: '800 300',
+            loc: '500 300',
             image: 'images/switch.jpg'
         }, {
             key: 'F3-S1-CE6850',
             scale: 1,
-            loc: '800 375',
+            loc: '500 375',
             image: 'images/switch.jpg'
         }, {
             key: 'HX-S5700',
             scale: 1,
-            loc: '800 450',
+            loc: '500 450',
             image: 'images/switch.jpg'
         }, {
             key: 'E7-S5700-SW2',
             scale: 1,
-            loc: '800 525',
+            loc: '600 0',
             image: 'images/switch.jpg'
         }, {
             key: 'F4-CE5850-S1',
             scale: 1,
-            loc: '800 600',
+            loc: '600 75',
             image: 'images/switch.jpg'
         }, {
             key: 'E8-S5700-02',
             scale: 1,
-            loc: '800 675',
+            loc: '600 150',
             image: 'images/switch.jpg'
         }, {
             key: 'F5-CE5850-S1',
             scale: 1,
-            loc: '800 750',
+            loc: '600 225',
             image: 'images/switch.jpg'
         }, {
             key: 'F5-CE5850-S2',
             scale: 1,
-            loc: '800 825',
+            loc: '600 300',
             image: 'images/switch.jpg'
         }, {
             key: 'E7-S5700-01',
             scale: 1,
-            loc: '800 900',
+            loc: '600 375',
             image: 'images/switch.jpg'
         }, {
             key: 'E8-S5700-01',
             scale: 1,
-            loc: '800 975',
+            loc: '600 450',
             image: 'images/switch.jpg'
         }, {
             key: 'F6-S5700',
             scale: 1,
-            loc: '800 1050',
+            loc: '700 0',
             image: 'images/switch.jpg'
         }, {
             key: 'F7-S5700',
             scale: 1,
-            loc: '800 1125',
+            loc: '700 75',
             image: 'images/switch.jpg'
         }, {
             key: 'F8-S5700',
             scale: 1,
-            loc: '800 1200',
+            loc: '700 150',
             image: 'images/switch.jpg'
         }, {
             key: 'F9-S5700',
             scale: 1,
-            loc: '800 1275',
+            loc: '700 225',
             image: 'images/switch.jpg'
         }, {
             key: 'F10-S5700',
             scale: 1,
-            loc: '800 1350',
+            loc: '700 300',
             image: 'images/switch.jpg'
         }, {
             key: 'E18-S1-CE5850',
             scale: 1,
-            loc: '800 1425',
+            loc: '700 375',
             image: 'images/switch.jpg'
         }
     ];
