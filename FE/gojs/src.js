@@ -71,6 +71,17 @@
         )
     );
 
+    // 点击事件
+    myDiagram.addDiagramListener("ObjectSingleClicked",
+        function(e) {
+            var part = e.subject.part;
+            if (!(part instanceof go.Link)) console.log("Clicked on " + part.data.key);
+        });
+
+    /**
+     * ---------------------------------------------------
+     */
+
     // 节点数据
     var nodeDataArray = [
         // layer 1 switch
