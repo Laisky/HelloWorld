@@ -97,4 +97,10 @@
     // helper condition
     renderTemplate('tpl-helper-condition', 'helper-condition');
 
+    // helper inline
+    Handlebars.registerHelper('my-helper-inline', function(timestamp) {
+        return (new Date(timestamp)).toString();
+    })
+    renderTemplate('tpl-helper-inline', 'helper-inline');
+
 })();

@@ -41,24 +41,31 @@
     <div class="demo" id="helper-each"></div>
     <div class="demo" id="helper-hash"></div>
     <div class="demo" id="helper-condition"></div>
+    <div class="demo" id="helper-inline"></div>
   </div>
+
   <!-- libs -->
   <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
   <!-- templates -->
   <script id="tpl-exp" type="text/x-handlebars-template">
     <p>Hello, {{ name }}, Welcome to {{ info.location }}.</p>
     <p>arm: {{weapons.[1]}}</p>
   </script>
+
   <script id="tpl-escape" type="text/x-handlebars-template">
     <p>Hello, {{{ name }}}, Welcome to {{ info/location }}.</p>
   </script>
+
   <script id="tpl-helper" type="text/x-handlebars-template">
     <p>{{#my-helper}}{{body}}{{/my-helper}}</p>
   </script>
+
   <script id="tpl-helper-wrapper" type="text/x-handlebars-template">
     {{#my-helper-wrapper}}{{name}}{{/my-helper-wrapper}}
   </script>
+
   <script id="tpl-helper-with" type="text/x-handlebars-template">
     {{#my-helper-with}}
     <h1>{{title}}</h1> {{#with content}}
@@ -66,14 +73,17 @@
     <p>sex: {{ sex }}</p>
     {{/with}} {{/my-helper-with}}
   </script>
+
   <script id="tpl-helper-each" type="text/x-handlebars-template">
     {{#my-helper-each weapons}}
     <p>{{ content }}</p>
     {{/my-helper-each}}
   </script>
+
   <script id="tpl-helper-hash" type="text/x-handlebars-template">
     {{#my-helper-hash hash site='ehentai' locate='japan'}} {{{ content }}} {{/my-helper-hash}}
   </script>
+
   <script id="tpl-helper-condition" type="text/x-handlebars-template">
     {{#if idDead}}
     <p>死咯</p>
@@ -81,6 +91,11 @@
     <p>万税万税万万税</p>
     {{/if}}
   </script>
+
+  <script id="tpl-helper-inline" type="text/x-handlebars-template">
+    {{my-helper-inline 1444974760697}}
+  </script>
+
   <!-- custom js -->
   <script type="text/javascript" src="src.js"></script>
 </body>
