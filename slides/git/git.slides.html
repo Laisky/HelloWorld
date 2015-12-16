@@ -912,6 +912,16 @@ a.anchor-link {
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>推荐一个叫做 SourceTree 的工具，上面提到的这些操作都可以在 GUI 上点点鼠标就简单实现</p>
+
+</div>
+</div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1083,7 +1093,7 @@ git version 2.5.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>而且因为 github 会自动会 issue 创建一个唯一的 issue_id，所以我们之前提到在给 feature branch 命名的时候，都是 feature/1-title 格式</p>
+<p>而且因为 github 会自动为 issue 创建一个唯一的 issue_id，所以我们之前提到在给 feature branch 命名的时候，都是 feature/1-title 格式</p>
 <p>而且在每次提交的时候，都带上所述的 issue 号，比如</p>
 <p><code>$ git ci -am '* #1 fix typo'</code></p>
 <p>这样的好处是，github 会自动提取信息中的 <code>#1</code>，然后在所指向的 issue 中显示该提交</p>
@@ -1263,7 +1273,7 @@ git version 2.5.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="gist-&amp;-git-page">gist &amp; git page<a class="anchor-link" href="#gist-&amp;-git-page">&#182;</a></h3><p>这两个在我们公司使用的 gitlab 里好像没有，我就跳过了😄</p>
+<h3 id="gist-&amp;-git-page-&amp;-gitter">gist &amp; git page &amp; gitter<a class="anchor-link" href="#gist-&amp;-git-page-&amp;-gitter">&#182;</a></h3><p>这两个在我们公司使用的 gitlab 里好像没有，我就跳过了😄</p>
 
 </div>
 </div>
@@ -1308,7 +1318,121 @@ git version 2.5.0
 
 </div>
 </div>
-</div></div></section></section>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="stash">stash<a class="anchor-link" href="#stash">&#182;</a></h3><ul>
+<li><code>$ git stash</code>： 可以将当前 index 和 working directory 的所有未提交内容压入 stash 栈中</li>
+<li><code>$ git stash pop</code>： 将栈顶存储的内容恢复到工作空间</li>
+<li><code>$ git stash list</code>： 可以显示 stash 栈的所有内容</li>
+<li><code>$ git stash clear</code>： 可以清空栈</li>
+</ul>
+<p><img src="images/stash.jpg" alt=""></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="diff">diff<a class="anchor-link" href="#diff">&#182;</a></h3><ul>
+<li><code>$ git diff</code>： 查看当前工作区和 index 去的区别，也就是尚未 add 的修改</li>
+<li><code>$ git diff head</code>：查看当前 index 和工作区与 head 的区别，也就是查看所有尚未 commit 的修改</li>
+<li><code>$ git diff &lt;commit&gt; &lt;commit&gt;</code>：查看任意两个 commit 间的区别</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="blame">blame<a class="anchor-link" href="#blame">&#182;</a></h3><ul>
+<li><code>$ git blame &lt;file&gt;</code>：可以查看某一个文件的每一行具体是谁在什么时候提交的</li>
+</ul>
+<p><img src="images/blame.jpg" alt=""></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="tag">tag<a class="anchor-link" href="#tag">&#182;</a></h3><p>git 可以通过 tag 来做版本管理，在 github 上会自动将 tag 打包成 tar 包并提供下载链接</p>
+<ul>
+<li><code>$ git tag &lt;tagname&gt; -m &lt;message&gt;</code>：将当前 head 所在的提交标记为 tag</li>
+<li><code>$ git tag &lt;tagname&gt; &lt;commit&gt; -m &lt;message&gt;</code>：将某个指定提交标记为 tag</li>
+<li><code>$ git tag -n2</code>： 查看 tag，可以指定为 -n1 或 -n2</li>
+<li><code>$ git tag -d &lt;tagname&gt;</code>：删除 tag</li>
+<li><code>$ git push origin --tags</code>：推送 tags 到远程仓库</li>
+<li><code>$ git pull origin --tags</code>：从远程仓库下拉 tags</li>
+<li><code>$ git push origin :refs/tags/&lt;tag_name&gt;</code>：删除远程的 tag</li>
+</ul>
+<p><img src="images/tag.jpg" alt=""></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="revert">revert<a class="anchor-link" href="#revert">&#182;</a></h3><p>用于反向提交。当你要撤销掉某次提交的时候，切记不要用 reset（因为可能会引起冲突），而要用 revert 进行一次反向提交，抵消到该提交的所有修改。</p>
+<ul>
+<li><code>$ git revert &lt;commit&gt;</code></li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="cherry-pick">cherry pick<a class="anchor-link" href="#cherry-pick">&#182;</a></h3><p>可以提取某个指定的提交，合并到 HEAD 处再提交一次。</p>
+<p>和 merge 的区别是，cherry pick 只针对某一个指定的提交，而不会将其上下游都带过来。</p>
+<ul>
+<li><code>$ git cherry-pick &lt;commit&gt;</code></li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="githooks">githooks<a class="anchor-link" href="#githooks">&#182;</a></h3><p>githooks 的功能类似于之前提到过的 github 的 webhooks，不过 githooks 是作用在本地的，功能也是监听各种 git 事件，然后调用脚本。</p>
+<p>你可以在服务器上配置 githooks 监听 post-receive，当服务器接收到新代码后，就自动重启应用玩成更新。</p>
+<p>githooks 的脚本都在 <code>.git/hooks/</code> 里</p>
+<div class="highlight"><pre><span class="c"># vi .git/hooks/post-receive</span>
+
+<span class="c">#!/bin/sh</span>
+<span class="nb">unset</span> <span class="k">$(</span>git rev-parse --local-env-vars<span class="k">)</span>
+
+<span class="nb">cd</span> /home/laisky/repo/laisky-blog/
+git stash
+git pull
+
+<span class="c"># script</span>
+<span class="c"># do what you want</span>
+</pre></div>
+
+</div>
+</div>
+</div></section></section>
 </div>
 </div>
 
