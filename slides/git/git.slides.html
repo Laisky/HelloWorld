@@ -250,7 +250,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Git-&amp;-Gitflow-&amp;-Github">Git &amp; Gitflow &amp; Github<a class="anchor-link" href="#Git-&amp;-Gitflow-&amp;-Github">&#182;</a></h1><p><img src="images/git.jpg" alt=""></p>
+<h1 id="Git-&amp;-Gitflow-&amp;-Github">Git &amp; Gitflow &amp; Github<a class="anchor-link" href="#Git-&amp;-Gitflow-&amp;-Github">&#182;</a></h1><p><img src="http://laisky-blog.qiniudn.com/151216-git.jpg" alt=""></p>
 
 </div>
 </div>
@@ -328,7 +328,7 @@ a.anchor-link {
 <li><code>Git index</code>（暂存区）</li>
 <li><code>Git Directory</code>（Git 库，已提交的历史）</li>
 </ul>
-<p><img src="images/space.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-space.png" alt=""></p>
 
 </div>
 </div>
@@ -339,7 +339,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="add-&amp;-commit">add &amp; commit<a class="anchor-link" href="#add-&amp;-commit">&#182;</a></h2><p>这里就可以提到 git 最常用的几个命令</p>
-<p><img src="images/add.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-add.jpg" alt=""></p>
 
 </div>
 </div>
@@ -358,7 +358,7 @@ a.anchor-link {
 <li><code>A</code>：新增文件（和 M 一样也有两位，省略）</li>
 <li><code>D</code>：删除的文件（和 A、M 一样也有两位，省略）</li>
 </ul>
-<p><img src="images/add2.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-add2.jpg" alt=""></p>
 
 </div>
 </div>
@@ -375,7 +375,7 @@ a.anchor-link {
 <p>如果你想要将当前工作区全部直接提交到 git 目录，也就是跳过 add，可以直接执行</p>
 <div class="highlight"><pre><span class="nv">$ </span>git commit -am <span class="s2">&quot;&lt;comment&gt;&quot;</span>
 </pre></div>
-<p><img src="images/commit.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-commit.jpg" alt=""></p>
 
 </div>
 </div>
@@ -395,7 +395,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="images/branch.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-branch.jpg" alt=""></p>
 
 </div>
 </div>
@@ -406,7 +406,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>不同分之间的 git directory 是完全独立的，也就说在不同的分支上的提交也是互相隔离的。</p>
-<p><img src="images/branch2.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-branch2.png" alt=""></p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ a.anchor-link {
 <li>如果目的地会与未提交修改冲突，那么就会 checkout 不过去</li>
 </ul>
 <p>举个例子，我们已经在 develop 分支里创建了一个 branch_demo.txt 文件，如果我们在 master 的工作区里也创建一个这个文件，再试图 checkout 到 develop，就会引发冲突：</p>
-<p><img src="images/branch3.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-branch3.jpg" alt=""></p>
 <p><strong>据我观察，很多所谓『诡异的』『我怎么切不过去』大多都是这个原因</strong></p>
 
 </div>
@@ -448,7 +448,7 @@ a.anchor-link {
 <div class="highlight"><pre><span class="nv">$ </span>git log
 <span class="nv">$ </span>git log --oneline --graph --decorate
 </pre></div>
-<p><img src="images/log.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-log.png" alt=""></p>
 
 </div>
 </div>
@@ -469,7 +469,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>git 的每一次提交，可以粗略的认为由几个指针组成，可以通过 <code>$ git cat-file -p &lt;commit_id&gt;</code> 来查看</p>
-<p><img src="images/cat-file.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-cat-file.png" alt=""></p>
 
 </div>
 </div>
@@ -480,7 +480,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>可以看出每一个提交中都有一个指向 parent 的指针，一个提交链可以认为是一个链表，git 会持有分支的头部（比如 master、develop），这些头部根据 parent 指针递归的保持着整个提交链的引用。</p>
-<p><img src="images/head.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-head.jpg" alt=""></p>
 
 </div>
 </div>
@@ -516,10 +516,10 @@ a.anchor-link {
 <p>理解了 HEAD 后再来看 checkout，就会发现 checkout 其实是移动 HEAD 的操作。</p>
 <div class="highlight"><pre><span class="nv">$ </span>git checkout master
 </pre></div>
-<p><img src="images/head1.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-head1.jpg" alt=""></p>
 <div class="highlight"><pre><span class="nv">$ </span>git checkout master^1  <span class="c"># master 之前的一次提交</span>
 </pre></div>
-<p><img src="images/head2.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-head2.jpg" alt=""></p>
 
 </div>
 </div>
@@ -532,7 +532,7 @@ a.anchor-link {
 <p>趁机提一下幽灵分支</p>
 <p>上一页里我们 checkout 到了 master 的前一个分支，这时 HEAD 指向提交 37c6。</p>
 <p>如果这时候我们创建一个提交，这个提交的 parent 也会指向 37c6，而 HEAD 则会指向这个新提交。</p>
-<p><img src="images/head3.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-head3.jpg" alt=""></p>
 <p>但是需要注意的是，<strong>只有 HEAD 指向这个提交</strong>，一旦你这时 checkout 到其他地方，这个提交就会丢失引用，然后就会被 git gc，你也就丢失了这个分支。</p>
 <p>如果你想要保留它的话，应该执行 <code>$ git branch &lt;new_branch_name&gt;</code> 建立一个分支头来指向这个提交，保持引用。</p>
 
@@ -595,7 +595,7 @@ a.anchor-link {
 <li><code>--soft</code>：和 --mixed 类似，不过把跳过的提交放在 index 里</li>
 <li><code>--hard</code>：强行跳到指定提交，跳过的提交全部抛弃</li>
 </ul>
-<p><img src="images/reset.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-reset.jpg" alt=""></p>
 
 </div>
 </div>
@@ -653,7 +653,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>你以为用 git 合作开发就是一群人在一起 add &amp; commit &amp; push ？</p>
-<p><img src="images/naive.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-naive.jpg" alt=""></p>
 
 </div>
 </div>
@@ -709,7 +709,7 @@ a.anchor-link {
 <li>hotfix：紧急修复分支，原则上也仅有一个，开启后应尽快修复；</li>
 <li>release：发布分支，每一个待发布的版本对应一个分支。</li>
 </ul>
-<p><img src="images/flow.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow.jpg" alt=""></p>
 
 </div>
 </div>
@@ -741,7 +741,7 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#21151;&#33021;&#24320;&#21457;">&#21151;&#33021;&#24320;&#21457;<a class="anchor-link" href="#&#21151;&#33021;&#24320;&#21457;">&#182;</a></h2><p>假设这时候我们开了一个项目需求会，项目经历确认了有 10 个 需求需要开发，然后我领到了其中的 <strong>3 号</strong> 需求。</p>
 <p>这时候我应该从当前的开发分支中切出一个功能分支，进行开发工作</p>
-<p><img src="images/flow1.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow1.jpg" alt=""></p>
 <p>功能分支的命名规则是： <code>feature/&lt;issue_num&gt;-&lt;feature_name&gt;</code></p>
 
 </div>
@@ -765,7 +765,7 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>功能开发完成后，经过完善测试，如果需要，我们就可以将功能分支合并到 develop 分支。</p>
 <p>合并也是一门哲学，方法多种多样，这里我们就简单点：</p>
-<p><img src="images/flow-feature.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow-feature.jpg" alt=""></p>
 <p><strong>使用 --no-ff 是我的个人偏好，我喜欢在 develop 上保留完整的分支信息</strong></p>
 
 </div>
@@ -777,7 +777,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>万一合并的时候遇到冲突，我们应该立刻解决它</p>
-<p><img src="images/flow-merge.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow-merge.png" alt=""></p>
 
 </div>
 </div>
@@ -788,7 +788,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>解决完冲突后应该对合并结果进行提交，并删除 *.orig 临时文件</p>
-<p><img src="images/flow-merge2.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow-merge2.jpg" alt=""></p>
 
 </div>
 </div>
@@ -834,7 +834,7 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>在 gitflow 中与之对应的是 release 分支，我们可以在 develop 上建议一个对应相应版本号的发布分支</p>
 <p>一句话搞定</p>
-<p><img src="images/release.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-release.jpg" alt=""></p>
 
 </div>
 </div>
@@ -891,7 +891,7 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>gitflow 的核心内容差不多就这些了，再重温一下这张流程图</p>
-<p><img src="images/flow.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-flow.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1071,7 +1071,7 @@ git version 2.5.0
 <p>举一个实践的例子，当产品经理确认了项目需求后，项目经理应该将其该需求确认工期，并将其拆分为数个功能单一的 feature。</p>
 <p>对应在 github 上，我们应该为这个版本建立一个 milestone（如果需要的话还可以指定截止日期），然后再为每一个 feature 创建一个 issue。</p>
 <p>创建 issue 时可以指定 label 和 assignee</p>
-<p><img src="images/issue.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-issue.png" alt=""></p>
 
 </div>
 </div>
@@ -1083,7 +1083,7 @@ git version 2.5.0
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>简而言之，我们应该为每一个大的版本创建一个 milestone，为每一个 feature 创建一个 issue。</p>
 <p>对于各种不同性质的 issue，比如 Q&amp;A、feature、bug、调研等等，我们可以通过 label 来区分</p>
-<p><img src="images/label.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-label.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1097,7 +1097,7 @@ git version 2.5.0
 <p>而且在每次提交的时候，都带上所述的 issue 号，比如</p>
 <p><code>$ git ci -am '* #1 fix typo'</code></p>
 <p>这样的好处是，github 会自动提取信息中的 <code>#1</code>，然后在所指向的 issue 中显示该提交</p>
-<p><img src="images/issue2.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-issue2.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1119,7 +1119,7 @@ git version 2.5.0
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="code-review">code review<a class="anchor-link" href="#code-review">&#182;</a></h3><p>当某人完成了 feature 的开发后，你可以要求他必须在你 review 完成后再合并到主干。</p>
 <p>review 的方法也很简单，你可以点击任意提交，进入提交详情页，看到所有的代码修改细节，并且如果有疑问的话，可以在任意一行留下评论，要求对方解答</p>
-<p><img src="images/review.png" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-review.png" alt=""></p>
 
 </div>
 </div>
@@ -1197,7 +1197,7 @@ git version 2.5.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="images/deploy-key.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-deploy-key.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1218,7 +1218,7 @@ git version 2.5.0
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>方法是进入任意一个项目主页，点击右上方的 <strong>Fork</strong>，就会在你自己的账户下简历一个副本。</p>
-<p><img src="images/fork.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-fork.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1231,7 +1231,7 @@ git version 2.5.0
 <p>然后你就在这个副本项目里，像正常一样的做出修改，然后提交。</p>
 <p>接下来是重点，提交完成后，你要向原始项目发出合并请求（pull request）了</p>
 <p>点击进入原始项目的页面，选择 pull request tab 页，然后点击右上角的 New pull request</p>
-<p><img src="images/fork2.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-fork2.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1330,7 +1330,7 @@ git version 2.5.0
 <li><code>$ git stash list</code>： 可以显示 stash 栈的所有内容</li>
 <li><code>$ git stash clear</code>： 可以清空栈</li>
 </ul>
-<p><img src="images/stash.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-stash.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1357,7 +1357,7 @@ git version 2.5.0
 <h3 id="blame">blame<a class="anchor-link" href="#blame">&#182;</a></h3><ul>
 <li><code>$ git blame &lt;file&gt;</code>：可以查看某一个文件的每一行具体是谁在什么时候提交的</li>
 </ul>
-<p><img src="images/blame.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-blame.jpg" alt=""></p>
 
 </div>
 </div>
@@ -1377,7 +1377,7 @@ git version 2.5.0
 <li><code>$ git pull origin --tags</code>：从远程仓库下拉 tags</li>
 <li><code>$ git push origin :refs/tags/&lt;tag_name&gt;</code>：删除远程的 tag</li>
 </ul>
-<p><img src="images/tag.jpg" alt=""></p>
+<p><img src="http://laisky-blog.qiniudn.com/151216-tag.jpg" alt=""></p>
 
 </div>
 </div>
