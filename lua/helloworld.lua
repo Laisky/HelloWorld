@@ -83,3 +83,45 @@ for i=1, #myArr do  -- #myArr 是取 myArr 的长度
     print(myArr[i])
 end
 
+--[[
+MetaMethod & MetaTable
+即重载操作符
+
+__add(a, b)                     对应表达式 a + b
+__sub(a, b)                     对应表达式 a - b
+__mul(a, b)                     对应表达式 a * b
+__div(a, b)                     对应表达式 a / b
+__mod(a, b)                     对应表达式 a % b
+__pow(a, b)                     对应表达式 a ^ b
+__unm(a)                        对应表达式 -a
+__concat(a, b)                  对应表达式 a .. b
+__len(a)                        对应表达式 #a
+__eq(a, b)                      对应表达式 a == b
+__lt(a, b)                      对应表达式 a < b
+__le(a, b)                      对应表达式 a <= b
+__index(a, b)                   对应表达式 a.b
+__newindex(a, b, c)             对应表达式 a.b = c
+__call(a, ...)                  对应表达式 a(...)
+]]--
+tableA = {val=1}
+tableB = {val=2}
+
+fraction_op = {}
+function fraction_op.__add(a, b)
+    return a.val + b.val
+end
+
+setmetatable(tableA, fraction_op)
+setmetatable(tableB, fraction_op)
+print(tableA + tableB)
+
+--[[ 模块
+
+lua 有三种载入方式：
+  - require('filename')  -- 只有第一次会执行
+  - dofile('filename')   -- 每次都执行
+  - submodule = loadfile('filename')  -- 载入但不执行，可调用 submodule() 执行
+]]--
+
+
+
