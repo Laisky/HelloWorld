@@ -1,8 +1,9 @@
+var myDiagram;
 (function() {
     var $ = go.GraphObject.make;
 
     // 创建图标
-    var myDiagram =
+    myDiagram =
         $(go.Diagram, 'myDiagramDiv', {
             initialContentAlignment: go.Spot.Center,
             'undoManager.isEnabled': true
@@ -386,4 +387,43 @@
         nodeDataArray: nodeDataArray,
         linkDataArray: linkDataArray
     });
-})()
+
+})();
+
+window.onload = function(evt) {
+    /**
+     * 动态调整拓扑图大小
+     */
+    updateTopoGraphSize();
+
+    function updateTopoGraphSize() {
+        var topoCanvasResizeTrigger,
+            $myDiagram = $('#myDiagramDiv'),
+            $topoCanvas = $('#myDiagramDiv > canvas'),
+            lastWindowHeight;
+
+        resizeHandler();
+        $(window).on('resize', resizeHandler);
+
+        function resizeHandler() {
+            var windowHeight = window.innerHeight;
+            topoCanvasResizeTrigger || clearTimeout(topoCanvasResizeTrigger);
+            topoCanvasResizeTrigger = setTimeout(function() {
+                // 调整 canvas 画布大小
+                $myDiagram.css('height', windowHeight);
+                $topoCanvas.css('height', windowHeight);
+                // 调整 canvas 图标大小
+                if (lastWindowHeight) {
+                    var ratio = windowHeight / lastWindowHeight;
+                    console.log(ratio)
+                    if (windowHeight > lastWindowHeight) { // 放大
+                        myDiagram.commandHandler.decreaseZoom(ratio);
+                    } else { // 缩小
+                        myDiagram.commandHandler.decreaseZoom(ratio);
+                    }
+                }
+                lastWindowHeight = windowHeight;
+            }, 400);
+        }
+    }
+};
