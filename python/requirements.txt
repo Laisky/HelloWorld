@@ -2,8 +2,6 @@
 psutil
 line_profiler
 memory_profiler
-graphviz
-pycallgraph
 
 # async
 aiohttp
@@ -11,9 +9,12 @@ aiohttp
 # web
 tornado
 flask
+purl
 
 # graph
 networkx
+graphviz
+pycallgraph
 
 # tools
 ipython
@@ -21,11 +22,21 @@ pygments
 pyzmq
 pipe
 
+# encrypt
+PyJWT
+bcrypt
+
 # pub / sub & event-driver
 blinker
 
 # chart
 python-nvd3>=0.13.3
+
+# ldap
+ldap3
+
+# snmp
+pysnmp
 
 # science toolkit
 numpy
@@ -38,3 +49,6 @@ numexpr
 
 # for hull computation
 setuptools>=5.7
+
+# algorithm
+pybloof
