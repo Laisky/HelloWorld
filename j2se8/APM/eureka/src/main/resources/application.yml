@@ -1,0 +1,41 @@
+server.port: 8761
+spring.application.name: eureka-server
+
+spring:
+  cloud:
+    config:
+      enable: false
+  # zipkin:
+  #   baseUrl: http://zipkin:9411
+  # sleuth:
+  #   sampler:
+  #     percentage: 1.0
+  #   web:
+  #     skipPattern: (^cleanup.*|.+favicon.*)
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance:
+      preferIpAddress: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka,http://eureka2:8761/eureka
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    enable-self-preservation: false
+
+endpoints:
+  refresh:
+    sensitive: false
+  health:
+    sensitive: false
+  zipkin:
+    sensitive: false
+
+logging:
+  level:
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO
+    org.springframework.web.servlet.DispatcherServlet: INFO
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | eureka | %p | %t | %C | %L: %m%n"

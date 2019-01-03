@@ -1,0 +1,34 @@
+---
+spring:
+  zipkin:
+    baseUrl: http://zipkin:9411
+  sleuth:
+    # stream:
+    #   enable: false
+    sampler:
+      percentage: 1.0
+    web:
+      skipPattern: (^cleanup.*|.+favicon.*)
+  # cloud:
+  #   stream:
+  #     default:
+  #       contentType: application/json
+  #     kafka:
+  #       binder:
+  #         autoCreateTopics: false
+  #         brokers: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         zkNodes: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         defaultBrokerPort: 9092
+  #         defaultZkPort: 2181
+  #         headers:
+  #           - X-B3-TraceId
+  #           - X-B3-SpanId
+  #           - X-B3-Sampled
+  #           - X-B3-ParentSpanId
+  #           - X-Span-Name
+  #           - X-Process-Id
+  #           - messageSent
+  #           - X-Span-Export
+  #     bindings:
+  #       sleuth:
+  #         destination: tracingSit
