@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Handlebars Demo</title>
+  <style type="text/css">
+  div.app {
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  div.demo {
+    min-width: 600px;
+    min-height: 100px;
+    background-color: #DEDCDC;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+  </style>
+</head>
+
+<body>
+  <!-- apps -->
+  <div class="app">
+    <h1>demo for expression</h1>
+    <div class="demo" id="exp-1"></div>
+  </div>
+  <div class="app">
+    <h1>demo for escape</h1>
+    <div class="demo" id="escape-1"></div>
+  </div>
+  <div class="app">
+    <h1>demo for helper</h1>
+    <div class="demo" id="helper"></div>
+    <div class="demo" id="helper-wrapper"></div>
+    <div class="demo" id="helper-with"></div>
+    <div class="demo" id="helper-each"></div>
+    <div class="demo" id="helper-hash"></div>
+    <div class="demo" id="helper-condition"></div>
+    <div class="demo" id="helper-inline"></div>
+  </div>
+
+  <!-- libs -->
+  <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+  <!-- templates -->
+  <script id="tpl-exp" type="text/x-handlebars-template">
+    <p>Hello, {{ name }}, Welcome to {{ info.location }}.</p>
+    <p>arm: {{weapons.[1]}}</p>
+  </script>
+
+  <script id="tpl-escape" type="text/x-handlebars-template">
+    <p>Hello, {{{ name }}}, Welcome to {{ info/location }}.</p>
+  </script>
+
+  <script id="tpl-helper" type="text/x-handlebars-template">
+    <p>{{#my-helper}}{{body}}{{/my-helper}}</p>
+  </script>
+
+  <script id="tpl-helper-wrapper" type="text/x-handlebars-template">
+    {{#my-helper-wrapper}}{{name}}{{/my-helper-wrapper}}
+  </script>
+
+  <script id="tpl-helper-with" type="text/x-handlebars-template">
+    {{#my-helper-with}}
+    <h1>{{title}}</h1> {{#with content}}
+    <p>name: {{ name }}</p>
+    <p>sex: {{ sex }}</p>
+    {{/with}} {{/my-helper-with}}
+  </script>
+
+  <script id="tpl-helper-each" type="text/x-handlebars-template">
+    {{#my-helper-each weapons}}
+    <p>{{ content }}</p>
+    {{/my-helper-each}}
+  </script>
+
+  <script id="tpl-helper-hash" type="text/x-handlebars-template">
+    {{#my-helper-hash hash site='ehentai' locate='japan'}} {{{ content }}} {{/my-helper-hash}}
+  </script>
+
+  <script id="tpl-helper-condition" type="text/x-handlebars-template">
+    {{#if idDead}}
+    <p>死咯</p>
+    {{else if isKing}}
+    <p>万税万税万万税</p>
+    {{/if}}
+  </script>
+
+  <script id="tpl-helper-inline" type="text/x-handlebars-template">
+    {{my-helper-inline 1444974760697}}
+  </script>
+
+  <!-- custom js -->
+  <script type="text/javascript" src="src.js"></script>
+</body>
+
+</html>

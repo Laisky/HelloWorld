@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: app-demo
+  profiles:
+    active: sit
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.apache.kafka: DEBUG
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-svc-1 | %p | %t | %C | %L: %m%n"

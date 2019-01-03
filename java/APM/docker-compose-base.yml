@@ -1,0 +1,128 @@
+version: '3.5'
+services:
+
+  eureka:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 8761:8761
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+    volumes:
+      - "./eureka/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+  eureka2:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 8762:8761
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+    volumes:
+      - "./eureka/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+
+  zipkin:
+    image: openzipkin/zipkin:2.9.4
+    # --------------------------------------
+    # image: openjdk:8u171-jdk-alpine3.7
+    # volumes:
+    #   - "./zipkin-server/target:/target"
+    # entrypoint: java -jar /target/app.jar
+    # ----------------------------------------
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 9411:9411
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+      - "STORAGE_TYPE=elasticsearch"
+      - "ES_HOSTS=http://172.16.4.160:8200"
+      - "ES_INDEX=zipkin"
+      - "ES_USERNAME=zipkin"
+      - "ES_PASSWORD=zipkin"
+      - "ES_INDEX_SHARDS=2"
+      - "LOGGING_PATTERN_CONSOLE=%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-server | %p | %t | %C | %L: %m%n"
+      - "ZIPKIN_LOG_LEVEL=DEBUG"
+      - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SERVLET_DISPATCHERSERVLET=DEBUG"
+      - "LOGGING_LEVEL_ORG_APACHE_KAFKA=debug"
+      # kafka
+      - "KAFKA_BOOTSTRAP_SERVERS=172.16.6.11:9092,172.16.6.12:9092,172.16.6.13:9092"
+      - "KAFKA_TOPIC=tracingSit"
+      - "KAFKA_GROUP_ID=zipkin"
+      - "KAFKA_STREAMS=3"
+
+  zipkin-dependencies:
+    image: openzipkin/zipkin-dependencies
+    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 8080:8080
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+      - "STORAGE_TYPE=elasticsearch"
+      - "ES_HOSTS=http://172.16.4.160:8200"
+      - "ES_INDEX=zipkin"
+      - "ES_USERNAME=zipkin"
+      - "ES_PASSWORD=zipkin"
+      - "LOGGING_PATTERN_CONSOLE=%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-server | %p | %t | %C | %L: %m%n"
+      - "ZIPKIN_LOG_LEVEL=DEBUG,"
+      - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SERVLET_DISPATCHERSERVLET=DEBUG"
+
+  config-server:
+    image: ppcelery/java-git:latest
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 8888:8888
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+      - SPRING_ZIPKIN_BASEURL=http://zipkin:9411
+    volumes:
+      - "./config-server/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+
+networks:
+  apm:
+    driver: bridge
+    name: apm

@@ -1,0 +1,23 @@
+version: "2"
+services:
+
+  v2ray:
+    image: v2ray/official
+    restart: "on-failure"
+    networks:
+      - v2ray
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    ports:
+      - 1021:8001/tcp
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /etc/v2ray/config.json:/etc/v2ray/config.json
+
+networks:
+  v2ray:
+    driver: bridge

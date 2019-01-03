@@ -1,0 +1,19 @@
+{
+  "name": "gojs",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Laisky/HelloWorld",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "gojs": "~1.5.9"
+  }
+}

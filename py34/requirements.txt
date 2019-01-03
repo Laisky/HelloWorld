@@ -1,0 +1,62 @@
+# profiler
+psutil
+line_profiler
+memory_profiler
+
+# async
+aiohttp
+
+# web
+tornado
+flask
+purl
+meinheld
+gunicorn
+
+# graph
+networkx
+graphviz
+pycallgraph
+
+# tools
+cython
+ipython
+pygments
+pyzmq
+pipe
+
+# encrypt
+PyJWT
+bcrypt
+
+# pub / sub & event-driver
+blinker
+
+# chart
+python-nvd3>=0.13.3
+
+# ldap
+ldap3
+
+# snmp
+pysnmp
+
+# science toolkit
+numpy
+scipy
+cython
+scikit-learn
+matplotlib
+pandas
+numexpr
+
+# terminal
+click
+xtermcolor
+tqdm
+
+# for hull computation
+setuptools>=5.7
+
+# algorithm
+pybloof

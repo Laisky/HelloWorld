@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bootstra</title>
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <style type="text/css">
+  body {
+    padding: 10px;
+  }
+
+  article.container {
+    border: 1px solid black;
+    min-height: 400px;
+  }
+
+  li.active > a {
+    background-color: lightgrey;
+  }
+
+  .nav .nav {
+    display: none;
+  }
+
+  .nav li.active nav {
+    display: block;
+  }
+
+  .nav .active .nav {
+    display: block;
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target=".title-nav">
+  <article class="container col-xs-8">
+    <h1>Page Title</h1>
+    <h2 id="title1">title1</h2>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <h3 id="title1-1">title1-1</h3>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <h3 id="title1-2">title1-2</h3>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <p>content 1</p>
+    <h2 id="title2">title2</h2>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <h3 id="title2-1">title2-1</h3>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <h3 id="title2-2">title2-2</h3>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+    <p>content 2</p>
+  </article>
+  <nav class="title-nav container col-xs-4">
+    <ul class="nav affix-top" data-spy="affix">
+      <li>
+        <a href="#title1">title1</a>
+        <ul class="nav">
+          <li><a href="#title1-1">title1-1</a></li>
+          <li><a href="#title1-2">title1-2</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#title2">title2</a>
+        <ul class="nav">
+          <li><a href="#title2-1">title2-1</a></li>
+          <li><a href="#title2-2">title2-2</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+@import "compass/css3/box-shadow";
+
+.row:nth-child(1) {
+    .box:nth-child(1) {
+        /* offset-x | offset-y | blur-radius | spread-radius | color */
+        @include box-shadow(10px 20px 5px 1px red);
+    }
+    .box:nth-child(2) {
+        /* offset-x | offset-y | color */
+        @include box-shadow(10px 20px teal);
+    }
+    .box:nth-child(3) {
+        /* offset-x | offset-y | blur-radius | color */
+        @include box-shadow(10px 20px 5px yellow);
+    }
+}
+
+.row:nth-child(2) {
+    .box:nth-child(1) {
+        /* inset | offset-x | offset-y | color */
+        @include box-shadow(inset 10px 20px gold);
+    }
+    .box:nth-child(2) {
+        /* Any number of shadows, separated by commas */
+        @include box-shadow(3px 3px red, -1em 0 0.4em olive);
+    }
+}

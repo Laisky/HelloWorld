@@ -1,0 +1,60 @@
+@charset "utf-8";
+/* will be compiler to css */
+body {
+  background-color: #373737;
+}
+.box {
+  background: red;
+  width: 200px;
+  height: 200px;
+}
+.border {
+  border: solid 5px yellow;
+}
+.box1 {
+  background: red;
+  width: 200px;
+  height: 200px;
+  border: solid 5px yellow;
+}
+.box2 {
+  background: red;
+  width: 200px;
+  height: 200px;
+  border: solid 5px #008000;
+  margin-left: 20px;
+}
+.triangle_box {
+  border-width: 5px;
+  border-color: transparent transparent #ff0000 transparent;
+  border-style: dashed dashed solid dashed;
+  height: 0px;
+  width: 0px;
+}
+.box3 {
+  background: red;
+  width: 200px;
+  height: 200px;
+  width: 102.5px;
+  background: #b8b8b8;
+}
+.box4 {
+  background: red;
+  width: 200px;
+  height: 200px;
+}
+.box4 span {
+  color: yellow;
+}
+.box4 span:hover {
+  background: #373737;
+}
+.box4 ul {
+  color: blue;
+}
+.box4_li:hover {
+  color: yellow;
+}
+.test {
+  height: calc(200px - 50px);
+}

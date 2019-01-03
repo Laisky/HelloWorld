@@ -1,0 +1,57 @@
+
+spring:
+  application:
+    name: zipkin-svc-1
+  cloud:
+    config:
+      enable: true
+      # uri: ${config.server.uri:http://config-server.marathon.mesos:8888}
+      uri: ${config.server.uri:http://config-server:8888}
+      profile: dev
+      label: zipkin
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+ribbon:
+  ConnectTimeout:  10000
+  ReadTimeout:  10000
+
+management:
+  context-path: /admin
+
+endpoints:
+  refresh:
+    sensitive: false
+  health:
+    sensitive: false
+  zipkin:
+    sensitive: false
+  restart:
+    enabled: false
+  shutdown:
+    enabled: false
+
+feign:
+  hystrix:
+    enable: true
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.apache.kafka: DEBUG
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-svc-1 | %p | %t | %C | %L: %m%n"
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+      # defaultZone: http://eureka:8761/eureka/
+

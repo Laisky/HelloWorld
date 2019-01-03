@@ -1,0 +1,24 @@
+{
+  "name": "reveal.js",
+  "homepage": "https://github.com/Laisky/HelloWorld",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "reveal.js": "^3.3.0",
+    "showdown": "^1.3.0",
+    "marked": "^0.3.5",
+    "markdown": "^0.5.0"
+  }
+}

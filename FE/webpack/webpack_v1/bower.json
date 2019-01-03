@@ -1,0 +1,17 @@
+{
+  "name": "webpack_v1",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Laisky/HelloWorld",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

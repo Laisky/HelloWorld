@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: py-svc2
+
+server:
+  port: 3000
+
+eureka:
+  client:
+    serviceUrl:
+       defaultZone: http://eureka:8080/eureka/v2
+    register-with-eureka: true
+    fetch-registry: true
+
+sidecar:
+  port: 80
+  hostname: py-svc2
+  health-uri: http://py-svc2/health
+
+management:
+  security:
+    enabled: false
+
+zuul:
+  routes:
+    api:
+      path: /api/**
+      url: http://py-svc2:3000

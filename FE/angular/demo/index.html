@@ -1,0 +1,115 @@
+<!-- controller.html -->
+<!-- 首先指定顶层的 app -->
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body > div {
+        width: 100%;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid grey;
+    }
+
+    div[contenteditable] {
+        background-color: grey;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body ng-view>
+    <!-- 指定 controller -->
+    <div class="controller" ng-controller="myController">
+        <!-- 每一个 controller 都会创建一个 $scope -->
+        <!-- 调用了 scope 中的 greeting 和 username -->
+        <!-- 用 ng-init 可以初始化变量 -->
+        <p ng-init="dot = '.'">{{ greeting }} {{ username }} {{ dot }}
+        </p>
+        <!-- ng-model 数据绑定 -->
+        <!-- 相当于设置 $scope.username = input.value -->
+        <input type="text" ng-model="username">
+        <!-- 用 ng-click 绑定点击事件 -->
+        <button ng-click="addDot()">addDot</button>
+        <!-- demo for route -->
+        <a href="/detail/1">ID 1</a>
+    </div>
+    <!-- service demo -->
+    <div class="controller" ng-controller="serviceDemo">
+        <!-- 当点击按钮时，调用 serviceShow 并传入参数 userInput -->
+        <input type="text" ng-model="userInput">
+        <button ng-click="serviceShow(userInput)">Alert</button>
+    </div>
+    <!-- template demo -->
+    <div class="template" ng-controller="templateDemo">
+        <label for="">Filter: {{ 'NiNiNi' | myFilter:10 }}</label>
+        <!-- 指定 form 的 name -->
+        <form novalidate class="simple-form" name="myForm">
+            <!-- 指定 input 的 name -->
+            <div>
+                <!-- 默认的 regular，立刻生效 -->
+                <span>Name:</span>
+                <input type="text" ng-model="user.name" name="myName" required="" />
+                <span ng-show="myForm.myName.$error.required">请输入你的名字</span>
+            </div>
+            <div>
+                <!-- 当移开焦点时才生效 -->
+                <!-- 指定 ng-model-options 为 "{ updateOn: 'blur' }" -->
+                <span>blur 失焦</span>
+                <input type="text" ng-model="user.nameBlur" name="blur" ng-model-options="{ updateOn: 'blur' }">
+                <p>blur: {{ user.nameBlur }}</p>
+            </div>
+            <div>
+                <!-- 延迟生效 -->
+                <span>debounce 延迟</span>
+                <input type="text" ng-model="user.debounce" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
+                <p>debounce: {{debounce}}</p>
+            </div>
+            <div>
+                <span>自定义 validators</span>
+                <input type="text" ng-model="user.integer" name="integer" integer>
+                <p ng-show="myForm.integer.$error.integer">请输入整数！</p>
+            </div>
+            <div>
+                <span>自定义 async validators</span>
+                <input type="text" ng-model="user.asyncValidator" name="asyncValidator" asyncinteger>
+                <p ng-show="myForm.asyncValidator.$pending.asyncinteger">等待检查...</p>
+                <p ng-show="myForm.asyncValidator.$error.asyncinteger">请输入整数！！！</p>
+            </div>
+            <div>
+                <span>directives > type</span>
+                <!-- directives validator 的优先级高于 type -->
+                <input type="email" ng-model="user.email" name="email" integer>
+                <p ng-show="myForm.email.$error.integer">请输入整数！</p>
+            </div>
+            <div>
+                <p>自定义的表单</p>
+                <div ng-model="user.customField" contenteditable></div>
+            </div>
+        </form>
+        <span>Forms: </span><pre>{{ user | json }}</pre>
+    </div>
+    <!-- directives demo -->
+    <div ng-controller="directiveDemo">
+        <!-- custom directives -->
+        <div my-customer type="name"></div>
+        <!-- // isolate directives -->
+        <p>
+            <my-iso-customer info="naomi"></my-iso-customer>
+        </p>
+        <p>
+            <my-iso-customer info="vojta"></my-iso-customer>
+        </p>
+        <p><span>Timer: </span><input type="text" ng-model="timeNow" my-current-time></p>
+        <!-- demo for transclude -->
+        <span my-iso-customer>Out myTransclude: {{ customer.name }}</span><my-transclude><p>In myTransclude: {{ customer.name }}</p></my-transclude>
+    </div>
+    <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+</body>
+
+</html>

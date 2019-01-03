@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello, Angular</title>
+    <link rel="stylesheet">
+    <style>
+    div.app {
+        border-bottom: 1px solid black;
+        margin-bottom: 5px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="app" ng-app="first">
+        <h2>Your First AngularJS App</h2>
+        <input type="text" ng-model="firstUserInput">
+        <p>Hello, {{ firstUserInput }}!</p>
+    </div>
+    <!-- app -->
+    <h2>I am not inside an AngularJS app</h2>
+    <div class="app" ng-app="embeddedApp">
+        <h3>Inside an AngularJS app named embeddedApp</h3>
+    </div>
+    <!-- 作用域 -->
+    <div class="app" ng-app="scope" ng-controller="myFirstCtrl">
+        <p>local scope var: {{ localVar }}</p>
+        <p>global scope var: {{ globalVar }}</p>
+        <label for="">{{ number }}</label>
+        <button ng-click="add(1)">Add1</button>
+        <button ng-click="add(2)">Add2</button>
+    </div>
+    <!-- 指令 -->
+    <!-- ng-init 初始化
+    ng-show 显示
+    ng-repeat 遍历
+    ng-click 点击事件 -->
+    <div class="app" ng-app="directives" ng-init="isShow = true;">
+        <p for="" ng-show="isShow" ng-repeat="mark in marks">{{ mark }}!!</p>
+        <button ng-click="isShow = !isShow">Toggle</button>
+    </div>
+    <!-- AngularJs Provider -->
+    <div class="app" ng-app="provider" ng-controller="providerCtrl">
+        <p for="" ng-repeat="date in dates">myDate {{ date }}</p>
+    </div>
+</body>
+<script src="libs/angular/angular.js"></script>
+<script>
+(function() {
+    "use strict"
+    var app = angular.module('myApp', []);
+
+    // Scope 分为局部的 $scope 和全局的 $rootScole
+    app.controller("myFirstCtrl", function myFirstCtrl($scope, $rootScope) {
+        $scope.number = 0;
+        $scope.localVar = "I am a local var";
+        $rootScope.globalVar = "I am a global var";
+        $rootScope.marks = ["a", "b", "c", "d"];
+
+        $scope.add = function(step) {
+            $scope.number += step;
+        }
+    });
+
+    // provide.provider
+    // provide 类似于 $scope, $rootScope，会作为依赖注入进 controller
+    // 下面三个 provider & factory & service 的效果是完全一样的
+
+    // provider 注册一个完整对象，有属性有方法
+    app.provider('providerDate', {
+        $get: function() {
+            return new Date();
+        }
+    });
+
+    // provide.factory
+    // factory 只有 方法
+    app.factory('factoryDate', function() {
+        return new Date();
+    });
+
+    // provide.service
+    // service 直接返回一个对象的实例
+    app.service('serviceDate', function() {
+        return new Date();
+    });
+
+    app.controller("providerCtrl", function($scope, providerDate, factoryDate, serviceDate) {
+        console.log(serviceDate);
+        $scope.dates = {
+            providerDate: providerDate,
+            factoryDate: factoryDate,
+            serviceDate: serviceDate
+        };
+    });
+
+})()
+</script>
+
+</html>

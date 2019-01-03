@@ -1,0 +1,18 @@
+import origin
+import fast, faster, fastest
+
+
+lon1, lat1, lon2, lat2 = -72.345, 34.323, -61.823, 54.826
+
+
+print('origin\t', end='')
+%timeit origin.great_circle(lon1, lat1, lon2, lat2)
+
+print('fast\t', end='')
+%timeit fast.great_circle(lon1, lat1, lon2, lat2)
+
+print('faster\t', end='')
+%timeit faster.great_circle(lon1, lat1, lon2, lat2)
+
+print('fastest\t', end='')
+%timeit fastest.great_circle(lon1, lat1, lon2, lat2)

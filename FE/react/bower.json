@@ -1,0 +1,22 @@
+{
+  "name": "react",
+  "homepage": "https://github.com/Laisky/HelloWorld",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.14.8",
+    "babel": "*"
+  }
+}

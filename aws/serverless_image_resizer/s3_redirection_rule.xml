@@ -1,0 +1,13 @@
+<RoutingRules>
+    <RoutingRule>
+        <Condition>
+            <HttpErrorCodeReturnedEquals>404</HttpErrorCodeReturnedEquals>
+        </Condition>
+        <Redirect>
+            <Protocol>https</Protocol>
+            <HostName>4m9h0w3fmc.execute-api.us-west-1.amazonaws.com</HostName>
+            <ReplaceKeyPrefixWith>prd/resize/</ReplaceKeyPrefixWith>
+            <HttpRedirectCode>302</HttpRedirectCode>
+        </Redirect>
+    </RoutingRule>
+</RoutingRules>
