@@ -1,0 +1,48 @@
+spring.application.name: zipkin-svc-2
+server.port: 8081
+
+spring:
+  zipkin:
+    baseUrl: http://zipkin:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
+    web:
+      skipPattern: (^cleanup.*|.+favicon.*)
+  cloud:
+    config:
+      enable: false
+
+management:
+  context-path: /admin
+
+endpoints:
+  refresh:
+    sensitive: false
+  health:
+    sensitive: false
+  zipkin:
+    sensitive: false
+  restart:
+    enabled: false
+  shutdown:
+    enabled: false
+
+feign:
+  hystrix:
+    enable: true
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-svc-2 | %p | %t | %C | %L: %m%n"
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+      # defaultZone: http://eureka:8761/eureka/
+
+

@@ -1,0 +1,45 @@
+version: '3.5'
+services:
+
+  zipkin-svc-3:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    # ports:
+    #   - 8083:8083
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+    volumes:
+      - "./zipkin-service-3/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+  zipkin-svc-4:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    networks:
+      - apm
+    # ports:
+    #   - 8084:8084
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+    volumes:
+      - "./zipkin-service-4/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+networks:
+  apm:
+    external: true
+    name: apm

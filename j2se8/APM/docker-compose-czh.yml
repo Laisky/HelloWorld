@@ -1,0 +1,136 @@
+version: '3.5'
+services:
+
+  zipkin-svc-1:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 18081:8081
+    networks:
+      - apm
+    environment:
+      # - "spring.profiles.active=sit"
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+      - "LOGGING_LEVEL_ORG_APACHE_KAFKA=debug"
+    volumes:
+      - "./zipkin-service-1/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+  zipkin-svc-2:
+    image: openjdk:8u171-jdk-alpine3.7
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 18082:8081
+    networks:
+      - apm
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+      - TZ=Asia/Shanghai
+      - reserved_megabytes=256
+    volumes:
+      - "./zipkin-service-2/target:/target"
+    entrypoint: java -jar /target/app.jar
+
+  # zipkin-svc-3:
+  #   image: openjdk:8u171-jdk-alpine3.7
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   # ports:
+  #   #   - 8083:8083
+  #   networks:
+  #     - apm
+  #   environment:
+  #     - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+  #     - TZ=Asia/Shanghai
+  #     - reserved_megabytes=256
+  #   volumes:
+  #     - "./zipkin-service-3/target:/target"
+  #   entrypoint: java -jar /target/app.jar
+
+  # zipkin-svc-4:
+  #   image: openjdk:8u171-jdk-alpine3.7
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   networks:
+  #     - apm
+  #   # ports:
+  #   #   - 8084:8084
+  #   environment:
+  #     - JAVA_OPTS=-XX:+UseG1GC -Xss256k -XX:G1ConcRefinementThreads=2 -XX:CICompilerCount=4 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=128m -XX:CompressedClassSpaceSize=32m
+  #     - TZ=Asia/Shanghai
+  #     - reserved_megabytes=256
+  #   volumes:
+  #     - "./zipkin-service-4/target:/target"
+  #   entrypoint: java -jar /target/app.jar
+
+  # elasticsearch:
+  #   image: elasticsearch:5.6.10-alpine
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   environment:
+  #     - xpack.security.enabled=false
+  #     - xpack.monitoring.enabled=false
+  #     - xpack.ml.enabled=false
+  #     - xpack.graph.enabled=false
+  #     - xpack.watcher.enabled=false
+  #   volumes:
+  #     - "./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+  #     - "./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties"
+  #     - "./data/elasticsearch:/usr/share/elasticsearch/data"
+  #   # ports:
+  #   #   - 1234:1234
+
+  # kibana:
+  #   image: kibana:5.6.10
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 5601:5601
+  #   environment:
+  #     - ELASTICSEARCH_URL=http://elasticsearch:1234/
+  #     # - ELASTICSEARCH_USERNAME=superuser
+  #     # - ELASTICSEARCH_PASSWORD=20180109ElK
+  #     - ELASTICSEARCH_SSL_VERIFY="false"
+  #     - xpack.security.enabled="false"
+  #   depends_on:
+  #     - elasticsearch
+
+  # zipkin-ui:
+  #   image: openzipkin/zipkin-ui
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - zipkin
+
+
+networks:
+  apm:
+    external: true
+    name: apm
