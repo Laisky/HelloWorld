@@ -1,0 +1,100 @@
+version: "2"
+services:
+
+  # https://github.com/Netflix-Skunkworks/zerotodocker/tree/master/eureka/1.3.1
+  eureka:
+    image: netflixoss/eureka:1.3.1
+    restart: on-failure
+    networks:
+      - spring-cloud
+    ports:
+      - 8761:8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    volumes:
+      - ./eureka/eureka-client.properties:/tomcat/webapps/eureka/WEB-INF/classes/eureka-client-test.properties
+    environment:
+      # - eureka.instance.ip-address=laisky.com
+
+  # https://github.com/Netflix-Skunkworks/zerotodocker/tree/master/zuul
+  zuul:
+    image: netflixoss/zuul:1.0.28
+    restart: on-failure
+    networks:
+      - spring-cloud
+    ports:
+      - 8080:8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    volumes:
+      - ./zuul/zuul.properties:/tomcat/webapps/ROOT/WEB-INF/classes/zuul-test.properties
+
+  py-svc:
+    build: ./py-service
+    restart: on-failure
+    networks:
+      - spring-cloud
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    ports:
+      - 10800:80
+
+  sidecar-py:
+    build: ./sidecar-py
+    restart: on-failure
+    networks:
+      - spring-cloud
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    ports:
+      - 10300:3000
+    environment:
+
+  py-svc2:
+    build: ./py-service2
+    restart: on-failure
+    networks:
+      - spring-cloud
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    ports:
+      - 10801:80
+    environment:
+
+  sidecar-py2:
+    build: ./sidecar-py2
+    restart: on-failure
+    networks:
+      - spring-cloud
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    ports:
+      - 10301:3000
+
+  test:
+    build: ./test
+    restart: on-failure
+    tty: true
+    stdin_open: true
+    networks:
+      - spring-cloud
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+
+networks:
+  spring-cloud:
+    driver: bridge

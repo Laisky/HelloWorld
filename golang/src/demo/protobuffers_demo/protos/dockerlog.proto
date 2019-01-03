@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package dockerlog;
+
+message Message {
+    map<string, string> msg = 2;
+    string tag = 3;
+    int64 offset = 4;
+}

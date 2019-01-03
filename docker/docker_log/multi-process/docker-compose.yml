@@ -1,0 +1,36 @@
+version: "2"
+services:
+
+  lb:
+    image: haproxy:1.6-alpine
+    restart: on-failure
+    depends_on:
+      - fluentd1
+      - fluentd2
+    networks:
+      - fluentd
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - 24225:24225
+      - 24326:24326
+
+  fluentd1:
+    image: ppcelery/fluentd-docker-image:pateo
+    restart: on-failure
+    networks:
+      - fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+
+  fluentd2:
+    image: ppcelery/fluentd-docker-image:pateo
+    restart: on-failure
+    networks:
+      - fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+
+networks:
+  fluentd:
+    driver: bridge

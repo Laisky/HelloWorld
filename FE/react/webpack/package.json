@@ -1,0 +1,22 @@
+{
+    "name": "test_webpack",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "webpack --config webpack.config.js"
+    },
+    "dependencies": {
+        "babel-core": "^6.18.2",
+        "babel-loader": "^6.2.7",
+        "babel-preset-es2015": "^6.18.0",
+        "babel-preset-react":q
+         "^6.16.0",
+        "babel-preset-react-hmre": "^1.1.1",
+        "react": "^15.3.2",
+        "react-dom": "^15.3.2",
+        "react-redux": "^4.4.6",
+        "redux": "^3.6.0",
+        "webpack": "^1.13.3"
+    }
+}

@@ -1,0 +1,17 @@
+ipython[all]
+
+# time
+maya
+pytz
+
+# image
+pillow
+
+# framework
+japronto
+
+# aws
+aiobotocore
+
+# markdown
+markdown2

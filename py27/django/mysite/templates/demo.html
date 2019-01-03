@@ -1,0 +1,14 @@
+{% load my_filter %}
+{% load my_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>123</title>
+</head>
+<body>
+    <p>hello, {{ name | my_lower }}</p>
+    <p>{% my_simple_tag "tag demo 1" %}</p>
+    <p>{% my_simple_tag_with_context "tag demo 2" %}</p>
+</body>
+</html>

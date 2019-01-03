@@ -1,0 +1,17 @@
+<seelog type="asynctimer" asyncinterval="5000000" minlevel="debug" maxlevel="error">
+    <exceptions>
+        <exception funcpattern="*main.test*Something*" minlevel="info"/>
+        <exception filepattern="*main.go" minlevel="error"/>
+    </exceptions>
+    <outputs formatid="main">
+        <console/>  <!-- 输出到控制台 -->
+
+        <buffered size="10000" flushperiod="1000">
+            <rollingfile type="size" filename="./log/go.log" maxsize="100" maxrolls="5" />
+        </buffered>
+
+    </outputs>
+    <formats>
+        <format id="main" format="%UTCDate %UTCTime - %LEV - %File - l%Line - %Msg%n"/>
+    </formats>
+</seelog>

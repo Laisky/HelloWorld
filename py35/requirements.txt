@@ -1,0 +1,35 @@
+ipython
+
+# crawler
+selenium
+lxml
+pyquery
+pyspider
+
+# profile
+vprof
+line_profiler
+memory_profiler
+pytest-benchmark
+pprofile
+
+celery
+
+jieba
+pymongo
+
+# web
+gunicorn
+aiohttp
+meinheld
+tornado
+sanic
+
+# syntax
+mypy-lang
+
+# test
+ipdb
+
+# time
+arrow

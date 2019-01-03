@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>JWT Demo</title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <script src="./bower_components/jwt-decode/build/jwt-decode.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTGFpc2t5In0.Tb2-2NUb315iokcQRBRNHvOYqXwxwCz7X1Hm6P19rJ8';
+        var decoded = jwt_decode(token);
+        console.log(decoded);
+    </script>
+</body>
+
+</html>

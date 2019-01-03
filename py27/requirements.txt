@@ -1,0 +1,6 @@
+django
+python-ldap
+pygraphviz
+pyspider
+
+cython

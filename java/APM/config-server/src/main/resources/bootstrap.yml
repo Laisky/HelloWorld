@@ -1,0 +1,47 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      # enable: false
+      server:
+        monitor:
+          gitlab:
+            enabled: true
+        git:
+          uri: ${config.repo.uri:http://gitlab.pateo.com.cn:10080/PaaS/config-repo.git}
+          # ignore-local-ssh-settings: true
+          # clone-on-start: true
+          username: ${config.repo.username:config-service-user}
+          password: ${config.repo.password:cspwdqawe123}
+          searchPaths: service-{application}
+  # zipkin:
+  #   baseUrl: http://zipkin:9411
+  # sleuth:
+  #   sampler:
+  #     percentage: 1.0
+  #   web:
+  #     skipPattern: (^cleanup.*|.+favicon.*)
+
+management:
+  context-path: /admin
+
+endpoints:
+  refresh:
+    sensitive: false
+  health:
+    sensitive: false
+  zipkin:
+    sensitive: false
+  restart:
+    enabled: false
+  shutdown:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | config-server | %p | %t | %C | %L: %m%n"

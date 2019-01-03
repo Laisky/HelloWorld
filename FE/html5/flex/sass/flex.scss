@@ -1,0 +1,23 @@
+@import "compass/css3/flexbox";
+
+body {
+    background-color: #373737;
+    min-height: 100vh;
+    @include align-items(center);
+    @include flex-direction(column);
+    @include justify-content(space-around);
+    @include display-flex(flex);
+}
+
+.row {
+    width: 100%;
+    @include display-flex(flex);
+    @include flex-direction(row);
+    @include justify-content(space-around);
+}
+
+.box {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+}

@@ -1,0 +1,58 @@
+---
+server.port: 9411
+
+spring:
+  application:
+    name: zipkin-server
+  sleuth:
+    enable: false
+    sampler:
+      percentage: 1.0
+    web:
+      skipPattern: (^cleanup.*|.+favicon.*)
+  # cloud:
+  #   stream:
+  #     default:
+  #       contentType: application/json
+  #     kafka:
+  #       binder:
+  #         autoCreateTopics: false
+  #         brokers: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         zkNodes: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         defaultBrokerPort: 9092
+  #         defaultZkPort: 2181
+  #         headers:
+  #           - X-B3-TraceId
+  #           - X-B3-SpanId
+  #           - X-B3-Sampled
+  #           - X-B3-ParentSpanId
+  #           - X-Span-Name
+  #           - X-Process-Id
+  #           - messageSent
+  #           - X-Span-Export
+  #     bindings:
+  #       sleuth:
+  #         destination: tracingSit
+
+zipkin:
+  storage:
+    type: elasticsearch
+    elasticsearch:
+      hosts: ${ES_HOSTS:http://172.16.4.160:8200}
+      index: ${ES_INDEX:zipkin}
+      index-shards: ${ES_INDEX_SHARDS:2}
+      index-replicas: ${ES_INDEX_REPLICAS:1}
+      username: ${ES_USERNAME:zipkin}
+      password: ${ES_PASSWORD:zipkin}
+      legacy-reads-enabled: ${ES_LEGACY_READS_ENABLED:true}
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+  pattern.console: "%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-server | %p | %t | %C | %L: %m%n"
+
+  collector:
+    kafka:
+      zookeeper: 172.16.6.11:2181,172.16.6.12:2181,172.16.6.13:2181
+      topic: tracingSit
+      groupId: zipkin
