@@ -3,6 +3,7 @@ package main_test
 import (
 	"crypto/md5"
 	"crypto/sha1"
+	"encoding/binary"
 	"math/rand"
 	"testing"
 
@@ -40,23 +41,27 @@ func BenchmarkHash(b *testing.B) {
 
 	b.Run("xxhash 1kb", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			xxhash.Sum64(data1k)
+			ret := make([]byte, 8)
+			binary.BigEndian.PutUint64(ret, xxhash.Sum64(data1k))
 		}
 	})
 	b.Run("xxhash 10kb", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			xxhash.Sum64(data10k)
+			ret := make([]byte, 8)
+			binary.BigEndian.PutUint64(ret, xxhash.Sum64(data10k))
 		}
 	})
 
 	b.Run("murmur3 1kb", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			murmur3.Sum64(data1k)
+			ret := make([]byte, 8)
+			binary.BigEndian.PutUint64(ret, murmur3.Sum64(data1k))
 		}
 	})
 	b.Run("murmur3 10kb", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			murmur3.Sum64(data10k)
+			ret := make([]byte, 8)
+			binary.BigEndian.PutUint64(ret, murmur3.Sum64(data10k))
 		}
 	})
 
