@@ -100,3 +100,6 @@ target
 
 # zookeeper
 /zookeeper/data
+
+cpuprofile
+meory.pprof
