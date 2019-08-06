@@ -1,3 +1,55 @@
+ipython[all]
+
+# time
+maya
+pytz
+
+# image
+pillow
+
+# framework
+japronto
+
+# aws
+aiobotocore
+
+# markdown
+markdown2
+
+# crawler
+selenium
+lxml
+pyquery
+pyspider
+
+# profile
+vprof
+line_profiler
+memory_profiler
+pytest-benchmark
+pprofile
+
+celery
+
+jieba
+pymongo
+
+# web
+gunicorn
+aiohttp
+meinheld
+tornado
+sanic
+
+# syntax
+mypy-lang
+
+# test
+ipdb
+
+# time
+arrow
+
 # profiler
 psutil
 line_profiler
