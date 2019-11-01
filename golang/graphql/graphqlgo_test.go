@@ -1,14 +1,15 @@
-package main
+package main_test
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"testing"
 
 	"github.com/graphql-go/graphql"
 )
 
-func main() {
+func TestGraphqlgo(t *testing.T) {
 	// Schema
 	fields := graphql.Fields{
 		"hello": &graphql.Field{
