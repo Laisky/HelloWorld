@@ -7,7 +7,7 @@
 ./escape.go:9:9: foo new(P) does not escape
 */
 
-package perf
+package test
 
 type P struct {
 	X, Y int
