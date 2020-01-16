@@ -25,15 +25,21 @@ func BenchmarkFakeSharing(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				atomic.AddUint64(&noPaddingData.a, 1)
+				atomic.AddUint64(&noPaddingData.a, 1)
+				atomic.AddUint64(&noPaddingData.a, 1)
 			}
 		})
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				atomic.AddUint64(&noPaddingData.b, 1)
+				atomic.AddUint64(&noPaddingData.b, 1)
+				atomic.AddUint64(&noPaddingData.b, 1)
 			}
 		})
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
+				atomic.AddUint64(&noPaddingData.c, 1)
+				atomic.AddUint64(&noPaddingData.c, 1)
 				atomic.AddUint64(&noPaddingData.c, 1)
 			}
 		})
@@ -59,15 +65,21 @@ func BenchmarkFakeSharing(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				atomic.AddUint64(&paddingData.a, 1)
+				atomic.AddUint64(&paddingData.a, 1)
+				atomic.AddUint64(&paddingData.a, 1)
 			}
 		})
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				atomic.AddUint64(&paddingData.b, 1)
+				atomic.AddUint64(&paddingData.b, 1)
+				atomic.AddUint64(&paddingData.b, 1)
 			}
 		})
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
+				atomic.AddUint64(&paddingData.c, 1)
+				atomic.AddUint64(&paddingData.c, 1)
 				atomic.AddUint64(&paddingData.c, 1)
 			}
 		})
