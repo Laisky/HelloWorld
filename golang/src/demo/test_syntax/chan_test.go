@@ -1,6 +1,11 @@
 package test
 
-import "testing"
+import (
+	"runtime"
+	"sync"
+	"testing"
+	"time"
+)
 
 func TestClocsChan(t *testing.T) {
 
@@ -27,6 +32,11 @@ func TestClocsChan(t *testing.T) {
 
 }
 
+/*
+ * 44: len chan1: 42
+ * 45: len chan2: 58
+ * 46: len chan3: 0
+ */
 func TestSelectChan(t *testing.T) {
 	chan1 := make(chan int, 100000)
 	chan2 := make(chan int, 100000)
@@ -44,5 +54,30 @@ func TestSelectChan(t *testing.T) {
 	t.Logf("len chan1: %v", len(chan1))
 	t.Logf("len chan2: %v", len(chan2))
 	t.Logf("len chan3: %v", len(chan3))
+	t.Error()
+}
+
+func TestClosedChan(t *testing.T) {
+	c := make(chan int, 10)
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 10; i++ {
+			c <- i
+		}
+		close(c)
+	}()
+	go func() {
+		defer wg.Done()
+		for v := range c {
+			time.Sleep(100 * time.Millisecond)
+			t.Logf("got: %+v", v)
+			runtime.Gosched()
+		}
+	}()
+
+	wg.Wait()
 	t.Error()
 }
