@@ -1,9 +1,11 @@
 package test
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
+	"testing"
 )
 
 func ReadLine(reader io.Reader) (line []byte, err error) {
@@ -44,7 +46,6 @@ func TestBufio(t *testing.T) {
 		fmt.Printf("The input was: %s", inputString)
 	}
 }
-
 
 func TestReader(t *testing.T) {
 	inputFile, inputError := os.Open("data.txt")
