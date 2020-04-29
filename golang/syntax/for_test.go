@@ -22,7 +22,7 @@ func TestFor(t *testing.T) {
 	}
 
 	wg.Wait()
-	// t.Error()
+	t.Error()
 }
 
 func TestErrgroupInFor(t *testing.T) {
@@ -30,7 +30,7 @@ func TestErrgroupInFor(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		j := i
 		pool.Go(func() error {
-			t.Logf("%v", j)
+			t.Logf("%v - %v", i, j)
 			return nil
 		})
 
