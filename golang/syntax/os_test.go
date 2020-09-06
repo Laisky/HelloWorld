@@ -32,6 +32,6 @@ func TestExit(t *testing.T) {
 
 func TestFilepath(t *testing.T) {
 	src := "/a/v/c/d.xxx"
-	t.Logf("%+v", filepath.Split(src))
+	t.Log(filepath.Split(src))
 	t.Error()
 }
