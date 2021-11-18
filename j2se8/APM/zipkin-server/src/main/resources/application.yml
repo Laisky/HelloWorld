@@ -17,8 +17,8 @@ spring:
   #     kafka:
   #       binder:
   #         autoCreateTopics: false
-  #         brokers: 172.16.6.11,172.16.6.12,172.16.6.13
-  #         zkNodes: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         brokers: 1.1.1.1,1.1.1.1,1.1.1.1
+  #         zkNodes: 1.1.1.1,1.1.1.1,1.1.1.1
   #         defaultBrokerPort: 9092
   #         defaultZkPort: 2181
   #         headers:
@@ -38,7 +38,7 @@ zipkin:
   storage:
     type: elasticsearch
     elasticsearch:
-      hosts: ${ES_HOSTS:http://172.16.4.160:8200}
+      hosts: ${ES_HOSTS:http://1.1.1.1:8200}
       index: ${ES_INDEX:zipkin}
       index-shards: ${ES_INDEX_SHARDS:2}
       index-replicas: ${ES_INDEX_REPLICAS:1}
@@ -53,6 +53,6 @@ logging:
 
   collector:
     kafka:
-      zookeeper: 172.16.6.11:2181,172.16.6.12:2181,172.16.6.13:2181
+      zookeeper: 1.1.1.1:2181,1.1.1.1:2181,1.1.1.1:2181
       topic: tracingSit
       groupId: zipkin

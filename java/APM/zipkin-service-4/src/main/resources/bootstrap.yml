@@ -43,5 +43,4 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://eureka:8761/eureka/
-      # defaultZone: http://172.16.5.22:18761/eureka/
-
+      # defaultZone: http://1.1.1.1:18761/eureka/

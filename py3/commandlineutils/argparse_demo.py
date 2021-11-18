@@ -2,7 +2,7 @@ import argparse
 import textwrap
 
 
-def parse_command(host='10.32.144.93', port=3306,
+def parse_command(host='1.1.1.1', port=3306,
                   db='messerflow', user='root', passwd='devops'):
     parser = argparse.ArgumentParser('Update Messerflow Database.',
                                      formatter_class=argparse.RawTextHelpFormatter  # <-- 支持输出多行 help

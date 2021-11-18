@@ -11,8 +11,8 @@ async def do_ping(host):
         print("Timed out")
 
 
-fs = [asyncio.ensure_future(do_ping('172.16.4.85')) for _ in range(30)]
-# fs = [asyncio.ensure_future(do_ping('127.0.0.1')) for _ in range(50)]
+fs = [asyncio.ensure_future(do_ping('1.1.1.1')) for _ in range(30)]
+# fs = [asyncio.ensure_future(do_ping('1.1.1.1')) for _ in range(50)]
 f = asyncio.wait(fs)
 
 

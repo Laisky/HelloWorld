@@ -14,7 +14,7 @@ BenchmarkRegexp/with_+_unmatched-4       	 1000000	      1430 ns/op	       0 B/o
 func BenchmarkRegexp(b *testing.B) {
 	regexp1 := regexp.MustCompile(`^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*`)
 	regexp2 := regexp.MustCompile(`^((\d{1,3})+\.(\d{1,3})+\.(\d{1,3})+\.(\d{1,3})+).*`)
-	text1 := `107.21.20.1 - - [07/Dec/2012:18:55:53 -0500] "GET /" 200 2144`
+	text1 := `1.1.1.1 - - [07/Dec/2012:18:55:53 -0500] "GET /" 200 2144`
 	text2 := `9.21.2015 non matching text that kind of matches`
 	b.Run("normal matched", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {

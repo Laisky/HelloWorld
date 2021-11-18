@@ -110,8 +110,8 @@ services:
   #     - 5601:5601
   #   environment:
   #     - ELASTICSEARCH_URL=http://elasticsearch:1234/
-  #     # - ELASTICSEARCH_USERNAME=superuser
-  #     # - ELASTICSEARCH_PASSWORD=20180109ElK
+  #     # - ELASTICSEARCH_USERNAME=123
+  #     # - ELASTICSEARCH_PASSWORD=123
   #     - ELASTICSEARCH_SSL_VERIFY="false"
   #     - xpack.security.enabled="false"
   #   depends_on:

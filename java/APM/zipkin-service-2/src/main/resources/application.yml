@@ -16,8 +16,8 @@ spring:
   #     kafka:
   #       binder:
   #         autoCreateTopics: false
-  #         brokers: 172.16.6.11,172.16.6.12,172.16.6.13
-  #         zkNodes: 172.16.6.11,172.16.6.12,172.16.6.13
+  #         brokers: 1.1.1.1,1.1.1.1,1.1.1.1
+  #         zkNodes: 1.1.1.1,1.1.1.1,1.1.1.1
   #         defaultBrokerPort: 9092
   #         defaultZkPort: 2181
   #         headers:

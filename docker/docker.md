@@ -32,7 +32,7 @@ $ brew install boot2docker
 $ boot2docker init
 $ boot2docker start
 $ boot2docker shellinit
-$ boot2docker ssh "echo $'EXTRA_ARGS=\"--insecure-registry 192.168.1.200:5000\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
+$ boot2docker ssh "echo $'EXTRA_ARGS=\"--insecure-registry 1.1.1.1:5000\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
 ```
 在 .*shrc 中添加 `eval "$(boot2docker shellinit)”`
 
@@ -41,7 +41,7 @@ $ boot2docker ssh "echo $'EXTRA_ARGS=\"--insecure-registry 192.168.1.200:5000\"'
 
 ### 配置本地镜像仓库
 
-在 `/etc/default/docker` 中添加 `DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 192.168.1.200:5000"`
+在 `/etc/default/docker` 中添加 `DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 1.1.1.1:5000"`
 
 ### 配置用户组，免得老是打 sudo
 
@@ -68,8 +68,8 @@ $ docker-pid <id>
 ### pull & run
 
 ```
-$ sudo docker pull 192.168.1.200:5000/qb
-$ sudo docker run -i -t -d --name qb 192.168.1.200:5000/qb:latest /bin/bash
+$ sudo docker pull 1.1.1.1:5000/qb
+$ sudo docker run -i -t -d --name qb 1.1.1.1:5000/qb:latest /bin/bash
 $ sudo docker attach qb   # 按几下回车
 ```
 
@@ -80,8 +80,8 @@ detach 用 `ctrl+p ctrl+q`
 push 前要先改 tag
 
 ```
-$ sudo docker tag <your_docker_image> 192.168.1.200:5000/<repo_name>:<tag_name>
-$ sudo docker push 192.168.1.200:5000/<repo_name>:<tag_name>
+$ sudo docker tag <your_docker_image> 1.1.1.1:5000/<repo_name>:<tag_name>
+$ sudo docker push 1.1.1.1:5000/<repo_name>:<tag_name>
 ```
 
 ### 常用命令
@@ -100,4 +100,3 @@ $ sudo docker push 192.168.1.200:5000/<repo_name>:<tag_name>
     - `cat <path/to/tar> | sudo docker import - <image_name>`   # 导入镜像 tar 包
  - export
     - `docker export <container_id> > <path/to/tar>`            # 导出容器 tar 包
-

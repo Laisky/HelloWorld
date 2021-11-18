@@ -85,7 +85,7 @@ xD7xsZEsYPG8IDIHfH+zEivH7eb8eRbt/Q==
 )
 
 const (
-	addr = "127.0.0.1:24444"
+	addr = "1.1.1.1:24444"
 )
 
 func main() {

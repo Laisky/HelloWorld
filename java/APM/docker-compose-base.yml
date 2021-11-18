@@ -62,17 +62,17 @@ services:
       - TZ=Asia/Shanghai
       - reserved_megabytes=256
       - "STORAGE_TYPE=elasticsearch"
-      - "ES_HOSTS=http://172.16.4.160:8200"
+      - "ES_HOSTS=http://1.1.1.1:8200"
       - "ES_INDEX=zipkin"
-      - "ES_USERNAME=zipkin"
-      - "ES_PASSWORD=zipkin"
+      - "ES_USERNAME=123"
+      - "ES_PASSWORD=123"
       - "ES_INDEX_SHARDS=2"
       - "LOGGING_PATTERN_CONSOLE=%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-server | %p | %t | %C | %L: %m%n"
       - "ZIPKIN_LOG_LEVEL=DEBUG"
       - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SERVLET_DISPATCHERSERVLET=DEBUG"
       - "LOGGING_LEVEL_ORG_APACHE_KAFKA=debug"
       # kafka
-      - "KAFKA_BOOTSTRAP_SERVERS=172.16.6.11:9092,172.16.6.12:9092,172.16.6.13:9092"
+      - "KAFKA_BOOTSTRAP_SERVERS=1.1.1.1:9092,1.1.1.1:9092,1.1.1.1:9092"
       - "KAFKA_TOPIC=tracingSit"
       - "KAFKA_GROUP_ID=zipkin"
       - "KAFKA_STREAMS=3"
@@ -93,10 +93,10 @@ services:
       - TZ=Asia/Shanghai
       - reserved_megabytes=256
       - "STORAGE_TYPE=elasticsearch"
-      - "ES_HOSTS=http://172.16.4.160:8200"
+      - "ES_HOSTS=http://1.1.1.1:8200"
       - "ES_INDEX=zipkin"
-      - "ES_USERNAME=zipkin"
-      - "ES_PASSWORD=zipkin"
+      - "ES_USERNAME=123"
+      - "ES_PASSWORD=123"
       - "LOGGING_PATTERN_CONSOLE=%d{yyyy-MM-dd HH:mm:ss.SSS} | zipkin-server | %p | %t | %C | %L: %m%n"
       - "ZIPKIN_LOG_LEVEL=DEBUG,"
       - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_SERVLET_DISPATCHERSERVLET=DEBUG"
