@@ -8507,15 +8507,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box 
+/* This file is a compatability layer.  It allows the usage of flexible box
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this 
+`Modern browsers` comments below).  Browsers that are known to implement this
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+ 
+    Internet Explorer 11+
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -11289,7 +11289,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for 
+  /* This injects handle bars (a short, wide = symbol) for
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -11732,7 +11732,7 @@ ul.typeahead-list > li > a {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
 <style type="text/css">
-    
+
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
 .ansi-black-fg { color: #3E424D; }
 .ansi-black-bg { background-color: #3E424D; }
@@ -11934,7 +11934,7 @@ a.anchor-link {
 <p>Email:</p>
 <ul>
 <li><code>me@laisky.com</code></li>
-<li><code>zhonghuacai@pateo.com.cn</code></li>
+<li><code>zhonghuacai@laisky.com.cn</code></li>
 </ul>
 <p>课件放在：</p>
 <p><img src="https://s2.laisky.com/images/go-lesson-slides-1.jpg" alt="go-lesson-slides-1"></p>
@@ -13050,7 +13050,7 @@ func main() {
 <p>任何人想要使用这个包，只需要 import 即可，import 有几种不同的写法：</p>
 <div class="highlight"><pre><span></span><span class="c1">// 导入 package，可以使用 package name</span>
 <span class="c1">// demo.xxx</span>
-<span class="s">&quot;github.com/Laisky/demo&quot;</span>  
+<span class="s">&quot;github.com/Laisky/demo&quot;</span>
 
 <span class="c1">// 重命名 package name</span>
 <span class="c1">// demo2.xxx</span>
@@ -13616,15 +13616,15 @@ go build main.go  <span class="c1"># 编译成二进制文件 main</span>
 <p>可以使用 docker 的 multi stage build，先编译 go 二进制文件，然后再把二进制文件拷贝进一个干净的新容器发布，极大的节省空间：</p>
 
 <pre><code>FROM golang:1.9.4-alpine3.6 AS gobin
-RUN mkdir -p /go/src/pateo.com/go-ramjet
+RUN mkdir -p /go/src/laisky.com/go-ramjet
 RUN apk update &amp;&amp; apk upgrade &amp;&amp; \
     apk add --no-cache bash git openssh
-ADD . /go/src/pateo.com/go-ramjet
-WORKDIR /go/src/pateo.com/go-ramjet
+ADD . /go/src/laisky.com/go-ramjet
+WORKDIR /go/src/laisky.com/go-ramjet
 RUN go build main.go
 
 FROM alpine:3.6
-COPY --from=gobin /go/src/pateo.com/go-ramjet/main .
+COPY --from=gobin /go/src/laisky.com/go-ramjet/main .
 CMD ["./main"]</code></pre>
 <p>比如我目前在做一个程序，二进制文件 15M，打包成镜像后仅 20M，压缩后发布，仅需要传输 7MB 即可直接运行。</p>
 

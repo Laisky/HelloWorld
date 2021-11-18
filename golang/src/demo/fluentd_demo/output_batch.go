@@ -35,7 +35,7 @@ func RunBatchOutput() {
 		map[string]interface{}{"message": "test msg 6"},
 	}
 	// msg := map[string]interface{}{
-	// 	"log": "2018-03-06 16:56:22.514 | mscparea | INFO  | http-nio-8080-exec-1 | com.pateo.qingcloud.cp.core.service.impl.CPBusiness.reflectAdapterRequest | 84: test",
+	// 	"log": "2018-03-06 16:56:22.514 | mscparea | INFO  | http-nio-8080-exec-1 | com.laisky.qingcloud.cp.core.service.impl.CPBusiness.reflectAdapterRequest | 84: test",
 	// }
 
 	var err error

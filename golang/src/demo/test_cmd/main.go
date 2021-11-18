@@ -8,7 +8,7 @@ import (
 
 	"github.com/Laisky/go-utils"
 	"go.uber.org/zap"
-	"pateo.com/go-ramjet/tasks/store"
+	"laisky.com/go-ramjet/tasks/store"
 )
 
 func runTask() {

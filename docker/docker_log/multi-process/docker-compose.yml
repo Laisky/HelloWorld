@@ -16,7 +16,7 @@ services:
       - 24326:24326
 
   fluentd1:
-    image: ppcelery/fluentd-docker-image:pateo
+    image: ppcelery/fluentd-docker-image:laisky
     restart: on-failure
     networks:
       - fluentd
@@ -24,7 +24,7 @@ services:
       - ./fluent.conf:/fluentd/etc/fluent.conf
 
   fluentd2:
-    image: ppcelery/fluentd-docker-image:pateo
+    image: ppcelery/fluentd-docker-image:laisky
     restart: on-failure
     networks:
       - fluentd
