@@ -1,5 +1,0 @@
-panic: yo
-demo/fuzz_demo.Foo
-demo/fuzz_demo/fuzz1.FuzzFoo
-go-fuzz-dep.Main
-main.main
