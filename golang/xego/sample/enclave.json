@@ -1,0 +1,16 @@
+{
+    "exe": "server",
+    "key": "private.pem",
+    "debug": false,
+    "heapSize": 512,
+    "productID": 1234,
+    "securityVersion": 2,
+    "mounts": [
+        {
+            "source": "/",
+            "target": "/",
+            "type": "hostfs",
+            "readOnly": false
+        }
+    ]
+}

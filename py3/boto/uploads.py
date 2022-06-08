@@ -1,3 +1,6 @@
+"""Upload files to s3
+"""
+
 import os
 from typing import Generator
 
@@ -29,7 +32,7 @@ def is_file_exists(s3_client, fpath, bucket, object_name) -> bool:
 
         resp_code = response['ResponseMetadata']['HTTPStatusCode']
         assert response['ResponseMetadata']['HTTPStatusCode'] == 200, f"status code is {response['ResponseMetadata']['HTTPStatusCode']}"
-        assert response['ContentLength'] == fsize, "file size mismatch"
+        # assert response['ContentLength'] == fsize, "file size mismatch"
         return True
     except ClientError as e:
         if e.response['Error']['Code'] == "404":
@@ -49,9 +52,9 @@ def connect_s3():
 
 
 def parse_args():
-    opt.set_option("dir", "/var/www/s3/www/uploads")
+    # opt.set_option("dir", "/var/www/s3/www/uploads")
 
-    # opt.add_argument("--dir", required=True)
+    opt.add_argument("--dir", required=True)
     opt.add_argument("--bucket", default="uploads")
     opt.add_argument("--server", default="http://100.97.108.34:8333")
     opt.parse_args()
