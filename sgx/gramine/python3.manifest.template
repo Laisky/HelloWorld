@@ -1,0 +1,62 @@
+# =====================================
+# manifest references: https://gramine.readthedocs.io/en/stable/manifest-syntax.html
+# jinja2 variables: https://gramine.readthedocs.io/en/stable/manpages/gramine-manifest.html
+# =====================================
+
+# SGX Quote
+sgx.isvprodid = 123
+sgx.isvsvn = 321
+
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/usr/bin/python3"
+loader.log_level = "{{ log_level }}"
+loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}"
+
+# 线程限制
+loader.env.OMP_NUM_THREADS = "8"
+
+loader.insecure__use_cmdline_argv = true
+# loader.insecure__use_host_env = true
+
+loader.pal_internal_mem_size = "128M"
+
+# 文件挂载
+fs.mounts = [
+  { uri = "file:{{ gramine.runtimedir() }}", path = "/lib" },
+  { uri = "file:{{ arch_libdir }}", path = "{{ arch_libdir }}" },
+  { uri = "file:/usr", path = "/usr" },
+  { uri = "file:/etc", path = "/etc" },
+  { uri = "file:/tmp", path = "/tmp" },
+]
+
+sgx.nonpie_binary = true
+sgx.enclave_size = "16G"
+sgx.thread_num = 256
+
+sgx.trusted_files = [
+  "file:{{ gramine.libos }}",
+  "file:/usr/bin/python3",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:{{ arch_libdir }}/",
+  "file:/usr/{{ arch_libdir }}/",
+  "file:{{ python.stdlib }}/",
+  "file:{{ python.distlib }}/",
+  "file:{{ python.get_path('stdlib', vars={'installed_base': '/usr/local'}) }}/",
+
+  "file:xx.py",
+]
+
+sgx.allowed_files = [
+  "file:/tmp",
+  "file:/etc/apt/apt.conf.d",
+  "file:/etc/apt/apt.conf",
+  "file:/etc/default/apport",
+  "file:/etc/nsswitch.conf",
+  "file:/etc/group",
+  "file:/etc/passwd",
+  "file:/etc/host.conf",
+  "file:/etc/hosts",
+  "file:/etc/gai.conf",
+  "file:/etc/resolv.conf",
+  "file:/etc/fstab",
+]
