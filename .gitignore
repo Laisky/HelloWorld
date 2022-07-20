@@ -103,3 +103,4 @@ target
 
 cpuprofile
 meory.pprof
+sgx/gramine/test.tar.gz

@@ -24,4 +24,4 @@ RUN adduser --disabled-password --gecos '' laisky \
     && chown -R laisky:laisky /app
 USER laisky
 
-CMD [ "python" , "-m" , "demo.py" ]
+CMD [ "python" , "demo.py" ]
