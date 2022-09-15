@@ -6,15 +6,15 @@ RUN apt-get update && apt-get upgrade -y \
     && update-ca-certificates
 
 # install gramine
-# RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg && \
-#     echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | sudo tee /etc/apt/sources.list.d/gramine.list && \
-#     apt-get update && \
-#     apt-get install gramine
+RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg && \
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | tee /etc/apt/sources.list.d/gramine.list && \
+    apt-get update && \
+    apt-get install gramine -y && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 ADD ./requirements.txt .
 RUN pip install -r requirements.txt
-
 
 ADD . .
 
