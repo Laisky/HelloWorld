@@ -2,8 +2,8 @@
 sgx.isvprodid = 123
 sgx.isvsvn = 321
 
-loader.uid = 1001
-loader.gid = 1001
+# loader.uid = 1001
+# loader.gid = 1001
 
 loader.entrypoint = "file:{{ gramine.libos }}"
 libos.entrypoint = "/usr/bin/python3"
@@ -11,12 +11,12 @@ loader.log_level = "{{ log_level }}"
 loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}"
 
 # 线程限制
-loader.env.OMP_NUM_THREADS = "8"
+# loader.env.OMP_NUM_THREADS = "8"
 
 loader.insecure__use_cmdline_argv = true
 # loader.insecure__use_host_env = true
 
-loader.pal_internal_mem_size = "128M"
+# loader.pal_internal_mem_size = "128M"
 
 # 文件挂载
 fs.mounts = [
@@ -29,7 +29,8 @@ fs.mounts = [
 
 sgx.nonpie_binary = true
 sgx.enclave_size = "2G"
-sgx.max_threads = 256
+# sgx.max_threads = 256
+sgx.thread_num = 256
 
 sgx.trusted_files = [
   "file:{{ gramine.libos }}",
@@ -39,7 +40,6 @@ sgx.trusted_files = [
   "file:/usr/{{ arch_libdir }}/",
   "file:{{ python.stdlib }}/",
   "file:{{ python.distlib }}/",
-  "file:{{ python.get_path('stdlib', vars={'installed_base': '/usr/local'}) }}/",
 
   "file:demo.py",
 ]

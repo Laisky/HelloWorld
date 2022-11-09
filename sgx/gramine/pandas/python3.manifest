@@ -4,8 +4,8 @@ isvsvn = 321
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 256
+thread_num = 256
 allowed_files = [ "file:/tmp", "file:/etc/apt/apt.conf.d", "file:/etc/apt/apt.conf", "file:/etc/default/apport", "file:/etc/nsswitch.conf", "file:/etc/group", "file:/etc/passwd", "file:/etc/host.conf", "file:/etc/hosts", "file:/etc/gai.conf", "file:/etc/resolv.conf", "file:/etc/fstab",]
-thread_num = 4
 remote_attestation = "none"
 debug = false
 require_avx = false
@@ -37,18 +37,12 @@ uri = "file:/usr/lib/python3.8/"
 uri = "file:/usr/lib/python3/dist-packages/"
 
 [[sgx.trusted_files]]
-uri = "file:/usr/local/lib/python3.8/"
-
-[[sgx.trusted_files]]
 uri = "file:demo.py"
 
 [loader]
-uid = 1001
-gid = 1001
 entrypoint = "file:/usr/lib/x86_64-linux-gnu/gramine/libsysdb.so"
 log_level = "error"
 insecure__use_cmdline_argv = true
-pal_internal_mem_size = "128M"
 
 [libos]
 entrypoint = "/usr/bin/python3"
@@ -76,4 +70,3 @@ path = "/tmp"
 
 [loader.env]
 LD_LIBRARY_PATH = "/lib:/usr/lib:/lib/x86_64-linux-gnu:/usr//lib/x86_64-linux-gnu"
-OMP_NUM_THREADS = "8"
