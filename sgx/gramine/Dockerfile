@@ -16,3 +16,6 @@ RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramine
     && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | sudo tee /etc/apt/sources.list.d/gramine.list \
     && apt-get update \
     && apt-get install gramine
+
+# preinstall some infras
+RUN pip3 install pandas==1.4.2 sklearn==1.0.2 xgboost==1.7.1
