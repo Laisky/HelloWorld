@@ -1,27 +1,18 @@
-FROM python:3.9.13-bullseye
+FROM 3.8.15-buster
 
-RUN apt-get update && apt-get upgrade -y \
+# install dependencies
+RUN apt-get update \
     && apt-get install -y --no-install-recommends g++ make gcc git build-essential ca-certificates curl \
-    libxslt-dev libxml2-dev libc-dev libssl-dev libffi-dev zlib1g-dev \
     && update-ca-certificates
 
 # install gramine
-RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg && \
-    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | tee /etc/apt/sources.list.d/gramine.list && \
-    apt-get update && \
-    apt-get install gramine -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt install -y autoconf bison gawk nasm ninja-build \
+    && python3-click python3-jinja2 wget \
+    && libcurl4-openssl-dev libprotobuf-c-dev \
+    && protobuf-c-compiler python3-cryptography python3-pip python3-protobuf \
+    && pip3 install --upgrade protobuf~=3.20
 
-WORKDIR /app
-ADD ./requirements.txt .
-RUN pip install -r requirements.txt
-
-ADD . .
-
-# RUN python setup.py install
-
-RUN adduser --disabled-password --gecos '' laisky \
-    && chown -R laisky:laisky /app
-USER laisky
-
-CMD [ "python" , "demo.py" ]
+RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg \
+    && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | sudo tee /etc/apt/sources.list.d/gramine.list \
+    && apt-get update \
+    && apt-get install gramine
