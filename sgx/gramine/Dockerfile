@@ -17,4 +17,4 @@ RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramine
     && apt-get install -y gramine
 
 # preinstall some infras
-RUN pip3 install pandas==1.4.2 sklearn==1.0.2 xgboost==1.7.1
+RUN pip3 install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib
