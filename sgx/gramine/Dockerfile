@@ -1,20 +1,35 @@
-# db . -t ppcelery/gramine:base-20221110
+# db . -t ppcelery/gramine:base-20221110-4
 FROM python:3.8.15-buster
 
 # install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends g++ make gcc git build-essential ca-certificates curl \
-    && update-ca-certificates
+    && update-ca-certificates \
+    libunwind8 musl-tools autoconf bison gawk nasm ninja-build \
+    wget libcurl4-openssl-dev libprotobuf-c-dev protobuf-c-compiler libprotobuf-c1
 
-# install gramine
-RUN apt install -y autoconf bison gawk nasm ninja-build \
-    wget libcurl4-openssl-dev libprotobuf-c-dev protobuf-c-compiler \
-    && pip3 install --upgrade protobuf~=3.20 click jinja2 cryptography pip protobuf
-
-RUN curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg \
+RUN set -x && curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg \
     && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | tee /etc/apt/sources.list.d/gramine.list \
     && apt-get update \
     && apt-get install -y gramine
 
+# /usr/bin/python3 is fucking 3.7, should rewrite to 3.8
+#
+# gramine debian depends on python3, which is point to 3.7,
+# so manually relink /usr/bin/python3 -> /usr/local/bin/python3.8.
+RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packages/. \
+    # && apt remove -y python3.7 \
+    # && apt autoremove -y \
+    && ln -snf /usr/local/bin/python3.8 /usr/bin/python3 \
+    && python3 -m pip install protobuf~=3.20 click jinja2 cryptography cffi pyelftools toml
+
+# RUN wget https://bootstrap.pypa.io/get-pip.py \
+#     && python3.7 get-pip.py \
+#     && python3.7 -m pip install protobuf~=3.20 click jinja2 cryptography \
+#     && python3 -m pip install protobuf~=3.20 click jinja2 cryptography
+
 # preinstall some infras
-RUN pip3 install pandas==1.4.2 sklearn==1.0.2 xgboost==1.7.1
+RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib
+
+# manual check whether gramine could run
+# gramine-sgx-gen-private-key private.pem
