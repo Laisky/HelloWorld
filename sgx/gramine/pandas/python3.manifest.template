@@ -1,0 +1,57 @@
+# SGX Quote
+sgx.isvprodid = 123
+sgx.isvsvn = 321
+
+# loader.uid = 1001
+# loader.gid = 1001
+
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/usr/local/bin/python3.8"
+loader.log_level = "{{ log_level }}"
+
+loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}:/usr/local/lib"
+loader.env.PYTHONPATH="/usr/local/lib/python38.zip:/usr/local/lib/python3.8:/usr/local/lib/python3.8/lib-dynload:/usr/local/lib/python3.8/site-packages"
+
+loader.pal_internal_mem_size = "256M"
+loader.insecure__use_cmdline_argv = true
+loader.insecure__use_host_env = false
+
+# 文件挂载
+fs.mounts = [
+  { uri = "file:{{ gramine.runtimedir() }}", path = "/lib" },
+  { uri = "file:{{ arch_libdir }}", path = "{{ arch_libdir }}" },
+  { type = "tmpfs", path = "/tmp" },  # sklearn need tmpfs
+  { uri = "file:/usr", path = "/usr" },
+  { uri = "file:/etc", path = "/etc" },
+]
+
+sgx.nonpie_binary = true
+sgx.enclave_size = "2G"
+sgx.thread_num = 10
+# sgx.require_avx    = true
+# sgx.require_avx512 = true
+# sgx.require_mpx    = true
+# sgx.require_pkru   = true
+# sgx.require_amx    = true
+
+sgx.trusted_files = [
+  "file:{{ gramine.libos }}",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:/lib/x86_64-linux-gnu/",
+  "file:/usr/lib/x86_64-linux-gnu/",
+  "file:/usr/local/lib/",
+  "file:/usr/local/bin/python3.8",
+  # "file:/usr/lib/python3.8/",
+  "file:/usr/lib/python3/",
+  "file:/usr/local/lib/python3.8/",
+
+  # system
+  "file:/usr/local/share/",
+  "file:/etc/ssl/",
+
+  "file:demo.py",
+]
+
+sgx.allowed_files = [
+  "file:/etc/",
+]
