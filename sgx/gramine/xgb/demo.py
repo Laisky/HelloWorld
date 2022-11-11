@@ -2,6 +2,7 @@
 # xgboost.__version__ == '1.7.1'
 
 import xgboost as xgb
+import pandas as pd
 
 data = pd.DataFrame([[1,0.254879,-1.046633,0.209656,0.074214,-0.441366,-0.377645,-0.485934,0.347072,-0.28757,-0.733474,0.449512],
 	[1,-1.142928,-0.781198,-1.166747,-0.923578,0.62823,-1.021418,-1.111867,-0.959523,-0.096672,-0.121683,-1.245485],
@@ -38,4 +39,3 @@ preds = bst[:bst.best_iteration + 1].predict(val_dataset)
 labels = val_dataset.get_label()
 if preds.shape==labels.shape:
 	print("Succeed!")
-

@@ -15,8 +15,10 @@ RUN set -x && curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packag
 
 # /usr/bin/python3 is fucking 3.7, should rewrite to 3.8
 #
-# gramine debian depends on python3, which is point to 3.7,
-# so manually relink /usr/bin/python3 -> /usr/local/bin/python3.8.
+# gramine debian depends on python3, which is link to 3.7.
+# if you want to use different version(3.8) of python,
+# you need manually relink /usr/bin/python3 -> /usr/local/bin/python3.8,
+# then copy all gramine's python packages to 3.8's PYTHONPATH.
 RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packages/. \
     # && apt remove -y python3.7 \
     # && apt autoremove -y \
