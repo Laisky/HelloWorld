@@ -31,7 +31,7 @@ RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packag
 #     && python3 -m pip install protobuf~=3.20 click jinja2 cryptography
 
 # preinstall some infras
-RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib jupyter
+RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib jupyter "MarkupSafe<2.1"
 
 # manual check whether gramine could run
 # gramine-sgx-gen-private-key private.pem
