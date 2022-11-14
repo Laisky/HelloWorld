@@ -1,4 +1,4 @@
-FROM ppcelery/gramine:base-20221110-6
+FROM ppcelery/gramine:base-20221114
 
 RUN python3 -m pip install pytest hypothesis
 
