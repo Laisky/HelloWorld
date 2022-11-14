@@ -23,7 +23,7 @@ RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packag
     # && apt remove -y python3.7 \
     # && apt autoremove -y \
     && ln -snf /usr/local/bin/python3.8 /usr/bin/python3 \
-    && python3 -m pip install protobuf~=3.20 click jinja2 cryptography cffi pyelftools toml
+    && python3 -m pip install protobuf~=3.20 click jinja2 cryptography cffi pyelftools toml pytest hypothesis
 
 # RUN wget https://bootstrap.pypa.io/get-pip.py \
 #     && python3.7 get-pip.py \
@@ -31,7 +31,7 @@ RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packag
 #     && python3 -m pip install protobuf~=3.20 click jinja2 cryptography
 
 # preinstall some infras
-RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib
+RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib jupyter
 
 # manual check whether gramine could run
 # gramine-sgx-gen-private-key private.pem

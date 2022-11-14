@@ -1,7 +1,6 @@
 FROM ppcelery/gramine:base-20221110-6
 
-WORKDIR /app
-ADD . .
+RUN python3 -m pip install notebook
 
 RUN make SGX=1
 
