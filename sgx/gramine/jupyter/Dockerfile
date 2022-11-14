@@ -1,9 +1,14 @@
 FROM ppcelery/gramine:base-20221114-v2
 
-RUN python3 -m pip install notebook
+WORKDIR /app
+ADD . .
 
 RUN make SGX=1
 
-# CMD gramine-sgx python3 -c 'import os; print(os.listdir("."))'
-CMD gramine-sgx python3 demo.py
+RUN chmod +rx -R /app && \
+    adduser --disabled-password --gecos '' laisky
+USER laisky
+
+CMD gramine-sgx python3 -c 'import os; print(os.listdir("."))'
+# CMD gramine-sgx python3 -m jupyter notebook --ip=0.0.0.0 --port=8888
 # CMD gramine-sgx python3 -c 'import numpy; numpy.core.test()'

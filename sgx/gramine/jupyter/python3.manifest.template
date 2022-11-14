@@ -27,7 +27,7 @@ fs.mounts = [
 
 sgx.nonpie_binary = true
 sgx.enclave_size = "2G"
-sgx.thread_num = 10
+sgx.thread_num = 100
 # sgx.require_avx    = true
 # sgx.require_avx512 = true
 # sgx.require_mpx    = true
@@ -41,7 +41,7 @@ sgx.trusted_files = [
   "file:/usr/lib/x86_64-linux-gnu/",
   "file:/usr/local/lib/",
   "file:/usr/local/bin/python3.8",
-  # "file:/usr/lib/python3.8/",
+  # "file:/usr/lib/python3.8/",  <-- run on host
   "file:/usr/lib/python3/",
   "file:/usr/local/lib/python3.8/",
 
@@ -49,7 +49,7 @@ sgx.trusted_files = [
   "file:/usr/local/share/",
   "file:/etc/ssl/",
 
-  "file:demo.py",
+  # "file:demo.py",
 ]
 
 sgx.allowed_files = [
