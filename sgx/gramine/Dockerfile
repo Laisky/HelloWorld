@@ -1,4 +1,4 @@
-# db . -t ppcelery/gramine:base-20221114
+# db . -t ppcelery/gramine:base-20221115
 FROM python:3.8.15-buster
 
 # install dependencies
@@ -9,7 +9,7 @@ RUN apt-get update \
     wget libcurl4-openssl-dev libprotobuf-c-dev protobuf-c-compiler libprotobuf-c1
 
 RUN set -x && curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg \
-    && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' | tee /etc/apt/sources.list.d/gramine.list \
+    && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ 1.3 main' | tee /etc/apt/sources.list.d/gramine.list \
     && apt-get update \
     && apt-get install -y gramine
 
@@ -31,7 +31,7 @@ RUN cp -rf /usr/lib/python3/dist-packages/* /usr/local/lib/python3.8/site-packag
 #     && python3 -m pip install protobuf~=3.20 click jinja2 cryptography
 
 # preinstall some infras
-RUN python3 -m pip install pandas==1.4.2 scikit-learn==1.0.2 xgboost==1.7.1 pillow numpy scipy matplotlib jupyter "MarkupSafe<2.1"
+RUN python3 -m pip install pandas==1.4.2 pillow numpy scipy matplotlib
 
 # manual check whether gramine could run
 # gramine-sgx-gen-private-key private.pem

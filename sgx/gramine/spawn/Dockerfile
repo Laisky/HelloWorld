@@ -1,4 +1,4 @@
-FROM ppcelery/gramine:base-20221114-v2
+FROM ppcelery/gramine:base-20221114-v3
 
 WORKDIR /app
 ADD . .

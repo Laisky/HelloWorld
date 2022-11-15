@@ -1,0 +1,15 @@
+version: '3'
+services:
+  jupyter:
+    # db ./jupyter -t jupyter
+    image: jupyter
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    devices:
+      - /dev/sgx_enclave
+      - /dev/sgx_provision
+    ports:
+      - "8888:8888"

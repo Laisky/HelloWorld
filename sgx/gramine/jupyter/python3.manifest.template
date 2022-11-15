@@ -2,8 +2,8 @@
 sgx.isvprodid = 123
 sgx.isvsvn = 321
 
-# loader.uid = 1001
-# loader.gid = 1001
+loader.uid = 6666
+loader.gid = 6666
 
 loader.entrypoint = "file:{{ gramine.libos }}"
 libos.entrypoint = "/usr/local/bin/python3.8"
@@ -12,7 +12,7 @@ loader.log_level = "{{ log_level }}"
 loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}:/usr/local/lib"
 loader.env.PYTHONPATH="/usr/local/lib/python38.zip:/usr/local/lib/python3.8:/usr/local/lib/python3.8/lib-dynload:/usr/local/lib/python3.8/site-packages"
 
-loader.pal_internal_mem_size = "256M"
+loader.pal_internal_mem_size = "256m"
 loader.insecure__use_cmdline_argv = true
 loader.insecure__use_host_env = false
 
@@ -23,7 +23,11 @@ fs.mounts = [
   { type = "tmpfs", path = "/tmp" },  # sklearn need tmpfs
   { uri = "file:/usr", path = "/usr" },
   { uri = "file:/etc", path = "/etc" },
+  { uri = "file:/app", path = "/app" },
 ]
+
+# jupyter
+sys.insecure__allow_eventfd = true
 
 sgx.nonpie_binary = true
 sgx.enclave_size = "2G"
@@ -34,6 +38,8 @@ sgx.thread_num = 100
 # sgx.require_pkru   = true
 # sgx.require_amx    = true
 
+# sgx.file_check_policy = "strict"
+sgx.file_check_policy = "allow_all_but_log"
 sgx.trusted_files = [
   "file:{{ gramine.libos }}",
   "file:{{ gramine.runtimedir() }}/",
@@ -44,6 +50,7 @@ sgx.trusted_files = [
   # "file:/usr/lib/python3.8/",  <-- run on host
   "file:/usr/lib/python3/",
   "file:/usr/local/lib/python3.8/",
+  "file:/app/",
 
   # system
   "file:/usr/local/share/",
