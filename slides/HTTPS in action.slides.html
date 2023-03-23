@@ -14700,8 +14700,9 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-CA">&#20026;&#20160;&#20040;&#38656;&#35201; CA<a class="anchor-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-CA">&#182;</a></h3><p>以密钥交换、非对称加密、对称加密等密码学为基础的 TLS 能够让双方在不可信信道上协商出加密通信。</p>
-<p>问题在于，你能和对方加密通讯了，可是你怎么知道对方是谁呢？（如何防御 MITM 攻击）</p>
+<h3 id="%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-CA">&#20026;&#20160;&#20040;&#38656;&#35201; CA<a class="anchor-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-CA">&#182;</a></h3><p>以密钥交换（如 DHKX）、非对称加密、对称加密等密码学为基础的 TLS 能够让双方在不可信信道上协商出加密通信。</p>
+<p>问题在于，你能和对方加密通讯了，可是你怎么知道对方是谁呢？</p>
+<p>（如何防御 MITM 攻击）</p>
 
 </div>
 </div>
@@ -14715,14 +14716,25 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>答案其实挺无聊：引入先验知识。</p>
 <p>如果对方能出示一个你们事先约定好的暗号，那你就知道对方是谁了。</p>
+
+</div>
+</div>
+</div>
+</div><div class="fragment">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>但是如果每个人都有一个唯一暗号，这个暗号量会变得太大。
-比如全世界有 14 亿个网站，你不大可能存 14 亿个暗号，更别说还每天都在更新。</p>
+比如全世界有 14 亿个网站，你大可能存 14 亿个暗号，而且还得经常更新。</p>
 <p>所以现实中采用 x509 证书信任链的方式。</p>
 
 </div>
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14731,6 +14743,17 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>所谓证书，可以简单粗暴的将其理解为是一个身份证，一个公钥，以及上级部门用私钥生成的签名。</p>
 <p>「私钥签名，公钥验签」</p>
+
+</div>
+</div>
+</div>
+</div><div class="fragment">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>假设 Alice 要去和 Bob 通信，</p>
 <p>每次握手时，Bob 都出示它及其它所有上级的全部证书。</p>
 <p>Alice 仅需要保存最顶级证书（根证书），然后用根证书的公钥校验中间证书，用中间证书的公钥校验叶子证书，
@@ -14739,7 +14762,7 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14825,7 +14848,7 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>那如果我是想申请如 <code>*.laisky.com</code> 这样的 wildcard 证书，又该怎么证明呢？</p>
 <p>最常见的办法就是给 CA 机构提供一个 DNS server 的 Access Token，
-让 CA 去域名托管机构上去看一下，这域名真是你的…</p>
+让 CA 去域名托管机构上去 check 一下，确定这域名真是你的。</p>
 
 </div>
 </div>
@@ -14837,8 +14860,8 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E4%BF%9D%E6%8A%A4%E5%A5%BD%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6">&#20445;&#25252;&#22909;&#33258;&#24049;&#30340;&#26681;&#35777;&#20070;<a class="anchor-link" href="#%E4%BF%9D%E6%8A%A4%E5%A5%BD%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6">&#182;</a></h3><p>任何人，只要往你的根证书池里插入一个自己的根证书，那么他就可以随心所欲的签发任何域名的任何证书，而且你都会毫无察觉的信任它。</p>
-<p>根证书的破坏了是如此巨大，只要一个恶意根证书，就能让你整个的 HTTPS 防御瞬间瓦解。</p>
+<h3 id="%E4%BF%9D%E6%8A%A4%E5%A5%BD%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6">&#20445;&#25252;&#22909;&#33258;&#24049;&#30340;&#26681;&#35777;&#20070;<a class="anchor-link" href="#%E4%BF%9D%E6%8A%A4%E5%A5%BD%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6">&#182;</a></h3><p>任何人，只要往你的系统根证书池里插入一个自己的根证书，那么他就可以随心所欲的签发任何域名的任何证书，而且你都会毫无察觉的信任它。</p>
+<p>根证书的破坏力是如此巨大，只要一个恶意根证书，就能让你整个的 HTTPS 防御瞬间瓦解。</p>
 
 </div>
 </div>
@@ -14889,9 +14912,35 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>顺带吐槽一下沃通这公司，</p>
+<p>最早原名 WoTrust，后来改名 WoSign，然后因为乱签证书被 Mozilla 和 Google 禁用，后来又改名 WoTrus 重回 CA 大家族。</p>
+<p>WoSign 被封时曾提出的申诉是：只服务于中国区用户。但是该辩解未被接受。</p>
+<p><img src="https://s3.laisky.com/uploads/2022/11/English_name_change.png" alt=""></p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a href="https://certificate.transparency.dev/">https://certificate.transparency.dev/</a></p>
 <p>由 Google 等公司牵头成立了证书透明日志（Certificate Transparency）。</p>
 <p>这是个第三方日志审计机构，要求所有的 CA，在签发证书时，必须上传所有新证书的审计日志。</p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><img src="https://s3.laisky.com/uploads/2022/10/how-ct-works-graphic_figure1.jpg" alt=""></p>
 
 </div>
@@ -14921,7 +14970,7 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>一个 CT Log 的例子</p>
+<p>这是一个我订阅的 CT Log 的例子</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/ctlog-laisky.png" alt=""></p>
 
 </div>
@@ -14979,7 +15028,7 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="%E4%BB%80%E4%B9%88%E6%98%AF-CDN">&#20160;&#20040;&#26159; CDN<a class="anchor-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-CDN">&#182;</a></h4><p>源站不再直接为用户提供公网服务，而是依托 CDN 在全球的边缘机房，将数据传输到 CDN 后，由 CDN 代为提供服务。</p>
-<p>所有的 CDN 都绑定同一个域名，用户通过智能 DNS 解析到最近的 CDN 站点。</p>
+<p>所有的 CDN 都绑定同一个域名，用户通过<strong>智能 DNS</strong> 解析到最近的 CDN 站点。</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/multicdn.png" alt="cdn"></p>
 
 </div>
@@ -14993,9 +15042,9 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>CDN 扮演的就像是一个缓存，客户先去请求 CDN，如果 CDN 没有，再去请求源站（穿透）。</p>
-<p>因为 CDN 需要知道用户的请求信息，所以 CDN 必须对 HTTPS 做卸载。</p>
+<p>因为 CDN 需要知道客户的请求信息，所以 CDN 必须对 HTTPS 做卸载。</p>
 <p>用户和 CDN 进行 HTTPS，CDN 再和源站通信。</p>
-<p>那其实，CDN 本身也可以扮演起 CA 的角色，为域名申请 HTTPS 证书，并持有该证书和用户通讯。</p>
+<p>那其实，CDN 本身也可以扮演起 CA 的角色，为域名申请 HTTPS 证书，并持有该证书和客户通讯。</p>
 
 </div>
 </div>
@@ -15009,6 +15058,19 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>CF 自动为托管的域名提供 HTTPS 服务，然后你还可以选择，源站是否要使用 HTTPS</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/cf-ssl.png" alt=""></p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>顺路吹一波 CloudFlare，不仅可以实现自动 HTTPS、HTTP/2、HTTP/3、IPv6，更有 Worker、Tunnel 等一系列大杀器应用。</p>
+<p>而且 <strong>全部免费！</strong></p>
 
 </div>
 </div>
@@ -15062,7 +15124,19 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>使用 LetsEncrypt 最简单的方法就是通过 SWAG - Secure Web Application Gateway</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/linuxserver_medium.png" alt=""></p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>这就是一个 Nginx docker container，你把 site-confs 挂载进去，它自动给你申请 LetsEncrypt 证书。</p>
+<p>（使用体验类似于 Go Caddy）</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/swag.gif" alt=""></p>
 
 </div>
@@ -15075,6 +15149,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>用 docker comose 启动</p>
 
 <pre><code>yml
   swag:
@@ -15116,6 +15191,33 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 </div>
 </div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="%E8%87%AA%E7%AD%BE">&#33258;&#31614;<a class="anchor-link" href="#%E8%87%AA%E7%AD%BE">&#182;</a></h3><p>自签就不展开了，有兴趣可以去看 XSS CFSSL 文档</p>
+<p><a href="http://xego-dev.basebit.me/doc/xss/2022/09/cfssl/">http://xego-dev.basebit.me/doc/xss/2022/09/cfssl/</a></p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>自签证书其实也挺爽的😄，尤其是不需要对公众开放的私有服务。</p>
+<p>自己搞一套 PKI 体系完全不受制于人，在自有设备上导入 rootCA 即可。</p>
+<p>不过有个缺点是，像 iOS 只支持有效期不超过 398 天的证书，为证书更换维护带来了一些麻烦。</p>
+
+</div>
+</div>
+</div>
 </div></section></section><section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15123,7 +15225,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="SNI">SNI<a class="anchor-link" href="#SNI">&#182;</a></h2><p>一个服务器（同一个 IP）可能托管多个站点，每个站点都有不同的域名。服务器需要按照域名将流量分发给不同的站点。</p>
+<h2 id="HTTPS-%E7%9A%84%E9%98%BF%E5%96%80%E7%90%89%E6%96%AF%E4%B9%8B%E8%B8%B5%EF%BC%9ASNI">HTTPS &#30340;&#38463;&#21888;&#29705;&#26031;&#20043;&#36405;&#65306;SNI<a class="anchor-link" href="#HTTPS-%E7%9A%84%E9%98%BF%E5%96%80%E7%90%89%E6%96%AF%E4%B9%8B%E8%B8%B5%EF%BC%9ASNI">&#182;</a></h2><p>一个服务器（同一个 IP）可能托管多个站点，每个站点都有不同的域名。服务器需要按照域名将流量分发给不同的站点。</p>
 <p>所以这个域名，即使在 HTTPS 时代，也得保持明文，这就是 <code>ClientHello</code> 中的 <code>Server Name Indication</code>。</p>
 
 </div>
@@ -15153,7 +15255,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>TLS 1.3 draft-10 提出了 0-RTT 方案，如果服务端的公钥长期未变，客户端可以跳过 ClientHello 直接使用旧公钥和服务器建立加密通信。</p>
-<p>不过该方案没有被 TLS 1.3 最终版取代。因为本质上并为解决首次握手时的明文状态。</p>
+<p>不过该方案没有被 TLS 1.3 最终版接纳。因为本质上并未解决首次握手时的明文状态。</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/0-rtt-vs-1-rtt.png" alt=""></p>
 
 </div>
@@ -15167,20 +15269,31 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>0-RTT 的设计理念是，要想加密握手信息，那么客户端就应该先取得服务端的公钥。</p>
-<p>其后的 ESNI(Encrypted SNI) 协议延续了这个思路，服务端将自己的公钥注册到 DNS 里，客户端先去 DNS 查询服务端公钥，再加密 SNI 信息并发起握手。</p>
-<p>为了防止 DNS 明文查询导致信息被篡改，ESNI 需要同步启用 DoH（DNS-Over-HTTPS） 后才能生效。</p>
 
 </div>
 </div>
 </div>
-</div></section><section>
+</div><div class="fragment">
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s2.laisky.com/uploads/twitter/FXq4FnSUEAArSqa.jpg" alt=""></p>
+<p>其后的 ESNI(Encrypted SNI) 协议延续了这个思路，服务端将自己的公钥注册到 DNS 里，客户端先去 DNS 查询服务端公钥，再加密 SNI 信息并发起握手。</p>
+<p>为了防止 DNS 明文查询导致信息被篡改，ESNI 需要同步启用 DoH（DNS-Over-HTTPS） 后才能生效。</p>
+
+</div>
+</div>
+</div>
+</div></div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/twitter/FXq4FnSUEAArSqa.jpg" alt=""></p>
 
 </div>
 </div>
@@ -15195,7 +15308,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 <p>但是实用了一段时间后发现 ESNI 有很多缺点：</p>
 <ol>
 <li>它只加密了 SNI，没有实现对握手的完全加密 </li>
-<li>服务端更新公钥的时候，会收到 DNS 缓存的影响</li>
+<li>服务端更新公钥的时候，会受到 DNS 缓存的影响</li>
 <li>只能为每个域名注册一个公钥，但实际上每个域名可能对应着 N 个不同的机房 IP，这些机房应该各自有不同的私钥</li>
 </ol>
 
@@ -15211,12 +15324,23 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>ESNI 继续进化就成为了 <code>ECH（Encrypted Client Hello）</code> 协议。</p>
 <p>首先看名字就知道，它实现了对握手的全加密。</p>
+
+</div>
+</div>
+</div>
+</div><div class="fragment">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>其次公钥还是注册到 DNS，但是 DNS 中增加了 HTTPS RR 类型，一个域名可以为不同 IP 解析地址注册不同的公钥。</p>
 
 </div>
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15249,7 +15373,9 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<blockquote><p><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-svcb-https-02">Service binding and parameter specification via the DNS (DNS SVCB and HTTPS RRs)</a></p>
+<blockquote><ul>
+<li><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-svcb-https-02">Service binding and parameter specification via the DNS (DNS SVCB and HTTPS RRs)</a></li>
+</ul>
 </blockquote>
 <p>DNS 内可以为域名配置多个 HTTPS endpoint，且每个 endpoint 都可以配置不同的元信息（如公钥等）</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/dns-rr.png" alt=""></p>
@@ -15265,7 +15391,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>ECH 协议解决 DNS 缓存的问题也很简单暴力。</p>
-<p>当你和 client-facing server 建立连接后，如果 client-facing server 发现客户端持有的公钥是无效的，
+<p>当你和 client-facing server 建立连接后，如果 client-facing server 发现客户端持有的公钥是无效的（已过期），
 那就直接把当前有效的公钥传给客户端。</p>
 
 </div>
@@ -15323,7 +15449,8 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="DoH">DoH<a class="anchor-link" href="#DoH">&#182;</a></h3><p>目前最流行的解决方案还是 DoT（DNS over TLS） 和 DoH（DNS over HTTPS），尤其是 DoH 已占主流。</p>
-<p>原理非常简单，DNS Server 提供一个 HTTPS 接口，然后客户端发起 HTTPS 请求去查询 DNS。</p>
+<p>实现原理非常简单，DNS Server 提供一个 HTTPS 接口，然后客户端发起 HTTPS 请求去查询 DNS。</p>
+<p>本质上就是把 DNS 服务器封装为一个 HTTPS 服务。</p>
 
 </div>
 </div>
@@ -15335,6 +15462,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>用 docker compose 部署一个 DoH 服务：</p>
 
 <pre><code>yml
   doh:
@@ -15355,7 +15483,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
       DOH_SERVER_TIMEOUT: "10"
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"</code></pre>
-<p>该服务会监听 8053 HTTP 接口，外面套一层 HTTPS 反向代理即可。</p>
+<p>该服务会监听 8053 HTTP 接口，外面套一层 SWAG HTTPS 反向代理即可。</p>
 
 </div>
 </div>
@@ -15369,6 +15497,19 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>给 Chrome 配置 DoH</p>
 <p><img src="https://s3.laisky.com/uploads/2022/10/chrome-dns.png" alt=""></p>
+
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>iOS 用户可以通过 ShadowRocket 等 App 配置 DoH</p>
+<p><img src="https://s3.laisky.com/uploads/2022/11/ios-doh.png" alt=""></p>
 
 </div>
 </div>
@@ -15399,7 +15540,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 </div>
 </div>
-</div><div class="fragment">
+</div></section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15411,7 +15552,7 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </div>
 </div>
 </div>
-</div></div></section><section>
+</div></section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15585,6 +15726,17 @@ CDN 往往是使用 CDN 自己的域名做 HTTPS，然后给你提供个子路�
 </ul>
 <p>（基于 UDP 重新实现了 TCP，然后拿来传输 UDP😂）</p>
 
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="THANKS">THANKS<a class="anchor-link" href="#THANKS">&#182;</a></h1>
 </div>
 </div>
 </div>
