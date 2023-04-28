@@ -106,3 +106,4 @@ meory.pprof
 sgx/gramine/test.tar.gz
 sgx/gramine/jupyter/python3.manifest.sgx
 sgx/gramine/jupyter/python3.manifest
+py3/ailangchain/.chroma
