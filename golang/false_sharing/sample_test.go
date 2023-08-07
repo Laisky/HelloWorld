@@ -5,17 +5,15 @@ import (
 	"testing"
 )
 
+// goos: linux
+// goarch: amd64
+// pkg: github.com/Laisky/HelloWorld/golang/false_sharing
 // cpu: AMD Ryzen 7 5700G with Radeon Graphics
-// BenchmarkFalseSharing
-// BenchmarkFalseSharing/notpadded
-// BenchmarkFalseSharing/notpadded-16         	       1	5020354358 ns/op	   31280 B/op	      79 allocs/op
-// BenchmarkFalseSharing/padded
-// BenchmarkFalseSharing/padded-16            	       1	4967160945 ns/op	    7024 B/op	      32 allocs/op
+// BenchmarkFalseSharing/notpadded_1core-16                      13          88986612 ns/op              64 B/op          2 allocs/op
+// BenchmarkFalseSharing/notpadded-16                             3         556081963 ns/op            6778 B/op         31 allocs/op
+// BenchmarkFalseSharing/padded-16                                4         282946009 ns/op            4424 B/op         25 allocs/op
 // PASS
-//
-//	github.com/Laisky/HelloWorld/golang/false_sharing	coverage: 45.2% of statements
-//
-// ok  	github.com/Laisky/HelloWorld/golang/false_sharing	10.022s
+// ok      github.com/Laisky/HelloWorld/golang/false_sharing       6.587s
 func BenchmarkFalseSharing(b *testing.B) {
 	total := int(1e6)
 	ncpu := runtime.NumCPU()
