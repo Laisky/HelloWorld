@@ -15453,8 +15453,9 @@ div.jp-OutputPrompt {
 <h4 id="Retrieval">Retrieval<a class="anchor-link" href="#Retrieval">&#182;</a></h4><p>执行类似步骤：</p>
 <ol>
 <li>将 prompt 交给 embeddings-model，计算词向量</li>
-<li>在向量数据库中执行 KNN 查询，获取 K 个最近似结果</li>
+<li>在向量数据库中执行 ANN 查询，获取 K 个最近似结果</li>
 </ol>
+<p>注：Approximate Nearest Neighbours (ANN) 和精确计算距离的 KNN 不同，ANN 适用于高维空间的近似计算。</p>
 
 </div>
 </div>
@@ -15484,6 +15485,18 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div></div></section><section >
+<div id="cell-id=126eb668" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-naive-overview.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=fd381825" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15544,6 +15557,18 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div></section><section >
+<div id="cell-id=1b551f92" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-adv-overview.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=13dccaa3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15553,11 +15578,21 @@ div.jp-OutputPrompt {
 <h4 id="Pre-retrieval-Process">Pre-retrieval Process<a class="anchor-link" href="#Pre-retrieval-Process">&#182;</a></h4><p>在 embeddings 以前，对数据进行清洗和规整，可以分为 5 个步骤：</p>
 <ol>
 <li>Enhancing Data Granularity: 对数据内容进行修订和简化，确保数据源的正确性和可读性</li>
-<li>Optimizing Index Structures: 优化数据索引，引入图数据库等关联结构</li>
+<li>Optimizing Index Structures: 优化数据索引，引入图数据库、多级索引等结构</li>
+<li>GraphDB: 可以用来建立知识图谱，进行关联查询</li>
+<li>Hierarchical Indices: 索引和查询是两类不同的任务，可以使用不同的 index</li>
 <li>Adding Medadata Information: 为切块后的数据增加 metadata，标记数据来源</li>
-<li>Alignment Optimization: 可以为每一个 chunk 生成一个假设性提问，然后将这个问题本身也嵌合到 chunk 中，这样可以提高检索的关联度。</li>
+<li>Alignment Optimization: 可以为每一个 chunk 生成一个假设性提问，然后将这个问题本身也嵌合到 chunk 中</li>
+</ol>
+<ul>
+<li>Hypotherical Question 和用户 query 间具有更强的语意相关性，可以提高检索的关联度。</li>
+</ul>
+<ol start="5">
 <li>Mixed Retrieval: 混合使用多种检索技术，而不仅仅是词向量搜索。</li>
 </ol>
+<ul>
+<li>也称为 hybrid/fusion/mixed/ensemble retrieval</li>
+</ul>
 
 </div>
 </div>
@@ -15605,10 +15640,36 @@ div.jp-OutputPrompt {
 <ol>
 <li>Hybrid Search: 前面提到过的混合检索</li>
 <li>Recursive Retrieval And Query Engine: 多阶段检索，先检索一批小 chunk，再根据小 chunk 去检索大 chunk</li>
+<li>Sentence Window Retrieval: 检索到小 chunk，然后返回 surrounding context 的大 chunk</li>
+<li>Parent-Child Chunks Retrieval: 每个小 chunk 都指向一个或多个更详细的大 chunk，如果有多个大 chunk 被引用，则使用这个大 chunk 替换小 chunk。</li>
 <li>StepBack-prompt: 一种 prompt-engineering，可以显著提高推理密集型任务的性能。让 LLM 更关注抽象概念</li>
 <li>Subqueries: 根据语意拆分为多个小查询</li>
 <li>HyDE: 先让 LLM 回答一次，然后根据 LLM 的回答再去搜索相关资料。但如果 LLM 对相关话题不熟悉，反而会加重幻觉。</li>
 </ol>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=ad6ccf4a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Sentence-Window-Retrieval">Sentence Window Retrieval<a class="anchor-link" href="#Sentence-Window-Retrieval">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-sentence-window-retrieval.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=2bf2b349" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Parent-Child-Chunks-Retrieval">Parent-Child Chunks Retrieval<a class="anchor-link" href="#Parent-Child-Chunks-Retrieval">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-parent-child-chunks-retrieval.png" alt="" /></p>
 
 </div>
 </div>
@@ -15621,7 +15682,7 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Modular-RAG">Modular RAG<a class="anchor-link" href="#Modular-RAG">&#182;</a></h3><p>这是作者提到的 RAG 的最终进化形态。不过其实所使用的技术都是前面 naive 和 advanced 里提到过的。</p>
-<p>最重要的改变更多是架构设计上的，将单一的命令式流水线（pipeline），变成了相应式的动态调度。</p>
+<p>最重要的改变更多是架构设计上的，将单一的命令式流水线（pipeline），变成了响应式的动态调度（adaptive/routing）。</p>
 <p>所有前面提到过的功能都被封装为了功能模块，根据任务类型进行动态组合和调度。</p>
 
 </div>
@@ -15696,7 +15757,35 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#23558;&#29992;&#25143;&#35831;&#27714;&#21644;&#25968;&#25454;&#38598;&#36827;&#34892;&#23545;&#40784;<a class="anchor-link" href="#%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#182;</a></h3><h4 id="Query-Rewrite">Query Rewrite<a class="anchor-link" href="#Query-Rewrite">&#182;</a></h4><p>最简单直观的方法就是让 LLM 重写用户查询，比如将其拆分为多个子查询。</p>
+<h3 id="%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#23558;&#29992;&#25143;&#35831;&#27714;&#21644;&#25968;&#25454;&#38598;&#36827;&#34892;&#23545;&#40784;<a class="anchor-link" href="#%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#182;</a></h3><h4 id="Query-Rewrite/Transformation">Query Rewrite/Transformation<a class="anchor-link" href="#Query-Rewrite/Transformation">&#182;</a></h4><p>最简单直观的方法就是让 LLM 重写用户查询。</p>
+<ul>
+<li>利用 prompt engineering 优化查询</li>
+<li>将复杂问题拆分为多个子查询等。</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9f92f98a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Prompt-Engineering">Prompt Engineering<a class="anchor-link" href="#Prompt-Engineering">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-prompt-engineering.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=b3d2efaf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Multi-Query-Retriever-/-Sub-Question-Query-Engine">Multi Query Retriever / Sub Question Query Engine<a class="anchor-link" href="#Multi-Query-Retriever-/-Sub-Question-Query-Engine">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-multi-query-retriever.png" alt="" /></p>
 
 </div>
 </div>
@@ -15761,10 +15850,26 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Rerank">Rerank<a class="anchor-link" href="#Rerank">&#182;</a></h4><p>RAG 里的 context 不是越多越好，实际上添加的上下文越多，LLM 的旧性能指标可能会降低。</p>
-<p><code>Catastrophic Forgetting</code>: LLM 学习新知识后会遗忘旧知识，导致回归性能降级。</p>
+<h4 id="Rerank">Rerank<a class="anchor-link" href="#Rerank">&#182;</a></h4><p>RAG 里的 context 不是越多越好，实际上添加的上下文越多，LLM 的性能指标反而可能会降低。</p>
+<ul>
+<li><code>Catastrophic Forgetting</code>: LLM 学习新知识后会遗忘旧知识，导致回归性能降级。</li>
+<li>此外 LLM 的 <code>In Context Learning (ICL)</code> 是位置相关的，越靠前效果越好。</li>
+</ul>
 <p>rerank 可以改善 CF，通过将最相关的信息放在最前面，然后限制总的信息量。
 我理解是，提供的新信息越少，对旧指标的干扰也就越少。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=684ec9ba" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="GPT-4-128k-ICL">GPT-4-128k ICL<a class="anchor-link" href="#GPT-4-128k-ICL">&#182;</a></h4><p>可以看出 LLM 的 ICL 对头尾效果最好</p>
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-gpt-4-128k-icl.jpeg" alt="" /></p>
 
 </div>
 </div>
@@ -15912,12 +16017,38 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Adaptive-Retrieval">Adaptive Retrieval<a class="anchor-link" href="#Adaptive-Retrieval">&#182;</a></h4><p>实际上就是 tools/agents/function call 的功能，让 LLM 可以自行根据 context 调用 retriever 抓取外部数据源。</p>
+<h4 id="Adaptive-Retrieval">Adaptive Retrieval<a class="anchor-link" href="#Adaptive-Retrieval">&#182;</a></h4><p>也叫做 query routing。实际上就是利用 tools/agents/function call 的功能，让 LLM 可以自行根据 context 调用 retriever 抓取外部数据源。</p>
 
 </div>
 </div>
 </div>
-</div></div></section></section><section ><section >
+</div></div></section><section >
+<div id="cell-id=20c2aec7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="function-calling-/-tools">function calling / tools<a class="anchor-link" href="#function-calling-/-tools">&#182;</a></h4><p>function calling 是一个多轮交互过程，简而言之就是让 LLM 可以主动问问题，然后你将答案融合到原始 query 后再重新交给 LLM。</p>
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-function-calling.jpg" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div>
+<div id="cell-id=e340b60e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Multi-Document-Agents">Multi-Document Agents<a class="anchor-link" href="#Multi-Document-Agents">&#182;</a></h4><p>结合 agent 实现了 hybrid retrieval</p>
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-multi-document-agents.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
 <div id="cell-id=ce4995e5" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -16054,6 +16185,7 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Horizontail-Expansion">Horizontail Expansion<a class="anchor-link" href="#Horizontail-Expansion">&#182;</a></h3><p>多模态！</p>
+<p><img src="https://s3.laisky.com/uploads/2023/12/llm-vision-sample.png" alt="" /></p>
 
 </div>
 </div>
