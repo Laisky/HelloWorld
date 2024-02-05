@@ -15176,6 +15176,10 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="What-is-GPT-and-Why-Does-It-Work?">What is GPT and Why Does It Work?<a class="anchor-link" href="#What-is-GPT-and-Why-Does-It-Work?">&#182;</a></h1><p>GPT 的横空出世引起了人类的普遍关注，Stephen Wolfram 的这篇文章深入浅出地讲解了人类语言模型和神经网络的历史进展，深度剖析了 ChatGPT 的底层原理。</p>
 <p>讲述 GPT 的能力和局限。</p>
+<ul>
+<li>slides: <a href="https://s3.laisky.com/public/slides/What%20Is%20ChatGPT.slides.html#/">https://s3.laisky.com/public/slides/What%20Is%20ChatGPT.slides.html#/</a></li>
+<li>notes: <a href="https://blog.laisky.com/p/what-is-gpt/">https://blog.laisky.com/p/what-is-gpt/</a></li>
+</ul>
 
 </div>
 </div>
@@ -15299,9 +15303,9 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="2-grams">2-grams<a class="anchor-link" href="#2-grams">&#182;</a></h3><p>除了计算独立概率，我们还可以计算两个字母的相关概率。</p>
-<p>横坐标是第一个字母，纵坐标就对应下一个字母出现的概率</p>
-<p><img src="https://s3.laisky.com/uploads/2024/02/llm-2gram.png" alt="" /></p>
+<p>横坐标是第一个字母，纵坐标就对应下一个字母出现的概率。</p>
 <p>可以看出，英语单词首字母概率最小的 j、k、q、x、z 都表现为淡色的竖线</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-2gram.png" alt="" /></p>
 
 </div>
 </div>
@@ -15424,7 +15428,7 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>如果情况真的很复杂，那么我们可以继续引入更多的参数。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-model-3.png" alt="" /></p>
-<p>但是参数过多的话，很容易出现过拟合。</p>
+<p>但是参数过多的话，很容易出现过拟合（Overfitting）。</p>
 
 </div>
 </div>
@@ -15453,6 +15457,7 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Models-for-Human-like-Tasks">Models for Human-like Tasks<a class="anchor-link" href="#Models-for-Human-like-Tasks">&#182;</a></h2><p>前文提到的扔铁球模型，是可以简化为简单数学运算的模型。</p>
 <p>但这个世界上还有很多的问题，难以收敛为简单的数学公式，比如数字识别。</p>
+<p>这些在数学上很困难，但是对人而言非常简单的任务，称为 Human-like 任务。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-humanlike-1.png" alt="" /></p>
 
 </div>
@@ -15567,7 +15572,8 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>结构非常简单，input layer 接收输入参数，output layer 输出结果。</p>
-<p>神经网络也并不是什么经过理论推导的迭代产物。而是上个世纪的某一天，某人参照对脑科学的简单理解，随手写了一个试试，发现效果不错，就流传至今。</p>
+<p>神经网络也并不是什么经过严肃理论推导的产物。</p>
+<p>上个世纪的某一天，某人参照对脑科学的简单理解，随手写了一个试试，发现效果不错，就流传至今。</p>
 
 </div>
 </div>
@@ -15595,8 +15601,8 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>类推到 10 个数字，这十个数字表现为平面空间中的十个点。</p>
 <p>然后我们可以用直线将这十个点进行切分。这些直线和任意两个最近的点间的距离都相等。被直线所包围的区域，也就被归类为中心的点。这个图称为 attractor basins。</p>
-<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-2.png" alt="" /></p>
 <p>所以识别问题被抽象为，在空间中任意一个点，求解距离最近的 attractor point 是哪一个？</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-2.png" alt="" /></p>
 
 </div>
 </div>
@@ -15641,7 +15647,7 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>训练数据集的可视化，用三种颜色代表三个 attractors。</p>
-<p>可以看到泾渭分明的三个区域，所有的点都应该根据其所处区域被染成三种颜色。</p>
+<p>可以看到泾渭分明的三个区域，所有的点都根据其所处区域被染成三种颜色。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-5.png" alt="" /></p>
 
 </div>
@@ -15654,8 +15660,21 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Inference">Inference<a class="anchor-link" href="#Inference">&#182;</a></h3><p>在介绍训练前，我们先来看看推理。推理就是神经元如何根据输入，计算出输出的过程，可以最直观地感受神经网络的运行方式。</p>
+<h3 id="Inference">Inference<a class="anchor-link" href="#Inference">&#182;</a></h3><p>在介绍训练前，我们先来看看推理。</p>
+<p>推理就是神经元如何根据输入，计算出输出的过程，可以最直观地感受神经网络的运行方式。</p>
 <p>不要担心，没有初中程度以上的数学！</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=5f7506a3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-6.png" alt="" /></p>
 
 </div>
 </div>
@@ -15667,9 +15686,8 @@ div.jp-OutputPrompt {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-6.png" alt="" /></p>
 <p>首先在输入层，输入 x、y 坐标。</p>
-<p>然后进行神经网络的迭代求值。这其中只设计加法和乘法。每一个箭头都有一个独立的权重系数（w），假设当前节点的值为 x，那么它就会把 wx 的乘积传递给下一个节点。</p>
+<p>然后进行神经网络的迭代求值。这其中只涉及加法和乘法。每一个箭头都有一个独立的权重系数（w），假设当前节点的值为 x，那么它就会把 wx 的乘积传递给下一个节点。</p>
 <p>下一层的每一个节点都会收到上层 N 个节点传递来的值。按照如下公式计算得到自己的值 <code>value = activation(weightedSum + bias)</code></p>
 <p><code>bias</code> 是一个随机偏差，<code>activation</code> 称为激活函数。之所以需要这两个东西，是为了给网络引入非线性的不确定性。不然整个网络就成了个线性网络，其表现能力会大幅削弱。</p>
 
@@ -15693,7 +15711,7 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div>
-</div><div class="fragment" >
+</div></section><section >
 <div id="cell-id=9ce80683" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15705,7 +15723,7 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div>
-</div></div></section><section >
+</div></section><section >
 <div id="cell-id=73e0a94f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15727,7 +15745,7 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Weights">Weights<a class="anchor-link" href="#Weights">&#182;</a></h3><p>神经网络能力的魔法就蕴含于它的权重和网络结构之中。
-严格地说，结构也只是权重的一部分，如果某个连接的权重为 0，那么在结构上就表现为无连接。</p>
+严格地说，结构也只是权重的一种表现形式。如果某个连接的权重为 0，那么在结构上就表现为无连接。</p>
 <p>我们暂且不管权重是从何而来，可以先尽情地探索一番，比如随意地手动修改权重，看看推理结果会如何变化。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-9.png" alt="" /></p>
 
@@ -15770,7 +15788,7 @@ div.jp-OutputPrompt {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="How">How<a class="anchor-link" href="#How">&#182;</a></h3><p>神经网络表现出的能力是如此强大，结构又是如此的简单，我们能够从数理原理上解释它究竟是如何做到的吗？</p>
 <p>很可惜，不能。神经网络最大的缺点就是不具有可解释性。它很简单，运行也很快，但是我们无从得知它这串数字的背后究竟蕴含着什么理论。</p>
-<p>模式识别和区分的背后是人类社群的经验和共识，而神经网络显然从资料集中学会了这个共识，然而我们人类自己都无法清晰地表述这个共识是什么，神经网络也不能。</p>
+<p>模式识别和区分的背后是人类社群的经验和共识，而神经网络显然从资料集中学会了这个共识，然而我们人类自己都无法清晰地表述这个共识是什么，神经网络当然也不能。</p>
 
 </div>
 </div>
@@ -15783,8 +15801,19 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>回到一开头时我们曾提到的 Polany's Paradox，有些东西，无法用语言表达。</p>
-<p>人类无法精确地认知世界，自然也无从精确地对世界进行形式化描述。最终只能构筑出神经网络这样的黑盒近似学习模型。</p>
+<p>人类无法精确地认知世界，自然也无从精确地对世界进行形式化描述。最终只能构筑出神经网络这样的黑盒拟合模型。</p>
 <p>另一个意义是，人类的知识并不存在 “正确”/“错误” 的严格界线，AI 也无法学习到这个界线，人类的认知是基于经验的，AI 亦如此。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=18a93158" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>这是一张猫的照片，但是为什么？</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-12.png" alt="" /></p>
 
@@ -16056,6 +16085,23 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 </div>
 </div></section><section >
+<div id="cell-id=7f7a315d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>这些等效模型某种意义上可以解释天才的存在。</p>
+<p>即是是完全一样的网络结构，只是各自有着不同的随机化初始值。
+然后接受了一模一样的训练，在校验集上也取得了一模一样的成绩。
+但其实每个网络学会的参数都是不一样的。</p>
+<p>在更大的范围内进行推理时，这个差距才会显现出来，有些人就是能取得更小的过拟合，在人身上被称为天才的洞察力。</p>
+<p>换句话说，一样的天资，一样的后天教育，仍然会随机的诞生天才，这就是神经网络的内在随机性。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=d8eb84f3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -16064,7 +16110,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Brief-History">Brief History<a class="anchor-link" href="#Brief-History">&#182;</a></h3><p>神经网络其实并不是个新东西，它最热门的时候实际上是上世纪 70 年代，当时的研究者们对它寄予了很大的希望，认为它可以解决所有的问题。可是因为算力的制约，神经网络的训练效果并不好，所以它很快就被冷落了。</p>
 <p>上个世纪人们也曾大肆鼓吹人工智能，可是随着热潮的退去，人们转而开始采用其他更谦卑的称呼，如神经网络、data mining、machine learning 等。</p>
-<p>突破性的发展来自 2012 年 AlexNet 的横空出世，借助 NVIDIA GPU 和一些设计创新，AlexNet 再度提出了那个如今已人尽皆知的道理：神经网络的能力和其复杂度息息相关！这一概念，后来被称为 <code>deep learning</code>。</p>
+<p>突破性的发展来自 2012 年 AlexNet 的横空出世，借助 NVIDIA GPU 和一些设计创新，AlexNet 再度提出了那个如今已人尽皆知的道理: <strong>“神经网络的能力和其复杂度息息相关！”</strong> 这一概念，后来被称为 <code>deep learning</code>。</p>
 <p>AlexNet 的作者为 Alex Krizhevsky、Geoffrey Hinton 和 Ilya Sutskever。后两位的名字如今已是如雷贯耳。</p>
 
 </div>
@@ -16092,8 +16138,8 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Human-Like-Process">Human-Like Process<a class="anchor-link" href="#Human-Like-Process">&#182;</a></h3><p>过去人们曾经试图为不同的任务设计不同结构的神经网络，但后来发现，神经网络在不同类型的任务上表现出了很好的泛化能力。</p>
-<p>简而言之，你不需要为不同的任务去设置不同类型的网络。网络几乎是万能的，其能力只和复杂度有关系。</p>
-<p>Wolfram 认为，这是因为我们试图让神经网络解决的都是 human-like process，所以它才表现出如何显著的泛化能力。</p>
+<p>简而言之，你不需要为不同的任务去设计不同类型的网络。网络几乎是万能的，其能力只和复杂度有关系。</p>
+<p>Wolfram 认为，这是因为我们试图让神经网络解决的都是 human-like process，所以它才表现出如此显著的泛化能力。</p>
 
 </div>
 </div>
@@ -16147,7 +16193,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>当神经网络复杂度达到一定的阈值后，推理效果就不会再上升。
 一个裁剪思路是，如果所有的数据都流经部分结点，那么其他结点就可以被裁剪掉。</p>
-<p>没有中间层的神经网络称为 perceptron，只能模拟线性方程。
+<p>没有中间层的神经网络称为 感知器（perceptron），只能模拟线性方程。
 有一个中间层的网络就可以拟合任意函数，只要有足够多的结点。</p>
 
 </div>
@@ -16176,7 +16222,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>给数据打标记需要巨大的人工成本，更多的时候是想办法去找现成的标记数据。</p>
 <p>比如通过影视多语言字幕可以获取到翻译数据集。通过图片的 alt 标签可以获得多模态的训练数据。</p>
-<p>比如 from scratch，直接利用已有模型进行迁移学习（<code>transfer learning</code>），也可以节省大量数据。</p>
+<p>比起从零开始训练，直接利用已有模型进行迁移学习（<code>transfer learning</code>），也可以节省大量数据和时间。</p>
 <p>迁移学习中还有一个窍门是反复重复使用同一个数据集，这也许就和人类的反复背诵类似。</p>
 
 </div>
@@ -16218,7 +16264,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="a-Network-Big-Enough-Can-Do-Anything?">a Network Big Enough Can Do Anything?<a class="anchor-link" href="#a-Network-Big-Enough-Can-Do-Anything?">&#182;</a></h2><p>像ChatGPT这样的东西的功能似乎是如此令人印象深刻，以至于一个人可能会想象，
+<h2 id="a-Network-Big-Enough-Can-Do-Anything?">a Network Big Enough Can Do Anything?<a class="anchor-link" href="#a-Network-Big-Enough-Can-Do-Anything?">&#182;</a></h2><p>像 ChatGPT 这样的东西的功能似乎是如此令人印象深刻，以至于一个人可能会想象，
 如果能够“不断进行”并训练更大更复杂的神经网络，那么它们最终将能够“做任何事情”？</p>
 
 </div>
@@ -16231,7 +16277,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>如果你想解决的问题都属于人类的直觉思维，那么神经网路也许确实可以。</p>
+<p>如果你想解决的问题都属于人类的直觉思维，那么神经网络也许确实可以。</p>
 <p>但是这类问题的本质在于背后存在一个浅显的抽象模式，但是世界上的问题并不都是可以被简化的。
 如非平凡数学（Nontrivial mathematics）这类的问题，统称为 irreducible computation 问题，
 这些问题除了遍历计算外没有任何简化办法。（也就是俗称的 NP 问题）</p>
@@ -16260,7 +16306,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Irreducible-Computation">Irreducible Computation<a class="anchor-link" href="#Irreducible-Computation">&#182;</a></h3><p>computational irreducibility 使得永远无法保证不发生意外。</p>
+<h3 id="Irreducible-Computation">Irreducible Computation<a class="anchor-link" href="#Irreducible-Computation">&#182;</a></h3><p>computational irreducibility 使得意外总是会发生。</p>
 <p>NP 问题无法简化，而人脑/神经网络只能学会简化的拟合模型，所以永远无法消除误差。</p>
 <p>一个非常经典的例子就是人类的科学发展。
 宇宙是 NP 复杂的，人类的科学进程就是试图用一个个的简化模型去拟合这个世界，直到随着工程进步探索到新的领域（新的数据集）后遭遇误差，然后继续进行下一轮的训练。</p>
@@ -16291,9 +16337,8 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>目前的神经网络实际上比人脑更糟，它的推理在神经网络中的流动是单向的，
-推理步骤由层数所限定，也就是说它无法完成任何超过它层数的推理步骤。计算能力和图灵机完全无法比拟。
-.
-<img src="https://s3.laisky.com/uploads/2024/02/llm-limit-1.png" alt="" /></p>
+推理步骤由层数所限定，也就是说它无法完成任何超过它层数的推理步骤。计算能力和图灵机完全无法比拟。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-limit-1.png" alt="" /></p>
 
 </div>
 </div>
@@ -16320,10 +16365,36 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>世界时如此复杂，实际上人类无法准确地描述或计算任何最简单的现象。</p>
+<p>世界是如此复杂，实际上人类无法准确地描述或计算任何最简单的现象。</p>
 <p>拿最简单的镜面反射来说，中学物理告诉你反射点只是镜面的一点，但其实这个世界从任何一个可能的路径都进行了概率求和。</p>
 <p>你可以在非反射点的地方挖掉一些看上去根本没有被光照到的镜面，来改变反射光的强度。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=729953c6" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-limit-2.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=02ab87bf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>无论是量子世界的叠加态，还是费曼的路径积分，似乎都预示了这么一个世界：</p>
+<p>一切可能发生的事情都会发生，结果赋予过程以意义，事件概率不是发生的概率，而是其显现的概率。</p>
+<p>并不存在可能性和必然性的区别，所有的事情都是必然的，所有可能发生的事情都发生了。</p>
+<p>所以观察者对于世界是无关紧要的，观察者只是让世界以观察者的方式现形。</p>
 
 </div>
 </div>
@@ -16483,10 +16554,10 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>前文讨论的全联通神经网络，每一层的每个结点都和前后层的每个结点互相连通。
+<p>前文讨论的全连通神经网络，每一层的每个结点都和前后层的每个结点互相连通。
 这种网络虽然强大，但是计算成本非常高，如果数据集存在明显的结构，是可以据此简化网络结构的。</p>
 <p>早期处理图片时常用 CNN（Convolutional Neural Nets） 网络，图片上的每个像素点只会和附近的像素点相连接。</p>
-<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-1.png" alt="" /></p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-1.jpg" alt="" /></p>
 
 </div>
 </div>
@@ -16548,7 +16619,8 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><code>hello hello hello hello hello hello hello hello hello hello bye bye bye bye bye bye bye bye bye bye</code> 的 attention 块。</p>
 <p>可以看到左边的 token-value 块还可以看出明显的重复结构。</p>
-<p>最右边就是得到的 attention blocks，GPT-2 中有 12 个，ChatGPT 有 96 个。</p>
+<p>最右边就是得到的 attention blocks。
+GPT-2 会构建 12 个这样的 attention blocks，ChatGPT 有 96 个。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-3.png" alt="" /></p>
 
 </div>
@@ -16605,7 +16677,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>attention heads 会将输入的 tokens vector re-weighted 为一个 embedding vector，然后输入一个巨大的全连接神经网络（GPT-2 位 768 维，GPT-3 位 12288 维）。</p>
-<p>很难理解这个网络在干什么，但是我们可以理解它通过 attention blocks 综合了所有相关的上下文信息。</p>
+<p>很难理解这个网络在干什么，但是我们可以猜想它通过 attention blocks 综合了所有相关的上下文信息。</p>
 
 </div>
 </div>
@@ -16835,7 +16907,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>计算过程可以显著提高系统的复杂性，即使背后的原理非常简单。</p>
 <p>我们一直被人类语言的复杂性所蒙蔽了，其实其背后的原理可能就如神经网络一样简单。</p>
-<p>神经网络的推理复杂性只需要简单的加法和乘法，却可以表现出非常复杂的行为。</p>
+<p>神经网络的推理复杂性只需要简单的加法和乘法，就可以表现出非常复杂的行为。</p>
 
 </div>
 </div>
@@ -16875,7 +16947,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>但是我们设计一个简化的语言，这个语言有括号构成，语法就是一定要闭合所有的括号。</p>
+<p>但是我们设计一个简化的语言，这个语言由括号构成，语法就是一定要闭合所有的括号。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-syntax-2.png" alt="" /></p>
 
 </div>
@@ -16890,7 +16962,7 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>GPT 看上去非常难以学会这门语言。
 在经历 40 万次训练后，它仍然难以正确地闭合所有的括号。</p>
-<p>左边表现地很好，AI 认为几乎肯定不能在这里结束。</p>
+<p>左边表现得很好，AI 认为几乎肯定不能在这里结束。</p>
 <p>右边就让人有些吃惊了，竟然有 15% 的概率认为这里可以放置一个错误的右括号。</p>
 <p><img src="https://s3.laisky.com/uploads/2024/02/llm-syntax-3.png" alt="" /></p>
 
@@ -16906,6 +16978,17 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>这个现象很令人深思。
 神经网络可以学会复杂的人类语言，却无法完成如此简单的数括号任务。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9ec3b6a0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>目前人类尚没有一个数理理论来验证一个句子是否有意义，而 GPT 很可能发现了这一理论，使它能够写出有意义的文章。</p>
 <p>目前能想到的这个理论最可能的形式，就是逻辑。如亚里士多德的三段论（All X are Y. This is not Y, so it’s not an X），人们正是用逻辑来判断一段话是否有意义，而 GPT 很可能掌握了简单逻辑。</p>
 
@@ -17034,6 +17117,17 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 而且和 GPT 的黑盒神经网络不同，这是可解释的。</p>
 <p>GPT 搭配计算语言，可以更轻松地使用各类 irreducible computations 的计算工具。</p>
 
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=569eeb42" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Thanks">Thanks<a class="anchor-link" href="#Thanks">&#182;</a></h2>
 </div>
 </div>
 </div>
