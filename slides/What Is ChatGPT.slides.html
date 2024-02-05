@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
-<title>LLM-RAG slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
+<title>What Is ChatGPT slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
   import mermaid from 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true });
 </script>
@@ -15168,1165 +15168,1872 @@ div.jp-OutputPrompt {
 
 <div class="reveal">
 <div class="slides"><section ><section >
-<div id="cell-id=48332385" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=7bbb0714" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="LLM-RAG">LLM RAG<a class="anchor-link" href="#LLM-RAG">&#182;</a></h1><p><a href="https://arxiv.org/abs/2312.10997">https://arxiv.org/abs/2312.10997</a></p>
-<p>《Retrieval-Augmented Generation for Large Language Models: A Survey》这篇论文介绍了 RAG 技术的发展。</p>
-<p>本文尝试对其关键要点进行一些简单的介绍。</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/qrcode_s3.laisky.com.png" alt="" /></p>
+<h1 id="What-is-GPT-and-Why-Does-It-Work?">What is GPT and Why Does It Work?<a class="anchor-link" href="#What-is-GPT-and-Why-Does-It-Work?">&#182;</a></h1><p>GPT 的横空出世引起了人类的普遍关注，Stephen Wolfram 的这篇文章深入浅出地讲解了人类语言模型和神经网络的历史进展，深度剖析了 ChatGPT 的底层原理。</p>
+<p>讲述 GPT 的能力和局限。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=74d2b77f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/02/chatgpt-demo.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=8b88fd7d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=0d44bcfc" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Why-Need-RAG,-LLM-%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98">Why Need RAG, LLM &#38754;&#20020;&#30340;&#38382;&#39064;<a class="anchor-link" href="#Why-Need-RAG,-LLM-%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98">&#182;</a></h2><p>在介绍 RAG 是什么以前，先介绍了 LLM 目前所面临的问题</p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=20424a9f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E8%AE%AD%E7%BB%83%E6%88%90%E6%9C%AC">&#35757;&#32451;&#25104;&#26412;<a class="anchor-link" href="#%E8%AE%AD%E7%BB%83%E6%88%90%E6%9C%AC">&#182;</a></h3><p>神经网络类型的 AI 有一大特点，就是预训练的成本远远高于推理。</p>
-<p>OpenAI 在 Dev Day 2023 宣称 GPT 的预训练成本在 5 百万美元。</p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=fc862009" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E6%95%B0%E6%8D%AE%E9%9B%86%E8%90%BD%E5%90%8E">&#25968;&#25454;&#38598;&#33853;&#21518;<a class="anchor-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E8%90%BD%E5%90%8E">&#182;</a></h3><p>高昂的预训练成本带来一个最直接的问题就是：模型更新缓慢。 GPT-3.5 的数据集时间为 September 2021。</p>
-<p>而且数据集的更新成本不仅仅是训练，还有数据集的收集和清洗，这都进一步降低了模型更新的频率。</p>
-<blockquote>
-<p>Training GPT-3 would cost over $4.6M using a Tesla V100 cloud instance.</p>
-<p><a href="https://lambdalabs.com/blog/demystifying-gpt-3">https://lambdalabs.com/blog/demystifying-gpt-3</a></p>
-</blockquote>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=3eb6481c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="hallucination-%E5%B9%BB%E8%A7%89">hallucination &#24187;&#35273;<a class="anchor-link" href="#hallucination-%E5%B9%BB%E8%A7%89">&#182;</a></h3><p>有一种观点认为 LLM 是一种高效的有损信息压缩算法，它的信息解压缩过程依赖于用户 prompt。</p>
-<p>这使得 LLM 的答复质量非常容易受到用户 prompt 的干扰。</p>
+<h2 id="It%E2%80%99s-Just-Adding-One-Word-at-a-Time">It&#8217;s Just Adding One Word at a Time<a class="anchor-link" href="#It%E2%80%99s-Just-Adding-One-Word-at-a-Time">&#182;</a></h2><p>在 GPT 流利的对话背后，GPT 实际上只专注于做一件事：预测下一个字是什么。</p>
 
 </div>
 </div>
 </div>
 </div><div class="fragment" >
-<div id="cell-id=4bfc951b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=df671c33" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-hallucination.png" alt="" /></p>
+<p>GPT 整个庞大的神经网络，其功能非常简单：根据输入的上下文，预测下一个字是什么。</p>
+<p>ChatGPT 的本质就是一个 loop:</p>
+<pre><code>for {
+    next = GPT(content)
+    if next == EOS {
+        breal
+    }
+
+    content += next
+}
+</code></pre>
+<p>在模型输出结束词（end-of-sequence, EOS）前，不断地循环迭代。</p>
 
 </div>
 </div>
 </div>
 </div></div></section><section >
-<div id="cell-id=725331aa" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=1e215880" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Transparency-%E9%80%8F%E6%98%8E%E6%80%A7">Transparency &#36879;&#26126;&#24615;<a class="anchor-link" href="#Transparency-%E9%80%8F%E6%98%8E%E6%80%A7">&#182;</a></h3><p>LLM 给出的回答完全是黑盒，根本不知道来自哪，自然也就难以查证。</p>
+<p>这是黄仁勋对 Ilya 的一次访谈，其中 Ilya 多次强调：最重要的事情，就是预测好下一个词。</p>
+<p><a href="https://youtu.be/GI4Tpi48DlA?si=cHJEUsNn4-bTIhV5">https://youtu.be/GI4Tpi48DlA?si=cHJEUsNn4-bTIhV5</a></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=969ccc50" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>LLM 的输出，就是一组词及其对应的概率</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-predict-next-word.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=335f2ba7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>不过 GPT 在挑选下一个词时，并不总会挑选概率最高的词，而是会根据 <code>temperature</code>  参数，引入一定的随机性。</p>
+<p>一般认为将 <code>temperature</code> 设置为 0.8 会取得不错的输出效果。</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=02ee8353" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=32955b91" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="What-is-RAG">What is RAG<a class="anchor-link" href="#What-is-RAG">&#182;</a></h2><h3 id="Parameter">Parameter<a class="anchor-link" href="#Parameter">&#182;</a></h3><p>我们将 LLM 的信息分为两个渠道：</p>
+<h2 id="%E8%AF%8D%E6%A6%82%E7%8E%87%E4%BB%8E%E4%BD%95%E8%80%8C%E6%9D%A5">&#35789;&#27010;&#29575;&#20174;&#20309;&#32780;&#26469;<a class="anchor-link" href="#%E8%AF%8D%E6%A6%82%E7%8E%87%E4%BB%8E%E4%BD%95%E8%80%8C%E6%9D%A5">&#182;</a></h2><p>这需要回顾一下 NLP 算法中 n-grams 的历程</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=03337148" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>首先，选定一个文本数据集，我们就可以计算其中每一个字母的出现概率。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-words-prob.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=0fd28d6f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="2-grams">2-grams<a class="anchor-link" href="#2-grams">&#182;</a></h3><p>除了计算独立概率，我们还可以计算两个字母的相关概率。</p>
+<p>横坐标是第一个字母，纵坐标就对应下一个字母出现的概率</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-2gram.png" alt="" /></p>
+<p>可以看出，英语单词首字母概率最小的 j、k、q、x、z 都表现为淡色的竖线</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=c51af9a6" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>基于 n-grams 算法，我们总是根据前 n 个字母，挑选下一个概率最高的字母，就可以实现一个最简单的语言生成模型：</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-5gram.png" alt="" /></p>
+<p>可以看出，随着 n 越大，生成的结果越 make sense</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=e3125c0b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Words">Words<a class="anchor-link" href="#Words">&#182;</a></h3><p>前文的例子使用的是字母，但现实中 NLP 处理的更多是以单词为单位。</p>
+<p>英语中大约有 40000 个常用词。处理的方式和字母一样，根据前 N 个单词计算下一个单词的概率。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=cd034078" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>基于词汇的 n-grams 生成算法效果很好，但是它的主要问题是计算量随着 N 的增长而指数级增长。</p>
+<p>为 40000 个单词构建 2-grams 会生成 16 亿个组合。3-grams 则有 60 万亿个组合。</p>
+<p>该如何计算如此巨量的数据？</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=d3a7298b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Model">Model<a class="anchor-link" href="#Model">&#182;</a></h3><p>答案是不需要去计算。</p>
+<p>回忆一下中学物理课上学到的那些公式。你并不需要遍历自然界的每一个可能的情况，而是会抽象出一个拟合模型（公式），然后把参数赋值进去，就可以直接取得结果了。</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=800a7231" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="What-Is-a-Model">What Is a Model<a class="anchor-link" href="#What-Is-a-Model">&#182;</a></h2><p>假设，现在要求你测算从比萨铁塔的每一层扔出铁球坠地所需的时间，你会怎么做？</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/Galileo_Experiment_Related3.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=69e38563" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>最 naive 的办法，就是去每一层扔出铁球，然后测量一下。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-model-1.png" alt="" /></p>
+<p>横轴是楼层，纵轴是耗时。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=546986db" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>更聪明的做法是，在选定的一些楼层抛出铁球，取得测量值。
+然后对这些值进行拟合，构建模型公式。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-model-2.png" alt="" /></p>
+<p>这是一个一元拟合</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=74c56958" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>有时候需要二次方程的拟合，这样我们可以得到一条曲线</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-model-4.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=08a31507" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>如果情况真的很复杂，那么我们可以继续引入更多的参数。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-model-3.png" alt="" /></p>
+<p>但是参数过多的话，很容易出现过拟合。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=01e358f7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>要想模拟人类的语言，大概需要多少参数？</p>
+<p>ChatGPT 使用了 1750 亿个参数！实现了类似于 20-grams 的生成效果。</p>
+<p>和 n-grams 的天文数字数据量相比，1750 亿还真是个 <strong>“小数字”</strong> ！
+毕竟 3-grams 就需要 60 万亿了。</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=2c3257ce" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Models-for-Human-like-Tasks">Models for Human-like Tasks<a class="anchor-link" href="#Models-for-Human-like-Tasks">&#182;</a></h2><p>前文提到的扔铁球模型，是可以简化为简单数学运算的模型。</p>
+<p>但这个世界上还有很多的问题，难以收敛为简单的数学公式，比如数字识别。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-humanlike-1.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=ae063b53" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>是否能构建一个数学模型，我们只需要把一个图片的全部像素值作为参数输入进去，然后它就能输出这是个什么数字？</p>
+<p>事实上确实存在这样的数学模型，它被称为神经网络（neural network），每一次识别需要大约 50 万次计算。</p>
+<p>此处暂且把神经网络当成一个神奇的黑盒，后文会对其详细介绍。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=6f083ceb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>可以看到神经网络对于手写数字有着非常好的识别能力</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-humanlike-2.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=69905906" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="I-know-it-when-I-see-it">I know it when I see it<a class="anchor-link" href="#I-know-it-when-I-see-it">&#182;</a></h3><p>我们稍微偏离议题，去探索一下认知的边界</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-humanlike-3.png" alt="" /></p>
+<p>可以看到图片越模糊，识别的效果就越差。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=cc11cc3a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>但是神经网络真的错了吗？</p>
+<p>你认为它错了，是因为你知道这组数字就是 2。但是神经网络看到的只是单一的图片，如果人类在没有任何上下文的情况下看到这张图片，也能识别出这是 2 吗？</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-humanlike-4.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=02c27c08" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>究竟模糊到什么程度，这才是 1 而不是 2？真的存在这样的客观标准吗？</p>
+<p>1964 年，美国最高法院大法官波特·斯图尔特（Potter Stewart）在 Jacobellis v. Ohio 案中，对何为淫秽做了如下论断：<code>I know it when I see it</code>。</p>
+<p>这一现象，被称为 Polany's Paradox，有些东西，无法用语言表达。
+这既是说语言缺乏内生标准，也是说语言无法描述世界的复杂性。</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=8ee15b62" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Neural-Nets">Neural Nets<a class="anchor-link" href="#Neural-Nets">&#182;</a></h2><p>正如前面所展示的，目前在认知领域大放异彩的，就是神经网络模型。</p>
+<p>这是一种对人脑神经结构的模拟。</p>
+<p>人脑中据信有 1000 亿个神经元，每个神经元都通过突触和 1000 个其他神经元相连，神经元每秒可以传递 1000 个电信号。（数字真巧）</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=29400366" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>通过对脑神经的研究，人类构建了神经元数学模型：</p>
 <ol>
-<li>Parameteric knowledge：预训练 LLM 时使用的信息</li>
-<li>Non-parametric knowledge：LLM 推理时 context 内的信息</li>
+<li>基础单元为神经节点和连接，每一个连接都具有不同的权重</li>
+<li>神经节点和连接构成分层网状结构，信号按照一定的方向在网中传递（绘图习惯从左到右）</li>
 </ol>
+<p><img src="https://s3.laisky.com/uploads/2024/02/Neural-Networks-Architecture.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=df3c9ffa" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=88f20fbb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="RAG">RAG<a class="anchor-link" href="#RAG">&#182;</a></h3><p>前文介绍过，RAG 就是为 LLM 引入外部的数据源，
-根据 LLM 对 parameter 的依赖程度，可以再分为三类：</p>
+<p>结构非常简单，input layer 接收输入参数，output layer 输出结果。</p>
+<p>神经网络也并不是什么经过理论推导的迭代产物。而是上个世纪的某一天，某人参照对脑科学的简单理解，随手写了一个试试，发现效果不错，就流传至今。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=b4aa833b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Attractors">Attractors<a class="anchor-link" href="#Attractors">&#182;</a></h3><p>神经网络如何实现数字识别？</p>
+<p>拿识别 1 和 2 来说，我们希望构筑这样一个空间，这个空间中，所有 2 和 1 的可能写法都聚集在各自的“社群”里。而且这两个聚团间最好存在一个鲜明的分界线。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-1.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=21f9fe72" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>类推到 10 个数字，这十个数字表现为平面空间中的十个点。</p>
+<p>然后我们可以用直线将这十个点进行切分。这些直线和任意两个最近的点间的距离都相等。被直线所包围的区域，也就被归类为中心的点。这个图称为 attractor basins。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-2.png" alt="" /></p>
+<p>所以识别问题被抽象为，在空间中任意一个点，求解距离最近的 attractor point 是哪一个？</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=f83f7a2a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Modeling">Modeling<a class="anchor-link" href="#Modeling">&#182;</a></h3><p>明确了抽象问题后，我们把问题简化一下，再交给神经网络求解。</p>
+<p>我们将 attractors 的数量削减为 3 个，然后为其编码（encoding）为 0、-1、+1 三个值。这三个值本身没有任何意义，只是为了方便计算，用不同的整数来进行区分。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-3.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=0a1b14ad" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>构筑一个简单的神经网络：</p>
 <ol>
-<li>fully parameterized model：只依赖预训练数据。也称为 ROG（Retrieval-Off Generation）</li>
-<li>RAG：hybrid</li>
-<li>RCG：完全依赖推理时的外部信息</li>
+<li>input layer 有两个结点，代表 x、y 坐标</li>
+<li>output layer 有一结点，只输出 0、-1、1 三个值之一</li>
+<li>hidden layer 有两层</li>
 </ol>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-4.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=1a8a74eb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=5151faab" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>可以看出 RAG, Retrieval-Augmented Generation 是一种结合预训练数据和外部数据源的混合增强方法。</p>
-<p>或者更通俗的理解为：在直接将用户 query 交给模型以前，先进行一轮信息检索，完善输入信息。</p>
+<p>训练数据集的可视化，用三种颜色代表三个 attractors。</p>
+<p>可以看到泾渭分明的三个区域，所有的点都应该根据其所处区域被染成三种颜色。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-5.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=c2e23064" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=14eff72b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="RAG-Vs.-Fine-Tunning">RAG Vs. Fine-Tunning<a class="anchor-link" href="#RAG-Vs.-Fine-Tunning">&#182;</a></h3><p>RAG 和 fine-tuning 都是可以提高 LLM 模型性能的方法，两者的应用场景存在一些差别：</p>
+<h3 id="Inference">Inference<a class="anchor-link" href="#Inference">&#182;</a></h3><p>在介绍训练前，我们先来看看推理。推理就是神经元如何根据输入，计算出输出的过程，可以最直观地感受神经网络的运行方式。</p>
+<p>不要担心，没有初中程度以上的数学！</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=3d0f2347" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-6.png" alt="" /></p>
+<p>首先在输入层，输入 x、y 坐标。</p>
+<p>然后进行神经网络的迭代求值。这其中只设计加法和乘法。每一个箭头都有一个独立的权重系数（w），假设当前节点的值为 x，那么它就会把 wx 的乘积传递给下一个节点。</p>
+<p>下一层的每一个节点都会收到上层 N 个节点传递来的值。按照如下公式计算得到自己的值 <code>value = activation(weightedSum + bias)</code></p>
+<p><code>bias</code> 是一个随机偏差，<code>activation</code> 称为激活函数。之所以需要这两个东西，是为了给网络引入非线性的不确定性。不然整个网络就成了个线性网络，其表现能力会大幅削弱。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=7707f7a7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-7.png" alt="" /></p>
+<p>这是一些常用的激活函数。我认为激活函数主要有两个作用：</p>
 <ol>
-<li>RAG 适合少量垂直领域的精确信息，不适合开放式的大量数据</li>
-<li>fine-tuning 适合大量数据</li>
+<li>引入非线性变化</li>
+<li>将节点的值 normalize 到某个固定的取值范围内（一般是 -1～1）</li>
 </ol>
 
 </div>
 </div>
 </div>
 </div><div class="fragment" >
-<div id="cell-id=3c795dc7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=9ce80683" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>需要注意的是，fine-tuning 和 pre-traning 的区别在于：</p>
-<p>fine-tuning 不适合让 LLM 学习新知识，而是适合让 LLM 强化某个已知知识。</p>
-<p>可以认为 fine-tuning 是复习，RAG 是考试时的小抄。</p>
+<p>你肯定会想为什么会这样？emm，神经网络这东西很多时候没有为什么，就是某年某日有个人突发奇想这么干了，然后发现跑出来的结果还不错，然后事情就这样了。但是引入非线性变化这个点子还是很直观的，赋予它灵活性，接下来就看它自己了。</p>
 
 </div>
 </div>
 </div>
 </div></div></section><section >
-<div id="cell-id=cb798682" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=73e0a94f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="What-is-fine-tuning">What is fine-tuning<a class="anchor-link" href="#What-is-fine-tuning">&#182;</a></h4><p>其实就是组织大量结构化的问答数据喂给 LLM，增强其对特定语料的回答能力。</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-fine-tunning-sample.png" alt="" /></p>
+<p>到最后，你会发现这些看似高大上的神经网络，实际上只是在反复地做一些加法和乘法。
+比如前面那个三层的神经网络，实际上也可以写成下面这个等价的公式：</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-8.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=54bf3e55" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=9762b28d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>fine-tuning 和 RAG 并不矛盾，两者契合可以发挥出更大的作用</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-finetuning.png" alt="" /></p>
+<h3 id="Weights">Weights<a class="anchor-link" href="#Weights">&#182;</a></h3><p>神经网络能力的魔法就蕴含于它的权重和网络结构之中。
+严格地说，结构也只是权重的一部分，如果某个连接的权重为 0，那么在结构上就表现为无连接。</p>
+<p>我们暂且不管权重是从何而来，可以先尽情地探索一番，比如随意地手动修改权重，看看推理结果会如何变化。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-9.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=ce3949cd" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=b83254ef" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-vs-finetuning.png" alt="" /></p>
+<p>再随意的修改一下结构，看看推理效果变化如何。</p>
+<p>可以看出规模越大的神经网络，推理效果越好。虽然边界区域的处理仍然比较混乱，但是正如前文所述，也许根本不存在泾渭分明的区分？</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-10.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=960f614b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>前面的例子只是推理三个点的范围，我们将同样类型的网络扩展到一些更复杂的图片上，也能得到非常好的分类结果。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-11.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=23816d87" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="How">How<a class="anchor-link" href="#How">&#182;</a></h3><p>神经网络表现出的能力是如此强大，结构又是如此的简单，我们能够从数理原理上解释它究竟是如何做到的吗？</p>
+<p>很可惜，不能。神经网络最大的缺点就是不具有可解释性。它很简单，运行也很快，但是我们无从得知它这串数字的背后究竟蕴含着什么理论。</p>
+<p>模式识别和区分的背后是人类社群的经验和共识，而神经网络显然从资料集中学会了这个共识，然而我们人类自己都无法清晰地表述这个共识是什么，神经网络也不能。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=10c91c5b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>回到一开头时我们曾提到的 Polany's Paradox，有些东西，无法用语言表达。</p>
+<p>人类无法精确地认知世界，自然也无从精确地对世界进行形式化描述。最终只能构筑出神经网络这样的黑盒近似学习模型。</p>
+<p>另一个意义是，人类的知识并不存在 “正确”/“错误” 的严格界线，AI 也无法学习到这个界线，人类的认知是基于经验的，AI 亦如此。</p>
+<p>这是一张猫的照片，但是为什么？</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-12.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=097cf6eb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Thinking-inside-neural-network">Thinking inside neural network<a class="anchor-link" href="#Thinking-inside-neural-network">&#182;</a></h3><p>前文中，用于识别三个临近点的神经网络有 17 个神经元节点。识别手写数字需要 2190 个，识别猫和狗需要 60650 个。</p>
+<p>我们尝试把这 60650 个节点的取值投影到二维平面上，窥探一下神经网络的思维过程。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=2505ad14" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Layer-1">Layer-1<a class="anchor-link" href="#Layer-1">&#182;</a></h4><p>看上去是做了一些 object detection 的操作。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-13.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=73b92cbd" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Layer-10">Layer-10<a class="anchor-link" href="#Layer-10">&#182;</a></h4><p>这就十分抽象了…</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-neural-14.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=f53190f2" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>我们可以轻易地追踪网络中每一个值的变化，还可以随心所欲地将其可视化。</p>
+<p>但是，我们仍然难以理解神经网络是如何思考的。</p>
+<p>这也是目前 AI 发展的一个困境，我们正在构建一个日益强大的思想机器，而我们对它的思想却一无所知。</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=2e0c83a0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=5a0c4b2f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="RAG's-Evolution">RAG's Evolution<a class="anchor-link" href="#RAG's-Evolution">&#182;</a></h2><p>介绍 RAG 技术和工作流的进化</p>
+<h2 id="Traning">Traning<a class="anchor-link" href="#Traning">&#182;</a></h2><p>终于进入到神经网络科学中最难的部分：训练！</p>
+<p>神经网络强大的地方不仅仅在于它可以完成几乎所有的任务，还在于它可以通过样本数据集进行增量训练。</p>
+<p>不要怕。虽然最优化理论是非常复杂的数学学科，但是此文中不会出现任何公式，只会提供一些可以凭直觉感受的图像和说明。</p>
+<p>你只需要有最简单的数学思维，比如对求极限的概念，即可。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=f59a33af" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=66db0c8b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Naive-RAG">Naive RAG<a class="anchor-link" href="#Naive-RAG">&#182;</a></h3><p>最简单的 RAG，就是顾名思义的执行三个步骤：</p>
-<ol>
-<li><code>Retrieval</code>: 根据 prompt 抓取外部数据</li>
-<li><code>Augmented</code>: 使用外部数据增强 prompt</li>
-<li><code>Generation</code>: 把增强后的 prompt 交给 LLM，生成 predict/answer</li>
-</ol>
+<p>仍然使用简单的例子进行示范，让我们使用如下所示的神经网络，尝试拟合右边的折线。
+（输入 x，输出 y）</p>
+<table>
+<thead>
+<tr>
+  <th></th>
+  <th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><img src="https://s3.laisky.com/uploads/2024/02/llm-train-2.png" alt="Image1" /></td>
+  <td><img src="https://s3.laisky.com/uploads/2024/02/llm-train-1.png" alt="Image2" /></td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=8097f9ea" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=deab8226" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="embeddings">embeddings<a class="anchor-link" href="#embeddings">&#182;</a></h4><p>Naive 处理资料集的方式也是单一的：</p>
-<ol>
-<li>首先，全部转换为文字（text）</li>
-<li>对文字进行切块（chunk）</li>
-<li>把每一个 chunk 交给 embeddings-model，计算词向量（word vector）</li>
-<li>将词向量和 chunk 存储向量数据库</li>
-</ol>
-<p>embeddings 就是基于 LLM 将一个语句转化为一个高维向量，切分资料的 <code>chunk_size</code> 是一个关键参数</p>
+<p>训练，指的就是对权重的选择。我们先尝试下随机选择权重，可以看出效果很不好。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-3.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=82b77c0b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=fcbe12b2" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-embaeedings-sample.png" alt="" /></p>
+<p>理想情况下，随着数据集的不断输入，神经网络的权重不断调整，输出结果会逐渐趋于完善。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-4.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=0598dfcb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=1d59fec1" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Retrieval">Retrieval<a class="anchor-link" href="#Retrieval">&#182;</a></h4><p>执行类似步骤：</p>
-<ol>
-<li>将 prompt 交给 embeddings-model，计算词向量</li>
-<li>在向量数据库中执行 ANN 查询，获取 K 个最近似结果</li>
-</ol>
-<p>注：Approximate Nearest Neighbours (ANN) 和精确计算距离的 KNN 不同，ANN 适用于高维空间的近似计算。</p>
+<h3 id="Cost-Function">Cost Function<a class="anchor-link" href="#Cost-Function">&#182;</a></h3><p>所以训练所面临的问题是：改如何调整权重，使得输出结果能逐渐趋近于期望值？</p>
+<p>这其实就是数学上很常见的求极限问题，属于微积分的基础知识。</p>
+<p>我们可以定义一个损失函数（<code>cost function</code>），这个函数的自变量就是权重值，因变量就是当前输出和期望输出的差值。</p>
+<p>于是这成了一个很经典的求极限问题，我们只需要找到这个函数的极小值点，就可以得到最优的权重值。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=eb02f8ba" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>上图是 cost function 的取值变化图，可以看出，随着 cost function 的取值趋近于极小值点，神经网络的拟合效果也越来越好。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-5.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=98a2c1bf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>为了便于理解，我们继续简化。假设我们正在优化一个仅有两个权重值的神经网络，那么我们可以在一个二维平面上对构造的 cost function 进行可视化。
+x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画出一个等高线图。颜色越深，代表计算误差越大。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-6.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=f13d82c3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>我们把这个等高线图想象成一个山脉，而我们就是一个登山者。在起步的时候随机选择了一个起点，然后我们需要找到一条下山的路径，直到找到这座山脉的最低点。</p>
+<p>可惜我们并没有上帝视野，只能看得清周围的山势，所以我们只能从身边的一小步开始，不断地选择向下的方向，直到走到某个盆地的最低点。
+这个算法，被很形象地称为梯度下降法（<code>gradient descent</code>）。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-7.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=de525abb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Back-Propagation">Back Propagation<a class="anchor-link" href="#Back-Propagation">&#182;</a></h3><p>面对动辄成千上万的权重参数，我怎么知道下一步该调整哪一个权重，才能让 cost function 的取值更小呢？
+这其实就是个很经典的最优化问题，在数值分析领域有大量的工具可以解决这个问题。</p>
+<p>从工程的角度来说，最常用的迭代优化方式就是反向传播算法（<code>back propagation</code>）。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=f39cf56a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Back Propagation 的数学原理其实很简单。</p>
+<p>推理是正向传播，就具体的某一次推理来说，根据某组输入，网络计算得出了一个输出，然后这个输出和期望值间存在一个确定的差值。</p>
+<p>于是我们从输出节点开始反向回溯，逐一计算每一个上游节点的误差，并且根据每个节点权重公式的导数，计算出每个节点的权重调整值。</p>
+<p>这其实就是微积分中很常见的求导问题，只要激活函数是可导的，那么整个网络的误差就可以被很好地传递回去，并且计算好下一步的权重调整值。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=5a65c7b0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>神经网络的训练就是不断地重复上述过程，利用大量事先准备好的预训练数据集，每一个训练数据都由输入和期望输出组成。</p>
+<div class="highlight"><pre><span></span><span class="c1">// 通过随机权重初始化神经网络</span>
+<span class="nx">neuralNetwork</span> <span class="o">:=</span> <span class="nx">initWithRandomWeights</span><span class="p">()</span>
+
+<span class="c1">// 遍历训练数据集</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">data</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">trainingData</span> <span class="p">{</span>
+    <span class="c1">// 推理</span>
+    <span class="nx">output</span> <span class="o">:=</span> <span class="nx">neuralNetwork</span><span class="p">.</span><span class="nx">inference</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">input</span><span class="p">)</span>
+
+    <span class="c1">// 计算误差</span>
+    <span class="nx">cost</span> <span class="o">:=</span> <span class="nx">costFunction</span><span class="p">(</span><span class="nx">output</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">expectedOutput</span><span class="p">)</span>
+
+    <span class="c1">// 利用误差进行反向传播调整下一轮的权重</span>
+    <span class="nx">neuralNetwork</span><span class="p">.</span><span class="nx">backPropagation</span><span class="p">(</span><span class="nx">cost</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=87c4c869" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>从前面的等高线图可以看出，梯度下降法虽然简单实用，但是有一个问题是，你可能走着走着就走进了半山腰的一个小凹坑，然后再也走不出来了（因为此时你无论朝什么方向走，都只能走上坡）。</p>
+<p>这就是梯度下降法的局部最优解问题，这个问题也没什么特别好的解决办法，最简单粗暴的方式就是多试几次，每次都从不同的随机位置开始。一般来说，你不会运气差到每次都走进同一个小凹坑吧。（这也是为什么有人把训练戏称为炼丹，运气在其中占了很大比重）</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-7.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=bba2f348" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>训练结果往往会得出不止一个 weights 组合。这意味着我们找到了多个等效的最优解。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-8.png" alt="" /></p>
+<p>但是这些等效模型只是在训练数据集上等效，在更多输入上进行推理时，会产生不一样的结果。
+你很难说谁对谁错，每一个模型都是从训练数据集获取了不同的领悟。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-9.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=d8eb84f3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Brief-History">Brief History<a class="anchor-link" href="#Brief-History">&#182;</a></h3><p>神经网络其实并不是个新东西，它最热门的时候实际上是上世纪 70 年代，当时的研究者们对它寄予了很大的希望，认为它可以解决所有的问题。可是因为算力的制约，神经网络的训练效果并不好，所以它很快就被冷落了。</p>
+<p>上个世纪人们也曾大肆鼓吹人工智能，可是随着热潮的退去，人们转而开始采用其他更谦卑的称呼，如神经网络、data mining、machine learning 等。</p>
+<p>突破性的发展来自 2012 年 AlexNet 的横空出世，借助 NVIDIA GPU 和一些设计创新，AlexNet 再度提出了那个如今已人尽皆知的道理：神经网络的能力和其复杂度息息相关！这一概念，后来被称为 <code>deep learning</code>。</p>
+<p>AlexNet 的作者为 Alex Krizhevsky、Geoffrey Hinton 和 Ilya Sutskever。后两位的名字如今已是如雷贯耳。</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=a39a8b9a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="The-Practice-and-Lore-of-Neural-Net-Training">The Practice and Lore of Neural Net Training<a class="anchor-link" href="#The-Practice-and-Lore-of-Neural-Net-Training">&#182;</a></h2><p>本章介绍神经网络训练过程中的一些实践经验和传说。</p>
+<p>神经网络的训练更像是艺术而不是科学，人们在不可解释的混沌中摸索和检验。</p>
+<p>很多成果都没有相应的理论支撑，只是无数的试验者们通过实践发现有效。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=eca9e60e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Human-Like-Process">Human-Like Process<a class="anchor-link" href="#Human-Like-Process">&#182;</a></h3><p>过去人们曾经试图为不同的任务设计不同结构的神经网络，但后来发现，神经网络在不同类型的任务上表现出了很好的泛化能力。</p>
+<p>简而言之，你不需要为不同的任务去设置不同类型的网络。网络几乎是万能的，其能力只和复杂度有关系。</p>
+<p>Wolfram 认为，这是因为我们试图让神经网络解决的都是 human-like process，所以它才表现出如何显著的泛化能力。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9197f648" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Misunderstanding:-make-the-neural-net-do-as-little-as-possible">Misunderstanding: make the neural net do as little as possible<a class="anchor-link" href="#Misunderstanding:-make-the-neural-net-do-as-little-as-possible">&#182;</a></h3><p>早期，人们试图对神经网络的功能进行解构，按照最小功能集去训练小的单一功能的网络。然后再将这一系列网络组织起来。</p>
+<p>但是后来发现，最好的训练方式是 end-to-end，直接用输入和输出去训练大网络，由神经网络自发形成功能层。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=e41fb9d7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Misunderstanding:-implement-functional-component">Misunderstanding: implement functional component<a class="anchor-link" href="#Misunderstanding:-implement-functional-component">&#182;</a></h3><p>另一个尝试是在神经网络中引入预设的功能单元，扮演类似硬件加速的角色。但是目前看来效果仍然不如直接训练简单网络。</p>
+<p>不过这些失败的尝试并不意味着人们没有对数据进行结构化的处理，也取得了如 RNN 或 transformer attention heads 这样的结构化成果。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=f96fb7de" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="How-Big">How Big<a class="anchor-link" href="#How-Big">&#182;</a></h3><p>另一个问题是如何判定某个任务需要多大的网络结构？</p>
+<p>很大程度上，看感觉……</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-10.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=a0270975" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>当神经网络复杂度达到一定的阈值后，推理效果就不会再上升。
+一个裁剪思路是，如果所有的数据都流经部分结点，那么其他结点就可以被裁剪掉。</p>
+<p>没有中间层的神经网络称为 perceptron，只能模拟线性方程。
+有一个中间层的网络就可以拟合任意函数，只要有足够多的结点。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=40395430" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Data">Data<a class="anchor-link" href="#Data">&#182;</a></h3><p>应用神经网络最现实的问题：收集和准备训练数据。</p>
+<p>网络的结构很简单，数据集的质量对训练模型的质量有着根本性的影响。</p>
+<p>这也是为什么过去几年一直有个说法：数据为王。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=b33e061b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>给数据打标记需要巨大的人工成本，更多的时候是想办法去找现成的标记数据。</p>
+<p>比如通过影视多语言字幕可以获取到翻译数据集。通过图片的 alt 标签可以获得多模态的训练数据。</p>
+<p>比如 from scratch，直接利用已有模型进行迁移学习（<code>transfer learning</code>），也可以节省大量数据。</p>
+<p>迁移学习中还有一个窍门是反复重复使用同一个数据集，这也许就和人类的反复背诵类似。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=b8cd655c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Training">Training<a class="anchor-link" href="#Training">&#182;</a></h3><p>在训练中我们可视化追踪 cost function 的进展，一般来说，lost 在快速下降后就会趋于平缓，此时我们可以判定训练过程已经结束。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-train-11.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=94969714" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>训练耗时和数据量、模型大小有关系，但是具体耗时多少很难定量计算。</p>
+<p>尽管在 cost function 最优化中使用了微积分方程，但是事实表明计算精度并不重要，大部分时候 8bits 的精度就足够了。</p>
+<p>现有的训练方式从自然界的角度来看是很愚蠢的，在 GPU 上执行大量线性计算。
+没有理由在未来不会出现某种真正意义上的并行优化算法，就像大自然每天做的那样。</p>
+<p>（也许忆阻器能做到？）</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=f04cf092" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="a-Network-Big-Enough-Can-Do-Anything?">a Network Big Enough Can Do Anything?<a class="anchor-link" href="#a-Network-Big-Enough-Can-Do-Anything?">&#182;</a></h2><p>像ChatGPT这样的东西的功能似乎是如此令人印象深刻，以至于一个人可能会想象，
+如果能够“不断进行”并训练更大更复杂的神经网络，那么它们最终将能够“做任何事情”？</p>
 
 </div>
 </div>
 </div>
 </div><div class="fragment" >
-<div id="cell-id=84350f53" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=3fde7dcf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Augmented">Augmented<a class="anchor-link" href="#Augmented">&#182;</a></h4><p>将获取到的资料按照某个模板，和 prompt 进行拼接，得到最终 prompt</p>
-
-</div>
-</div>
-</div>
-</div></div><div class="fragment" >
-<div id="cell-id=4a63fccf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Generation">Generation<a class="anchor-link" href="#Generation">&#182;</a></h4><p>将最终 prompt 交给 LLM，得到回答。</p>
+<p>如果你想解决的问题都属于人类的直觉思维，那么神经网路也许确实可以。</p>
+<p>但是这类问题的本质在于背后存在一个浅显的抽象模式，但是世界上的问题并不都是可以被简化的。
+如非平凡数学（Nontrivial mathematics）这类的问题，统称为 irreducible computation 问题，
+这些问题除了遍历计算外没有任何简化办法。（也就是俗称的 NP 问题）</p>
 
 </div>
 </div>
 </div>
 </div></div></section><section >
-<div id="cell-id=ede902dd" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=ec874a90" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-naive-overview.png" alt="" /></p>
+<p>大脑所擅长做的事情，就是从经验中提取模式，从而简化问题，然后在日后的情境中利用习得的模式快速解决问题。</p>
+<p>大脑几乎无法不借助外力解决 irreducible computation，比如求解素数、旅行家问题等等。</p>
+<p>直到人类发明了图灵机，图灵机可以高效地求解计算问题。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=fd381825" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=ecccca1a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>一个简单的结合向量数据库实现 prompt 增强的例子：</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-embeddings-code.png" alt="" /></p>
+<h3 id="Irreducible-Computation">Irreducible Computation<a class="anchor-link" href="#Irreducible-Computation">&#182;</a></h3><p>computational irreducibility 使得永远无法保证不发生意外。</p>
+<p>NP 问题无法简化，而人脑/神经网络只能学会简化的拟合模型，所以永远无法消除误差。</p>
+<p>一个非常经典的例子就是人类的科学发展。
+宇宙是 NP 复杂的，人类的科学进程就是试图用一个个的简化模型去拟合这个世界，直到随着工程进步探索到新的领域（新的数据集）后遭遇误差，然后继续进行下一轮的训练。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=4f178e86" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=530e626e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E9%97%AE%E9%A2%98">&#21521;&#37327;&#21270;&#30340;&#38382;&#39064;<a class="anchor-link" href="#%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E9%97%AE%E9%A2%98">&#182;</a></h4><p>可以看出数据的检索完全依赖于向量化所产生的词向量。</p>
-<blockquote>
-<p>when an embedding model calculates the vector representation of a sentence, it does so based on the similarity of the sentence to the pre-trained data</p>
-</blockquote>
-<p>而 embedding model 在计算一个语句的向量时，需要基于 pre-training 的数据来理解输入的语句。如果输入的语句和预训练数据集的差异特别大，会导致结果出现很大偏差。</p>
+<p>当然，就像人类依赖计算机一样，你可以在神经网络中通过 tools 为其提供计算能力，比如 function callings。</p>
+<p>但是这些 tools 对于神经网络而言是完全的黑盒，神经网络无法了解其中的计算细节。</p>
+<p>所以计算能力（computational capabilities）和可训练度（trainable）存在根本性的矛盾。
+你引入越多的 computational tools，可训练度就会越低；反之，你的神经网络越纯粹，计算能力就越差。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=03c0fc53" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=916f241a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>基于词向量相似性搜索的方案，precision 和 recall 都很低。就是查询的数据不一定有用，有用的数据不一定被查询到。</p>
-<p>Ps. precision 度量结果数据中的阳性率。recall 度量所有阳性被找到的概率。都是越高越好。</p>
+<p>目前的神经网络实际上比人脑更糟，它的推理在神经网络中的流动是单向的，
+推理步骤由层数所限定，也就是说它无法完成任何超过它层数的推理步骤。计算能力和图灵机完全无法比拟。
+.
+<img src="https://s3.laisky.com/uploads/2024/02/llm-limit-1.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=670f594c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=29f6b96e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Advanced-RAG">Advanced RAG<a class="anchor-link" href="#Advanced-RAG">&#182;</a></h3><p>Advanced RAG 在 Naive 的基础上增加了 pre-retrieval 和 post-retrieval 两个方法。</p>
-<p>工作流变为：</p>
-<ol>
-<li>pre-retrieval process</li>
-<li>embeddings</li>
-<li>post-retrieval process</li>
-</ol>
+<h3 id="The-Path-Integral-Formulation">The Path Integral Formulation<a class="anchor-link" href="#The-Path-Integral-Formulation">&#182;</a></h3><p>稍微在理论的边界走远一点点。</p>
+<p>你能想象世界上实际上根本不存在任何因果律吗？你能想象这个世界上实际上任何可能发生的事情都会发生吗，并且还能够在宏观世界留下它们的痕迹。</p>
+<p>欢迎来到费曼的神奇世界，推荐阅读《QED:光和物质的奇妙理论》。</p>
+<p>谈到这一点是希望大家对世界的复杂度有一个感性的认知。宇宙的每一件事情都是并行遍历的。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=0b76f258" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=2c09ea7e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-adv-overview.png" alt="" /></p>
+<p>世界时如此复杂，实际上人类无法准确地描述或计算任何最简单的现象。</p>
+<p>拿最简单的镜面反射来说，中学物理告诉你反射点只是镜面的一点，但其实这个世界从任何一个可能的路径都进行了概率求和。</p>
+<p>你可以在非反射点的地方挖掉一些看上去根本没有被光照到的镜面，来改变反射光的强度。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-limit-2.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=13dccaa3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=89e12de5" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Pre-retrieval-Process">Pre-retrieval Process<a class="anchor-link" href="#Pre-retrieval-Process">&#182;</a></h4><p>在 embeddings 以前，对数据进行清洗和规整，可以分为 5 个步骤：</p>
-<ol>
-<li><code>Enhancing Data Granularity</code>: 对数据内容进行修订和简化，确保数据源的正确性和可读性</li>
-<li><code>Optimizing Index Structures</code>: 优化数据索引，引入图数据库、多级索引等结构<ul>
-<li><code>GraphDB</code>: 可以用来建立知识图谱，进行关联查询</li>
-<li><code>Hierarchical Indices</code>: 索引和查询是两类不同的任务，可以使用不同的 index</li>
-</ul>
-</li>
-<li><code>Adding Medadata Information</code>: 为切块后的数据增加 metadata，标记数据来源</li>
-<li><code>Alignment Optimization</code>: 可以为每一个 chunk 生成一个假设性提问，然后将这个问题本身也嵌合到 chunk 中<ul>
-<li><code>Hypotherical Question</code> 和用户 query 间具有更强的语意相关性，可以提高检索的关联度。</li>
-</ul>
-</li>
-<li><code>Mixed Retrieval</code>: 混合使用多种检索技术，而不仅仅是词向量搜索。<ul>
-<li>也称为 hybrid/fusion/mixed/ensemble retrieval</li>
-</ul>
-</li>
-</ol>
+<h3 id="The-Collapse-of-Human-Mythology">The Collapse of Human Mythology<a class="anchor-link" href="#The-Collapse-of-Human-Mythology">&#182;</a></h3><p>回到 GPT 的话题来。过去这次 GPT 令人惊叹的表现，让很多人以为计算机世界迎来了革命性的进步。</p>
+<p>但实际上不是的，计算机的能力并没有特别大的变化，反而是，其实是人类的能力出现了“巨大降级”。</p>
+<p>GPT 证明了写文章实际上不是 irreducible computation 问题，而是 computationally shallower（浅计算）问题。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=b32b8900" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=b1fd70c3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-compare.png" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=051b2f35" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Embedding">Embedding<a class="anchor-link" href="#Embedding">&#182;</a></h4><p>对 embeddings 过程中所使用的 embedding-model 也进行改进</p>
-<ol>
-<li>Fine-tunning Embedding: 可以将领域知识预先通过 fine-tuning 内嵌到模型中</li>
-<li>Dynamic Embedding: 在 embeddings 时，不要仅针对关键词（static），而是要联合上下文一起（dynamic）。</li>
-</ol>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=233dc657" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Post-Retrieval-Process">Post-Retrieval Process<a class="anchor-link" href="#Post-Retrieval-Process">&#182;</a></h4><p>在完成资料查询，提交给 LLM 前，继续对收集到的资料进行优化</p>
-<ol>
-<li>ReRank: 根据关联度进行打分和重排序</li>
-<li>Prompt Compression: 无关输入对 LLM 的性能有负面影响。压缩不相关信息，强调关键信息，减少总长度</li>
-</ol>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=b8b0aa06" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="RAG-Pipeline-Optimization">RAG Pipeline Optimization<a class="anchor-link" href="#RAG-Pipeline-Optimization">&#182;</a></h4><p>一些通用的 RAG 检索资料优化办法</p>
-<ol>
-<li><code>Hybrid Search</code>: 前面提到过的混合检索</li>
-<li><code>Recursive Retrieval And Query Engine</code>: 多阶段检索，先检索一批小 chunk，再根据小 chunk 去检索大 chunk<ul>
-<li>chunk size 和 user query 长度接近时，可能会提高准确性</li>
-<li><code>Sentence Window Retrieval</code>: 检索到小 chunk，然后返回 surrounding context 的大 chunk</li>
-<li><code>Parent-Child Chunks Retrieval</code>: 每个小 chunk 都指向一个或多个更详细的大 chunk，如果有多个大 chunk 被引用，则使用这个大 chunk 替换小 chunk。</li>
-</ul>
-</li>
-<li><code>StepBack-prompt</code>: 一种 prompt-engineering，可以显著提高推理密集型任务的性能。让 LLM 更关注抽象概念</li>
-<li><code>Subqueries</code>: 根据语意拆分为多个小查询</li>
-<li><code>HyDE</code>: 先让 LLM 回答一次，然后根据 LLM 的回答再去搜索相关资料。但如果 LLM 对相关话题不熟悉，反而会加重幻觉。</li>
-</ol>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=4e10a66a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Sentence-Window-Retrieval">Sentence Window Retrieval<a class="anchor-link" href="#Sentence-Window-Retrieval">&#182;</a></h4><p>检索到小 chunk，然后返回 surrounding context 的大 chunk</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-sentence-window-retrieval.png" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=06b288ca" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Parent-Child-Chunks-Retrieval">Parent-Child Chunks Retrieval<a class="anchor-link" href="#Parent-Child-Chunks-Retrieval">&#182;</a></h4><p>每个小 chunk 都指向一个或多个更详细的大 chunk</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-parent-child-chunks-retrieval.png" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=5c61e9a3" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Modular-RAG">Modular RAG<a class="anchor-link" href="#Modular-RAG">&#182;</a></h3><p>这是作者提到的 RAG 的最终进化形态。不过其实所使用的技术都是前面 naive 和 advanced 里提到过的。</p>
-<p>最重要的改变更多是架构设计上的，将单一的命令式流水线（pipeline），变成了响应式的动态调度（adaptive/routing）。</p>
-<p>所有前面提到过的功能都被封装为了功能模块，根据任务类型进行动态组合和调度。</p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=85fe5f2c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-modular-rag.png" alt="" /></p>
+<p>也就是说，如果有朝一日我们可以制作一个超大规模的神经网络，那么确实可能构建一个 AGI，它也许能够完成人类大脑能做的任何事情。</p>
+<p>但是，这也就是它的极限了。它对于自然世界（的 NP 复杂本质）仍然一无所知。</p>
+<p>它会无限的接近于人类，但是和我们所使用的自然工具，如计算机，仍然存在着本质的不同</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=e40f7d6d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=f1fa9e74" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Retriever">Retriever<a class="anchor-link" href="#Retriever">&#182;</a></h2><p>在 Modular RAG 中，Retriever 负责对外部数据源进行预处理和查询。</p>
+<h2 id="The-Concept-of-Embeddings">The Concept of Embeddings<a class="anchor-link" href="#The-Concept-of-Embeddings">&#182;</a></h2><p>Embeddings 这个词在 LLM 领域频繁出现，此前分享过的 <a href="https://blog.laisky.com/p/llm-rag/">LLM RAG Technology Overview</a> 中的 RAG 也是高度依赖于 embeddings 所生成的词向量。</p>
+<p>本章就会详细介绍 embeddings 究竟是什么。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=7c24f841" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=4b3d4010" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E5%A2%9E%E5%BC%BA-Embeddings-%E7%9A%84%E8%AF%AD%E6%84%8F%E5%87%86%E7%A1%AE%E5%BA%A6">&#22686;&#24378; Embeddings &#30340;&#35821;&#24847;&#20934;&#30830;&#24230;<a class="anchor-link" href="#%E5%A2%9E%E5%BC%BA-Embeddings-%E7%9A%84%E8%AF%AD%E6%84%8F%E5%87%86%E7%A1%AE%E5%BA%A6">&#182;</a></h3><h4 id="Chunk">Chunk<a class="anchor-link" href="#Chunk">&#182;</a></h4><p>RAG 的最终生成物不能超出 LLM 的 context window，所以数据切片是必要的，而切片的 chunk size 的选择是优化的第一步。</p>
-<p>OpenAI 的 text-embedding-ada-002 的最优 chunk size 为 256～512 tokens。</p>
-
-</div>
-</div>
-</div>
-</div><div class="fragment" >
-<div id="cell-id=a4a06aa0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Fine-tuning-Embedding-Models">Fine-tuning Embedding Models<a class="anchor-link" href="#Fine-tuning-Embedding-Models">&#182;</a></h4><p>embedding 是 RAG 的核心，为了让 embedding model 能够更好地理解垂直领域信息，可以对 embedding model 进行 fine-tuning。</p>
-<p>Ps. OpenAI 目前尚不支持该功能</p>
-
-</div>
-</div>
-</div>
-</div></div></section><section >
-<div id="cell-id=ac4bb545" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-embedding-code-2.png" alt="" /></p>
+<p>神经网络基于数字，所以在推理文字时，需要先将文字转换为数字</p>
+<p>embeddings 是一种映射方法，可以将文字转换为一个向量。这个向量是当前模型的 meaning space 空间内的一个坐标。</p>
+<p>这个 meaning space 来自于神经网络对训练数据集的理解，如果两个词在语料库中表现为同义词，其坐标也应该非常接近。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=33bfa314" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=fdbd2e73" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#23558;&#29992;&#25143;&#35831;&#27714;&#21644;&#25968;&#25454;&#38598;&#36827;&#34892;&#23545;&#40784;<a class="anchor-link" href="#%E5%B0%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%AF%B9%E9%BD%90">&#182;</a></h3><h4 id="Query-Rewrite/Transformation">Query Rewrite/Transformation<a class="anchor-link" href="#Query-Rewrite/Transformation">&#182;</a></h4><p>最简单直观的方法就是让 LLM 重写用户查询。</p>
-<ul>
-<li>利用 prompt engineering 优化查询</li>
-<li>将复杂问题拆分为多个子查询等。</li>
-</ul>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-embedding-1.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=24cd2ccc" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=faa165d4" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Prompt-Engineering">Prompt Engineering<a class="anchor-link" href="#Prompt-Engineering">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-prompt-engineering.png" alt="" /></p>
+<p>有点抽象？没关系，我们先回过头看看神经网络的推理流程。</p>
+<p>神经网络的最后一层，被称为 <code>softmax</code> 层，负责按照预设的结果集，输出每一个可能结果的概率。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-embedding-2.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=1877bffa" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=d6f55bf2" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Multi-Query-Retriever-/-Sub-Question-Query-Engine">Multi Query Retriever / Sub Question Query Engine<a class="anchor-link" href="#Multi-Query-Retriever-/-Sub-Question-Query-Engine">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2023/12/llm-multi-query-retriever.png" alt="" /></p>
+<p>而在 <code>softmax</code> 的前一层网络，就是一组包含着一大堆数字的数组，这一层的取值，其实就是 embeddings 的值。</p>
+<p>比如我们之前识别手写数字的神经网络中，4 的 embeddings 结果就是：</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-embedding-3.png" alt="" /></p>
 
 </div>
 </div>
 </div>
-</div><div class="fragment" >
-<div id="cell-id=e383ade9" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div></section><section >
+<div id="cell-id=aafbb7d2" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Query-Embedding-Transformation">Query Embedding Transformation<a class="anchor-link" href="#Query-Embedding-Transformation">&#182;</a></h4><p>query rewrite 是粗粒度的，query 的 embedding 应该是细粒度的。</p>
-<p>query 最终也需要被 embedding 然后再去搜索外部资料，处理 query 的 embedding model 也可以被 fine-tuning，以使其可以更好的匹配特定任务，尤其是使其可以更好的关联到结构化的数据</p>
+<p>有趣的是，不同的手写体具有不同的 embeddings 值，而全部会被 softmax 识别为同一个数字。</p>
+<p>说明 embeddings 值内存在一些模式本质的信息，虽然目前我们还不知道它是什么。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-embedding-4.png" alt="" /></p>
 
 </div>
 </div>
 </div>
-</div></div></section><section >
-<div id="cell-id=04973cb0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div></section><section >
+<div id="cell-id=89ebd558" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Aligning-Retriever's-Output-and-LLM's-Preference">Aligning Retriever's Output and LLM's Preference<a class="anchor-link" href="#Aligning-Retriever's-Output-and-LLM's-Preference">&#182;</a></h3><p>单纯的计算 retriever 的 hit rate（正确性）是不够的，因为可能查找的资料并不是 LLM 所需要的。
-相比单纯的信息正确，LLM 更偏好于可读性更好的资料。</p>
-<p>所以 retriever 还需要对齐（alignment），才能真正提高 RAG 的性能。</p>
+<p>这种基于 embeddings 在 meaning space 里寻找近似关系的行为，和人类思维非常相似，适合解决基于认知的判定问题。</p>
+<p>我们再介绍一些关于语言处理的基础知识，下一章就要揭开 GPT 背后 transformer attention 的神秘面纱了。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=d9294324" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>为了将语言输入到神经网络，需要想办法将其转换为数字。</p>
+<p>最简单的做法就是枚举所有的常见词，然后将其映射为递增的整数。这一流程在 NLP 中称为 label encoding。</p>
+<p>在 GPT-2 中，就是枚举了 50000 个常见词，如 <code>the -&gt; 914</code>、<code>cat -&gt; 3542</code>。</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=95ed75d1" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=602b6a9e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Generator">Generator<a class="anchor-link" href="#Generator">&#182;</a></h2><p>Generator 负责将 retriever 抓取的资料转化为更好的格式，喂给 LLM</p>
+<h2 id="Inside-ChatGPT">Inside ChatGPT<a class="anchor-link" href="#Inside-ChatGPT">&#182;</a></h2><p>终于要开始介绍 GPT 内部的工作原理了！</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=ab8d005d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=1b105eab" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Post-Retrieval-Processing">Post-Retrieval Processing<a class="anchor-link" href="#Post-Retrieval-Processing">&#182;</a></h3><p>retriever 抓取的资料可能过长或存在冗余。在 retriever 后，提交给 LLM 前，增加一步做数据清洗的 post-retrieval 步骤。</p>
-<p>post-retrieval 的核心目标：信息压缩和结果重排（rerank）。</p>
-<p>信息压缩的必要性：降低噪音，减少长度，增强 LLM 生成效率。（冗余信息会极大的干扰 LLM 的生成质量）</p>
+<p>前文讨论的全联通神经网络，每一层的每个结点都和前后层的每个结点互相连通。
+这种网络虽然强大，但是计算成本非常高，如果数据集存在明显的结构，是可以据此简化网络结构的。</p>
+<p>早期处理图片时常用 CNN（Convolutional Neural Nets） 网络，图片上的每个像素点只会和附近的像素点相连接。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-1.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=7fc7547c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=1c59279c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Rerank">Rerank<a class="anchor-link" href="#Rerank">&#182;</a></h4><p>RAG 里的 context 不是越多越好，实际上添加的上下文越多，LLM 的性能指标反而可能会降低。</p>
-<ul>
-<li><code>Catastrophic Forgetting</code>: LLM 学习新知识后会遗忘旧知识，导致回归性能降级。</li>
-<li>此外 LLM 的 <code>In Context Learning (ICL)</code> 是位置相关的，越靠前效果越好。</li>
-</ul>
-<p>rerank 可以改善 CF，通过将最相关的信息放在最前面，然后限制总的信息量。
-我理解是，提供的新信息越少，对旧指标的干扰也就越少。</p>
+<h3 id="Attention">Attention<a class="anchor-link" href="#Attention">&#182;</a></h3><p>2017 年 6 月 26 日，Google 的研究人员提交了论文《Attention Is All You Need》，提出了名为 transformer 的神经网络结构。</p>
+<p>在这篇论文中引入了一种新的结构化方式：Attention！</p>
+<p>在文本训练时，类似于 CNN，更关注于某些局部区域。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=9517a1ff" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=1811ff3d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="GPT-4-128k-ICL">GPT-4-128k ICL<a class="anchor-link" href="#GPT-4-128k-ICL">&#182;</a></h4><p>可以看出 LLM 的 ICL 对头尾效果最好</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-gpt-4-128k-icl.jpeg" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section></section><section ><section >
-<div id="cell-id=77f8c58f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Augmentation-in-RAG">Augmentation in RAG<a class="anchor-link" href="#Augmentation-in-RAG">&#182;</a></h2><p>RAG 对 LLM 的提升是全面的，可以从三个维度来理解 RAG：</p>
+<p>Attention 的具体构建方式为：
+（这个 pipeline 的每一个组成部分，都是纯粹的神经网络，没有任何的预先设计）</p>
 <ol>
-<li>Stages: RAG 可以应用于 LLM 生命周期的全部三个阶段：pre-training、fine-tuning、inference</li>
-<li>Data: 可以对数据进行增强</li>
-<li>Process: RAG 的具体实操方法</li>
+<li>将输入的文字转换为 token</li>
+<li>将 token 值用神经网络转换为 embedding</li>
+<li>将每一个 token 在输入中的所在位置，也进行一轮 embedding</li>
+<li>将两轮 embedding 的结果相加，交给 softmax 函数输出概率向量</li>
 </ol>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-2.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=0e354e14" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=f72a3756" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="RAG-%E6%A6%82%E5%BF%B5%E6%A6%82%E8%A7%88">RAG &#27010;&#24565;&#27010;&#35272;<a class="anchor-link" href="#RAG-%E6%A6%82%E5%BF%B5%E6%A6%82%E8%A7%88">&#182;</a></h3><p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-overview.png" alt="" /></p>
+<p>为什么要对 token-value 和 token-position 分别 embedding，然后再相加？</p>
+<p>没人知道。</p>
+<p>2017 年的某一天 Google 的某个人这么做了，然后发现效果很好…</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=877f7682" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=afd3fc62" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Stages">Stages<a class="anchor-link" href="#Stages">&#182;</a></h3><p>RAG 并不仅仅是简单地用于增强用户 prompt，而是可以作用于 LLM 全生命周期</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-rag-stages.png" alt="" /></p>
+<p><code>hello hello hello hello hello hello hello hello hello hello bye bye bye bye bye bye bye bye bye bye</code> 的 attention 块。</p>
+<p>可以看到左边的 token-value 块还可以看出明显的重复结构。</p>
+<p>最右边就是得到的 attention blocks，GPT-2 中有 12 个，ChatGPT 有 96 个。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-3.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=8b704d7b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=2392f30a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Pre-training-Stage">Pre-training Stage<a class="anchor-link" href="#Pre-training-Stage">&#182;</a></h4><p>在 Pre-training 阶段就引入 RAG，对预训练数据集进行增强。</p>
-<p>优点：基于 RAG 的数据增强，比从头去重新准备预训练数据集要更简单。</p>
-<p>缺点：和预训练一样的缺点，更新缓慢，更新成本高。</p>
+<p>这一系列 attention heads，扮演的角色，就是为模型推理提供回溯的功能。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-4.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=b7444aab" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=0b131415" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Fine-tunning-State">Fine-tunning State<a class="anchor-link" href="#Fine-tunning-State">&#182;</a></h4><p>对于垂直领域，针对 LLM 和 retriever 都进行 fine-tuning，可以提高性能。</p>
-<p>fine-tuning 的缺点：需要结构化的训练数据，需要的计算资源远大于推理。</p>
+<p>前文探讨时 n-grams，这个 N 其实就是提供了直接相连的前 N 个单词的关联。
+但是仅仅依靠前面几个词来构建语言上下文显然是不够的。</p>
+<p>transfomer 的 attention 机制，就是提供了一种基于语义的回溯能力。</p>
+<p>比如当读到句子里的动词时，可以回溯找到主语。
+当读到 it 的时候，可以回溯找到代称的名词。这种回溯的距离比 n-gram 更远也更灵活。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=fb44371f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=febd263c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Inference-Stage">Inference Stage<a class="anchor-link" href="#Inference-Stage">&#182;</a></h4><p>推理阶段 RAG 是目前最流行的方式</p>
-<p>优点：轻量、便宜，实时</p>
-<p>缺点：需要占据 LLM 宝贵的 context 空间，需要针对底层 LLM 进行定制化优化。</p>
+<p>下面这个热力图就是在 12 个 attention heads 的眼中，tokens 间的互相关联程度。横轴和纵轴都是每一个 tokens 的枚举，颜色越深代表关联度越大，越应该被 attention。</p>
+<p>这种 attention 机制使得每一个 token 都可以和 input 中的任何一组 tokens 产生关联。而不再是 n-grams 那种死板的静态临近关系。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-5.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=01ceb90f" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=0fe52b58" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="%E5%AF%B9%E6%95%B0%E6%8D%AE%E6%BA%90%E8%BF%9B%E8%A1%8C%E5%A2%9E%E5%BC%BA">&#23545;&#25968;&#25454;&#28304;&#36827;&#34892;&#22686;&#24378;<a class="anchor-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AE%E6%BA%90%E8%BF%9B%E8%A1%8C%E5%A2%9E%E5%BC%BA">&#182;</a></h3><p>基于知识图谱的结构化数据，可以在数据检索时提供更为关联的信息。</p>
+<p>attention heads 会将输入的 tokens vector re-weighted 为一个 embedding vector，然后输入一个巨大的全连接神经网络（GPT-2 位 768 维，GPT-3 位 12288 维）。</p>
+<p>很难理解这个网络在干什么，但是我们可以理解它通过 attention blocks 综合了所有相关的上下文信息。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=b0acf52c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=4b98c99a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="LLM-Generated-Content-RAG">LLM Generated Content RAG<a class="anchor-link" href="#LLM-Generated-Content-RAG">&#182;</a></h4><p>外部输入的新知识有时候会对 LLM 的性能带来负影响，所以有一条 RAG 的研究道路是探索深入挖掘 LLM 的内生知识。</p>
-<p>SKR 让 LLM 区分已知和未知信息，只要求 retriever 获取未知信息，使用内置信息回答已知问题。</p>
+<p>利用投影和滑动平均，我们可以在更低的维度上对其进行可视化。</p>
+<p>你可以把这当着神经网络的脑电波图，无论你从中看出了什么…</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-gpt-6.png" alt="" /></p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=b9cdebf7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=d7eee1ab" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Augmentation-Process">Augmentation Process<a class="anchor-link" href="#Augmentation-Process">&#182;</a></h3><p>本节讨论 RAG 操作流程的优化。</p>
-<p>单步 RAG 可能会因为信息冗余使得 LLM 抓不住重点（lost in the middle）。
-此外，也让 LLM 无法进行深入的多步推理。</p>
-<p>可以设计一个逻辑 loop: retriever - generator。通过多轮循环，以取得更好的效果。
-（Recursive retrieval and multi-hop retrieval）</p>
+<h3 id="Turing-Machine">Turing Machine<a class="anchor-link" href="#Turing-Machine">&#182;</a></h3><p>抛开这些复杂的 pipeline、attention 不谈，整个 GPT 本质上仍然只是一个朴素的神经网络。</p>
+<p>最终输出层还是一个 softmax，输出所有 tokens 的概率向量。</p>
+<p>这依然只是一个朴素的前馈神经网络，没有 loop，所有的信号按照固定的方向传递，每一次推理的计算复杂度都完全恒定。</p>
+<p>所以，这仍然不是一台图灵机，不具备任何复杂计算能力。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=de0aa2d6" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=4276eb41" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Iterative-Retrieval">Iterative Retrieval<a class="anchor-link" href="#Iterative-Retrieval">&#182;</a></h4><p>利用外部数据增强推理 &amp; 利用推理增强数据抓取，不断循环迭代</p>
+<p>简单回顾一下图灵机。</p>
+<p>图灵机的组成非常简单，首先，是一根无限长的纸带，扮演持久化存储。</p>
+<p>然后就是一个 CPU，这个 CPU 可以在纸带上前后移动，读取纸带，执行逻辑，然后覆写新的数字或符号。</p>
+<table>
+<thead>
+<tr>
+  <th></th>
+  <th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><img src="https://s3.laisky.com/uploads/2024/02/turingMachine.gif" alt="" /></td>
+  <td><img src="https://s3.laisky.com/uploads/2024/02/turing-book.jpg" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=bbe0112d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>神经网络和图灵机存在根本的不同：</p>
+<ol>
+<li>没有持久化存储</li>
+<li>没有回退</li>
+<li>没有循环</li>
+</ol>
+<p>这导致神经网络缺乏复杂的计算能力，只能做“直觉式”的推理。</p>
+<p>（不过我觉得，虽然神经网络存在明显的计算局限性，但是通过不断地抽象迭代 meta neural nets，用高层网络调度底层网络，仍然可以组合出非常复杂的计算逻辑，甚至能实现循环计算。）</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=bcc5b272" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>GPT 大概有 400 层网络，共计 175B 个连接，也就是 175B 个权重参数。每一次推理，都会让一系列简单数字计算 175B 次。</p>
+<p>这也是为什么 GPT 是按照输入输出的长度进行收费的，因为每一个 token 的计算复杂度是恒等的。</p>
+<p>拿人脑做个对比，会不会觉得有些奇怪？因为我们回答一个问题所耗费的精力和时间显然和回答的长度无关。这也是人脑，或者自然和神经网络间的本质区别所在。</p>
 
 </div>
 </div>
 </div>
 </div><div class="fragment" >
-<div id="cell-id=3d889958" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=6c14a222" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Adaptive-Retrieval">Adaptive Retrieval<a class="anchor-link" href="#Adaptive-Retrieval">&#182;</a></h4><p>也叫做 query routing。实际上就是利用 tools/agents/function call 的功能，让 LLM 可以自行根据 context 调用 retriever 抓取外部数据源。</p>
-
-</div>
-</div>
-</div>
-</div></div></section><section >
-<div id="cell-id=20c2aec7" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="function-calling-/-tools">function calling / tools<a class="anchor-link" href="#function-calling-/-tools">&#182;</a></h4><p>function calling 是一个多轮交互过程，简而言之就是让 LLM 可以主动问问题，然后你将答案融合到原始 query 后再重新交给 LLM。</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-function-calling.jpg" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=4d3c81ea" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Multi-Document-Agents">Multi-Document Agents<a class="anchor-link" href="#Multi-Document-Agents">&#182;</a></h4><p>结合 agent 实现了 hybrid retrieval</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-multi-document-agents.png" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section></section><section ><section >
-<div id="cell-id=ce4995e5" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="RAG-Evaluation">RAG Evaluation<a class="anchor-link" href="#RAG-Evaluation">&#182;</a></h2>
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=66be808b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Evaluation-Methods">Evaluation Methods<a class="anchor-link" href="#Evaluation-Methods">&#182;</a></h3><p>有两种评估方式，其实和我们惯常的测试方法论也是一样的</p>
-<ol>
-<li>Independent Evaluation: 对各个流程/模块进行分别测试，可以理解为单元测试</li>
-<li>End-to-End Evaluation: 顾名思义，模仿用户行为，直接就最终接口进行测试</li>
-</ol>
-<p>E2E 测试又可分为 unlabeled 和 labeled。我的理解是，labeled 应该是偏向于人工校验，需要提供标准答案，然后计算 EM 等指标。unlabeled 偏向于自动测试，可以使用一些标准方法计算得分。</p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=6c82c30d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Retrieval-Metrics">Retrieval Metrics<a class="anchor-link" href="#Retrieval-Metrics">&#182;</a></h4><ul>
-<li><code>Hit Rate (HR)</code>: 检索到相关资料的概率</li>
-<li><code>Recall</code>: 所有应该被检索的文档里，被正确检索出来的比例</li>
-<li><code>Precesion</code>: 检索出来的文档里，相关文档的比率</li>
-<li><code>Mean Reciprocal Rank (MRR)</code>: rerank 的指标，度量 retriever 返回的最优信息是否出现在了最前列</li>
-<li><code>Mean Average Precision (mAP)</code>: 也称为 <code>mAP@K</code>，度量第 K 个正确答案的位置。可以理解为 MRR 的复数版。</li>
-<li><code>Normalized Discounted Cumulative Gain (NDCG)</code>: 度量整体的 rerank 质量</li>
-<li><code>Exact Match (EM)</code>: 查询到的资料里，包含正确答案的概率</li>
-<li><code>F1 Score</code>: 就是 recall 和 precision 的调和平均数：</li>
-<li><code>Semantic Answer Similarity (SAS)</code>: 比较正确答案和 LLM 回复（predict）间的语意相似度。</li>
-</ul>
-<p><a href="https://laisky.notion.site/Metrics-for-Information-Retrieval-and-Question-Answering-Pipelines-d5d4e3beb820419ca494596e319befcf?pvs=4">https://laisky.notion.site/Metrics-for-Information-Retrieval-and-Question-Answering-Pipelines-d5d4e3beb820419ca494596e319befcf?pvs=4</a></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=8ff68c99" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Key-Metrics-and-Abilities">Key Metrics and Abilities<a class="anchor-link" href="#Key-Metrics-and-Abilities">&#182;</a></h3><h4 id="Key-Metrics">Key Metrics<a class="anchor-link" href="#Key-Metrics">&#182;</a></h4><ol>
-<li>Faithfulness: retriever 取回的资料不应该违背原始问题</li>
-<li>Answer Relevance: RAG 生成 answer 应该忠于原始 query</li>
-<li>Context Relevance: RAG 生成的 context 和原始 query 一致</li>
-</ol>
-
-</div>
-</div>
-</div>
-</div><div class="fragment" >
-<div id="cell-id=5b017efe" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Key-abilities">Key abilities<a class="anchor-link" href="#Key-abilities">&#182;</a></h4><p>能够支撑 RAG 的底层 LLM 所应该具备的四个基础能力：</p>
-<ol>
-<li>Noise Robustness: 能够分辨噪音</li>
-<li>Negative Rejection: 信息不足时应该拒绝回答</li>
-<li>Information Integration: 能够整合杂乱的信息</li>
-<li>Counterfactual Robustness:能够分辨 retrieval 提供的信息中存在的事实错误</li>
-</ol>
-
-</div>
-</div>
-</div>
-</div></div><div class="fragment" >
-<div id="cell-id=42e22196" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>明显在做梦😂，现实是通用大模型的 hallucination 非常显著</p>
+<p>但是，单个神经网络虽然不是图灵机，由 meta 神经网络调度的神经网络，是图灵机吗？</p>
 
 </div>
 </div>
 </div>
 </div></div></section></section><section ><section >
-<div id="cell-id=f60da50c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=da101000" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Future-Prospects">Future Prospects<a class="anchor-link" href="#Future-Prospects">&#182;</a></h2><p>RAG 未来的三个发展方向：</p>
-<ol>
-<li>vertical optimization</li>
-<li>horizontal expansion</li>
-<li>ecosystem of RAG</li>
-</ol>
+<h2 id="The-Training-of-ChatGPT">The Training of ChatGPT<a class="anchor-link" href="#The-Training-of-ChatGPT">&#182;</a></h2><p>GPT 使用了千亿规模的语料词组完成了训练，其神经网络由 1750 亿个参数。</p>
+<p>令人吃惊的“巧合”，GPT 的训练集数量和参数数量在同一个量级上。</p>
+<p>但是你不能简单地认为 GPT 是把所有的数据集直接存储到网络中了，毕竟网络中只有上千亿个数字。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=163921b9" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=42e0f04a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Vertical-Optimization">Vertical Optimization<a class="anchor-link" href="#Vertical-Optimization">&#182;</a></h3><p>垂直优化，和水平扩容相对，一般指增强自身的能力，而不是依靠外部扩展，此处指增强 LLM 自身的能力。</p>
-<p>包括更大的 context，更稳定的回答能力。目前的 LLM 极易受到参考信息中的错误和无关信息的干扰。</p>
-<p>RAG 和 Fine-tuning 更深入地互相协调也是一个重要的优化方向。</p>
-<p>最后就是 RAG 的工程实践，包括性能提升和安全性。</p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=7062d7af" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Horizontail-Expansion">Horizontail Expansion<a class="anchor-link" href="#Horizontail-Expansion">&#182;</a></h3><p>多模态！</p>
-<p><img src="https://s3.laisky.com/uploads/2023/12/llm-vision-sample.png" alt="" /></p>
+<p>语言的背后是否存在一些可以简化的内在逻辑？</p>
+<p>目前看来 GPT 对信息的压缩能力并不显著，差不多一个权重对应着语料库中的一个 word。</p>
+<p>假设神经节点的数量为 N，每一次推理的计算复杂度为 N，训练的计算复杂度为 N^2。这也是为什么 GPT 的训练成本是如此高昂。</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=37159c19" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=fd2158c2" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Security">Security<a class="anchor-link" href="#Security">&#182;</a></h2><p>简单提一下 RAG 安全</p>
-
-</div>
-</div>
-</div>
-</div><div class="fragment" >
-<div id="cell-id=30104073" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="ACL">ACL<a class="anchor-link" href="#ACL">&#182;</a></h3><p>基于 RAG 的外部数据访问，可以使用更传统的数据集 ACL 来对用户、数据进行细粒度的访问，这在安全性上能够显著的强于对预训练数据集的“徒劳”保护。</p>
-
-</div>
-</div>
-</div>
-</div></div><div class="fragment" >
-<div id="cell-id=97535b3d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Prompt-Injection">Prompt Injection<a class="anchor-link" href="#Prompt-Injection">&#182;</a></h3><p>Prompt Injection 是目前 RAG 无法绕开之痛，甚至可以说 Prompt Injection 是目前阻碍所有接收用户 query 的 LLM 走向成熟产品之路上最大的阻碍。</p>
-<p>本文所参考的论文中没有论及相关信息，下次再另做一次关于  LLM 安全的分享。</p>
-
-</div>
-</div>
-</div>
-</div></div></section></section><section ><section >
-<div id="cell-id=05baf5b4" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="RCG">RCG<a class="anchor-link" href="#RCG">&#182;</a></h2><p>Retrieval-Centric Generation</p>
-<p>正如前文提到过的，RCG 就是比 RAG 更进一步，让 LLM 完全依赖于 Retrieval 的数据进行回答。</p>
+<h2 id="Beyond-Basic-Training">Beyond Basic Training<a class="anchor-link" href="#Beyond-Basic-Training">&#182;</a></h2><p>完成语料库的训练后，LLM 就可以输出看似合理的内容。</p>
+<p>但是这些内容很可能完全偏离了人类的思维方式，但却很难被机器检查出来，只能依赖人类介入进行判别。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=f22aedc0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=fc46ff62" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="RAG-cannot-avoid-hallucination">RAG cannot avoid hallucination<a class="anchor-link" href="#RAG-cannot-avoid-hallucination">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2024/01/llm-rag-hallucination.png" alt="" /></p>
-
-</div>
-</div>
-</div>
-</div></section><section >
-<div id="cell-id=96846d8c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>但是 RCG 并不仅仅是给 RAG 更多的数据，而是对底层 LLM 的设计方向存在一些根本性的变化：</p>
 <ol>
-<li>小型定制化模型可以取代大型模型，在 RCG 领域取得同等的性能</li>
-<li>对未知数据（unseen data）的学习和理解能力</li>
-<li>RCG 追求的是 100% 准确性和透明性，完全消除幻觉（learn and abstract the schema as an emergent capability）</li>
-<li>LLM 不仅仅能比对信息，还能够具有抽象范式的理解能力</li>
+<li>首先，人类对 LLM 的输出进行打分。</li>
+<li>然后训练另一个神经网络，能够模拟人类对结果进行打分。</li>
+<li>最后，将这个新的打分模型作为 cost function 的一部分，应用到原网络。</li>
 </ol>
-<p>LLM 的研究重点，从内嵌更多的数据，转变为对数据抽象模式的认知能力。</p>
+<p>有趣的是，仅通过原始语料训练出的神经网络就具备足够好的推理能力。并不需要太多人工修订。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=044a81a1" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=54209bbd" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="https://s3.laisky.com/uploads/2024/01/llm-rcg.png" alt="" /></p>
+<p>GPT 甚至不需要重训练，而是基于 ICL（in-context learning）就可以很好的学会用户 prompt 的指令，并输出内容。</p>
+<p>ICL 的神奇能力使 Wolfram 认为，GPT 内蕴含了人类语言和思维的某种本质。
+毕竟这个网络真的可以“理解”你的问题。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=91e48937" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=d8458f32" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>pre-training 不再是让 LLM 记忆信息，而是让其学习抽象模式</p>
-<p><img src="https://s3.laisky.com/uploads/2024/01/gpt-4-learned-schema.png" alt="" /></p>
+<p>你不能简单地认为 ICL 是因为问题已经存在于语料库中。
+这更像是一种在语料库里识别出 context schema 的思维过程。</p>
+<p>而且和人类一样，如果你告诉他的东西完全脱离于它的知识体系，
+它就会表现地非常差劲，不知道如何整合自己的知识。</p>
 
 </div>
 </div>
 </div>
 </div></section><section >
-<div id="cell-id=6b243f9b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=5001e2b1" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>RCG 被认为是 toB 领域 LLM 的研究重点，因为只有 RCG 能在垂直领域提供企业所需的精确性和可追溯性。</p>
-<p>具体的一些内容我现在也还不懂，等日后也许会令做一期分享。</p>
+<p>值得在此强调，谨记 LLM 存在算法极限，它学习的是语料的模式，
+如果你的问题匹配到了模式，它就可以按照神经网络中的某条路径迅速推理。</p>
+<p>LLM 不是图灵机，没有回退和循环，只有网络中的路径推理。所以它不能进行任何实际的运算，无法解答任何 irreducible computation 的问题（除非答案刚好在语料库里！）</p>
 
 </div>
 </div>
 </div>
 </div></section></section><section ><section >
-<div id="cell-id=1e7f492a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=b4019dab" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Thanks">Thanks<a class="anchor-link" href="#Thanks">&#182;</a></h1>
+<h2 id="What-Really-Lets-ChatGPT-Work?">What Really Lets ChatGPT Work?<a class="anchor-link" href="#What-Really-Lets-ChatGPT-Work?">&#182;</a></h2><p>人类语言以及生成它所涉及的思维过程，一直被认为是复杂性的顶峰。</p>
+<p>而 GPT 破除了这个“迷信”，如今我们知道一个同等复杂度的神经网络，就可以非常出色的生成人类语言。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=a148d8d0" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>计算过程可以显著提高系统的复杂性，即使背后的原理非常简单。</p>
+<p>我们一直被人类语言的复杂性所蒙蔽了，其实其背后的原理可能就如神经网络一样简单。</p>
+<p>神经网络的推理复杂性只需要简单的加法和乘法，却可以表现出非常复杂的行为。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=e44aeca4" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>语言就是一个虚假复杂度的例子。它看上去无穷复杂，但是背后的数学原理很简单。
+而 LLM 成功地捕捉到了这个背后的基础原理。</p>
+<p>GPT 的成功暗示着语言甚至思维的背后存在一个简单的原理。如果理解这个原理，也就能理解 GPT 的工作原理。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=121911ec" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Syntax-of-Language">Syntax of Language<a class="anchor-link" href="#Syntax-of-Language">&#182;</a></h3><p>人类的语言背后存在一些语法规则，LLM 显然很好地掌握了这些规则。</p>
+<p>GPT 并没有先验的语法知识，但是在训练过程中，GPT 领悟了语法结构。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-syntax-1.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9cf81190" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>但是我们设计一个简化的语言，这个语言有括号构成，语法就是一定要闭合所有的括号。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-syntax-2.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=12915319" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>GPT 看上去非常难以学会这门语言。
+在经历 40 万次训练后，它仍然难以正确地闭合所有的括号。</p>
+<p>左边表现地很好，AI 认为几乎肯定不能在这里结束。</p>
+<p>右边就让人有些吃惊了，竟然有 15% 的概率认为这里可以放置一个错误的右括号。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-syntax-3.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=6ab27ccb" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>这个现象很令人深思。
+神经网络可以学会复杂的人类语言，却无法完成如此简单的数括号任务。</p>
+<p>目前人类尚没有一个数理理论来验证一个句子是否有意义，而 GPT 很可能发现了这一理论，使它能够写出有意义的文章。</p>
+<p>目前能想到的这个理论最可能的形式，就是逻辑。如亚里士多德的三段论（All X are Y. This is not Y, so it’s not an X），人们正是用逻辑来判断一段话是否有意义，而 GPT 很可能掌握了简单逻辑。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9626976a" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>但是在面临更复杂的形式逻辑时，可以预想它的表现不会太好。</p>
+<p>我们可以认为神经网络模拟了人类思维中的快思维模式，利于进行快速的直觉响应。但是难以进行复杂严肃的思考，而且非常容易受到锚定效应等影响。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/thinking-fast-and-slow.jpg" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=fb688c88" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Meaning-Space-and-Semantic-Laws-of-Motion">Meaning Space and Semantic Laws of Motion<a class="anchor-link" href="#Meaning-Space-and-Semantic-Laws-of-Motion">&#182;</a></h2><p>在 meaning space 中追踪 GPT 的推理过程</p>
+<p>前文探讨过，每一段文字都会被拆分为一个 tokens 列表，每一个 token 都会被转换为一个 embedding vector，这个 vector 可以视为 GPT meaning space 的坐标。</p>
+<p>所以我们可以在这个 meaning space 内把所有的 token 都画出来，
+然后 GPT 的推理过程就成为了这个空间的一段连续路径。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=8ddcc488" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>通过 embedding，可以将所有的词映射到 meaning space 里</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-space-1.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=459fd2bf" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>将这个空间投影到二维平面，我们就可以追踪 GPT 的推理过程。
+（看不出任何规律😂）</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-space-2.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=92193d46" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>我们可以画出预测下一个词时，一些大概率可选词的方向</p>
+<p>（看着像是个扇形，也许预示着下一步推理的大致前进方向）</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-space-3.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9bb2ef97" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>将每一次推理的预测词向量都拼接起来，可以看到每一步的扇形</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-space-4.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=6ab64281" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>我们还可以在 3D 投影中，追踪 40 步的推理概率图</p>
+<p><img src="https://s3.laisky.com/uploads/2024/02/llm-space-5.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=359237b9" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>就目前为止，几乎看不出推理的任何可解释的行为。</p>
+<p>但是这是一种尝试解释的思路，我们可以不断地调整投影方式，也许能探索出一条存在某种可理解模式的踪迹。</p>
+
+</div>
+</div>
+</div>
+</div></section></section><section ><section >
+<div id="cell-id=bda2391c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Semantic-Grammar-and-the-Power-of-Computational-Language">Semantic Grammar and the Power of Computational Language<a class="anchor-link" href="#Semantic-Grammar-and-the-Power-of-Computational-Language">&#182;</a></h2><p>这一章是对 Wolfram 计算语言的鼓吹。</p>
+<p>人类语言天然是不精确的，也没有客观标准，其意义取决于社会共识。</p>
+<p>作者认为 GPT 的成功给了他信心，可以构筑出一个形式语义系统，
+而且和 GPT 的黑盒神经网络不同，这是可解释的。</p>
+<p>GPT 搭配计算语言，可以更轻松地使用各类 irreducible computations 的计算工具。</p>
+
 </div>
 </div>
 </div>
