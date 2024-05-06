@@ -15196,6 +15196,18 @@ div.jp-OutputPrompt {
 </div>
 </div>
 </div>
+</div></section><section >
+<div id="cell-id=7d65a22e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Changelog">Changelog<a class="anchor-link" href="#Changelog">&#182;</a></h2><p>Latest updated at: 2024-03-01</p>
+
+</div>
+</div>
+</div>
 </div></section></section><section ><section >
 <div id="cell-id=0d44bcfc" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15529,6 +15541,7 @@ div.jp-OutputPrompt {
 <p>1964 年，美国最高法院大法官波特·斯图尔特（Potter Stewart）在 Jacobellis v. Ohio 案中，对何为淫秽做了如下论断：<code>I know it when I see it</code>。</p>
 <p>这一现象，被称为 Polany's Paradox，有些东西，无法用语言表达。
 这既是说语言缺乏内生标准，也是说语言无法描述世界的复杂性。</p>
+<p>Polanyi’s paradox 对神经网络的挑战就是：人类语言无法表达人类所掌握的知识。而神经网络只能通过人类的语言去学习，那么它能学会人类的知识吗？</p>
 
 </div>
 </div>
@@ -16563,15 +16576,125 @@ x、y 轴是权重值，颜色代表 cost function 的取值，据此可以画�
 </div>
 </div>
 </div></section><section >
+<div id="cell-id=856c7b2e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Brief-History">Brief History<a class="anchor-link" href="#Brief-History">&#182;</a></h3><ol>
+<li>1943 年提出人工神经网络；</li>
+<li>2014 年发表深度学习(AlexNet)；</li>
+<li>2015 年 Bahdanau 提出 Attention 机制优化 RNN；</li>
+<li>2015 年 OpenAI 成立；</li>
+<li>2017 年 Google 发表 Transformer，提出不需要 RNN，只要 Attention 就够了；</li>
+<li>2017 年 OpenAI 发布基于 transformer 的 gpt-1；</li>
+<li>2019 年 gpt-2；2020 gpt-3；2022 ChatGPT</li>
+</ol>
+<p>可以看出，自从深度学习被提出和广泛应用以来，神经网络的发展就进入了快车道。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=69598a13" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="RNN">RNN<a class="anchor-link" href="#RNN">&#182;</a></h4><p>传统神经网络是单向推理，一次输入，一次输出。</p>
+<p>RNN 是多轮迭代，计算网络称为 RNN Cell，每次读取输入的一部分（如一个词），推理后得出 output 的一部分和一个中间结果（hidden state）。然后进入下一轮迭代，hidden state 会和 input 融合后作为后续的输入。不断重复这一过程直到全部推理结束。</p>
+<p>（某种意义上，这个 hidden state 有点像 n-grams）</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=09cfdc2e" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/03/chatgpt-2.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=e7e94b3b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>RNN 的 Cell 设计使其输入、输出的长度具有很大的灵活性，可以像普通网络一样单次输入单次输出，也可以多次输入多次输出。而 hidden state 的设计使得每一次输出都可以学习到之前的上下文信息，使其非常适合处理序列问题（sequential problems），如文本翻译。</p>
+<p>RNN 的结构也在不断迭代，比如最常见的 seq2seq（专职处理输入的 encoder &amp; 专职处理输出的 decoder）结构，此处略去。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=22c05b02" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/03/chatgpt-1.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=1baf66f1" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Attention-Mechanism">Attention Mechanism<a class="anchor-link" href="#Attention-Mechanism">&#182;</a></h4><p>RNN 的缺点是，每一轮的输出，只接收了上一轮的 hidden state，当输入比较长时，RNN Cell 可能会遗忘更早的上下文信息。简而言之，RNN 负责输出的 decoder 缺乏全文上下文意识，而更关注于邻近的前几个词。</p>
+<p>2015 年德国科学家 Bahdanau 提出了注意力机制（Attention）。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=c69677ad" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://s3.laisky.com/uploads/2024/03/chatgpt-3.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=9eace4f9" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>简而言之，attention 就是在 RNN 原来的架构外，给每一个 decoder cell 额外生成了一个 context vector 作为输入。</p>
+<p>也就是说 decoder cell 在生成 output 时会综合三个信息来源：input（当前词）、hidden state（前几个词） 和 context vector（全文相关信息）。</p>
+<p>这个 context vector 就是 attention 的核心，它通过为所有的 input 计算相关权重，然后摘取重要信息（注意力所在）为当前 output 生成量身定做的 context vector，使得 decoder cell 具有了能够纵览全文且选择性专注于任何重点片段的能力。大幅提高了 RNN 处理长文的能力。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=1c59279c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Attention">Attention<a class="anchor-link" href="#Attention">&#182;</a></h3><p>2017 年 6 月 26 日，Google 的研究人员提交了论文《Attention Is All You Need》，提出了名为 transformer 的神经网络结构。</p>
-<p>在这篇论文中引入了一种新的结构化方式：Attention！</p>
-<p>在文本训练时，类似于 CNN，更关注于某些局部区域。</p>
+<h3 id="Attention-Is-All-You-Need">Attention Is All You Need<a class="anchor-link" href="#Attention-Is-All-You-Need">&#182;</a></h3><p>2017 年 6 月 26 日，Google 的研究人员提交了论文《Attention Is All You Need》，提出了名为 transformer 的神经网络结构。</p>
+<p>Google 发现，其实根本不需要 RNN，纯粹只靠 attention 就足够了，一系列 attention heads 的组合就可以产生非常好的输出，这就是 transformer，也是那篇著名论文名字的来源。</p>
 
 </div>
 </div>
