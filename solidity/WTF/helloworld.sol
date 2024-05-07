@@ -18,6 +18,11 @@ contract HelloWeb3 {
     // event is used to log the transaction
     event Transfer(address indexed from, address indexed to, uint256 value);
 
+    // transfer all ETH to another contract
+    function migrateTo(address payable _to) public onlyOwner {
+        _to.transfer(address(this).balance);
+    }
+
     function changeOwner(address newOwner_) external onlyOwner {
         owner = newOwner_;
     }
@@ -53,6 +58,11 @@ contract HelloWeb3 {
         if (msg.value > 0) {
             emit Transfer(msg.sender, address(this), msg.value);
         }
+    }
+
+    // donate ETH to this contract
+    receive() external payable {
+        this.donate();
     }
 
     function insertionSort(
