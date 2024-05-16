@@ -1,3 +1,11 @@
+"""
+Relate discussion: https://twitter.com/LaiskyCai/status/1790935286245163035
+
+Disclaimer: I am writing this code just for fun, so those who are learning Python should not follow this example.
+
+IMHO, there is no doubt that ◍◍◍◍'s presentation involved deception. I mean, it is ◍◍◍◍ after all, would it be even more surprising if they didn't cheat?
+"""
+
 import time
 import asyncio
 
