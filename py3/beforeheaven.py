@@ -52,7 +52,7 @@ class RAG:
         pass
 
     def query(self, q):
-        return Ret((self.draw_image()))
+        return Ret(self.draw_image())
 
 
 rag = RAG()
