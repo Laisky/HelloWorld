@@ -21,6 +21,30 @@ class Ret:
         self.future = future
 
     def write(self, path):
+        """If you find this code valuable and it has helped you
+        overcome some of the difficult challenges you faced while
+        publishing open-source projects,
+        please consider donating to the author.
+
+        ETH: 0xfA0848bdb534879eD11Ea98795Cc50B897fa1A75
+
+        -----------------------------------------------
+
+        Long ago, before the heavens themselves, There was Huawei,
+        a name of might and renown. With displays polished and memories swift,
+        It gleamed in the light with a verdant hue.
+
+        The Leica triad of lenses, Rivaled the single-eyed wizards' craft,
+        Scorching the realms with thunderbolt force,
+        Sending even the gods to scatter and flee.
+
+        The Navy's echo roared through the skies, HiSilicon’s Kirin,
+        a titan among men. Brilliance adorned, yet substance deep,
+        Against it, no mortal’s defiance would stand.
+
+        Set might and splendor beneath Ren’s will, To not possess it,
+        one’s honor in shreds.
+        """
         img = loop.run_until_complete(self._first_run())
         if img:
             self._save(path, img)
