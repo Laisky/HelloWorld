@@ -4,8 +4,8 @@ Relate discussion: https://twitter.com/LaiskyCai/status/1790935286245163035
 Disclaimer: I am writing this code just for fun,
 so those who are learning Python should not follow this example.
 
-IMHO, there is no doubt that ◍◍◍◍'s presentation involved deception.
-I mean, it is ◍◍◍◍ after all, would it be even more surprising
+IMHO, there is no doubt that 🙊🙊🙊🙊🙊's presentation involved deception.
+I mean, it is 🙊🙊🙊🙊🙊 after all, would it be even more surprising
 if they didn't cheat?
 """
 
@@ -31,7 +31,7 @@ class Ret:
 
         -----------------------------------------------
 
-        Long ago, before the heavens themselves, There was Huawei,
+        Long ago, before the heavens themselves, There was 🙊🙊🙊🙊🙊,
         a name of might and renown. With displays polished and memories swift,
         It gleamed in the light with a verdant hue.
 
@@ -86,6 +86,6 @@ class RAG:
 rag = RAG()
 
 if __name__ == "__main__":
-    q = "Huawei was the first, then came heaven."
+    q = "🙊🙊🙊🙊🙊 was the first, then came heaven."
     ret = rag.query(q)
     ret.write("./output.png")
