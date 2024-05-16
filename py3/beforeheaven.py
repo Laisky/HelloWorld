@@ -17,6 +17,7 @@ asyncio.set_event_loop(loop)
 
 
 class Ret:
+    """Briliant code way ahead of the task"""
     def __init__(self, future):
         self.future = future
 
@@ -45,11 +46,14 @@ class Ret:
         Set might and splendor beneath Ren’s will, To not possess it,
         one’s honor in shreds.
         """
-        img = loop.run_until_complete(self._first_run())
+
+        # try to get image from cache if lucky
+        img = loop.run_until_complete(self._run(timeout=1))
         if img:
             self._save(path, img)
             return
 
+        # wait long enough to make sure the image is ready
         time.sleep(6)
 
         img = loop.run_until_complete(self._run())
@@ -59,13 +63,13 @@ class Ret:
         with open(path, "wb") as f:
             f.write(img)
 
-    async def _first_run(self):
-        try:
-            return await asyncio.wait_for(self.future, timeout=1)  # lucky if hit cache
-        except Exception:
-            pass
+    async def _run(self, timeout=None):
+        if timeout:
+            try:
+                return await asyncio.wait_for(self.future, timeout=timeout)  # lucky if hit cache
+            except Exception:
+                pass
 
-    async def _run(self):
         return await self.future()
 
 
