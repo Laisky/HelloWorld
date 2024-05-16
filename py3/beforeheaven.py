@@ -1,9 +1,12 @@
 """
 Relate discussion: https://twitter.com/LaiskyCai/status/1790935286245163035
 
-Disclaimer: I am writing this code just for fun, so those who are learning Python should not follow this example.
+Disclaimer: I am writing this code just for fun,
+so those who are learning Python should not follow this example.
 
-IMHO, there is no doubt that ◍◍◍◍'s presentation involved deception. I mean, it is ◍◍◍◍ after all, would it be even more surprising if they didn't cheat?
+IMHO, there is no doubt that ◍◍◍◍'s presentation involved deception.
+I mean, it is ◍◍◍◍ after all, would it be even more surprising
+if they didn't cheat?
 """
 
 import time
@@ -23,7 +26,7 @@ class Ret:
             self._save(path, img)
             return
 
-        time.sleep(5)
+        time.sleep(6)
 
         img = loop.run_until_complete(self._run())
         self._save(path, img)
@@ -34,7 +37,7 @@ class Ret:
 
     async def _first_run(self):
         try:
-            return await asyncio.wait_for(self.future, timeout=1)  # maybe hit cache
+            return await asyncio.wait_for(self.future, timeout=1)  # lucky if hit cache
         except Exception:
             pass
 
