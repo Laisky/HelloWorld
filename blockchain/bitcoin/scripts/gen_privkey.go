@@ -11,6 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func init() {
+	rootCMD.AddCommand(genPrivkeyCMD)
+}
+
 var genPrivkeyCMD = &cobra.Command{
 	Use:   "gen",
 	Short: "Generate privkey and address",

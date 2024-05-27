@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -20,10 +19,10 @@ func init() {
 	showTransactionCMD.Flags().StringVarP(&showTransactionCMDArgs.Txid, "txid", "t", "", "transaction id to show")
 	showCMD.AddCommand(showTransactionCMD)
 
-	transferCMD.Flags().StringVarP(&transferCMDArgs.From, "from", "f", "", "sender address")
-	transferCMD.Flags().StringVarP(&transferCMDArgs.To, "to", "t", "", "receiver address")
-	transferCMD.Flags().Float64VarP(&transferCMDArgs.Amount, "amount", "m", 0, "amount to transfer")
-	rootCMD.AddCommand(transferCMD)
+	// transferCMD.Flags().StringVarP(&transferCMDArgs.From, "from", "f", "", "sender address")
+	// transferCMD.Flags().StringVarP(&transferCMDArgs.To, "to", "t", "", "receiver address")
+	// transferCMD.Flags().Int64VarP(&transferCMDArgs.Amount, "amount", "m", 0, "amount to transfer")
+	// rootCMD.AddCommand(transferCMD)
 }
 
 var showCMD = &cobra.Command{
@@ -125,61 +124,61 @@ func showTransaction(txid string) error {
 	return nil
 }
 
-var transferCMDArgs = struct {
-	From   string
-	To     string
-	Amount float64
-}{}
+// var transferCMDArgs = struct {
+// 	From   string
+// 	To     string
+// 	Amount int64
+// }{}
 
-var transferCMD = &cobra.Command{
-	Use:  "transfer",
-	Args: gcmd.NoExtraArgs,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return transfer(transferCMDArgs.From, transferCMDArgs.To, transferCMDArgs.Amount)
-	},
-}
+// var transferCMD = &cobra.Command{
+// 	Use:  "transfer",
+// 	Args: gcmd.NoExtraArgs,
+// 	RunE: func(cmd *cobra.Command, args []string) error {
+// 		return transfer(transferCMDArgs.From, transferCMDArgs.To, transferCMDArgs.Amount)
+// 	},
+// }
 
-func transfer(from, to string, amount float64) error {
-	if from == "" || to == "" {
-		return errors.New("both from and to addresses are required")
-	}
-	if amount <= 0 {
-		return errors.New("amount must be greater than zero")
-	}
+// func transfer(from, to string, amount int64) error {
+// 	if from == "" || to == "" {
+// 		return errors.New("both from and to addresses are required")
+// 	}
+// 	if amount <= 0 {
+// 		return errors.New("amount must be greater than zero")
+// 	}
 
-	payload := map[string]interface{}{
-		"from":   from,
-		"to":     to,
-		"amount": amount,
-	}
+// 	payload := map[string]interface{}{
+// 		"from":   from,
+// 		"to":     to,
+// 		"amount": amount,
+// 	}
 
-	payloadBytes, err := json.Marshal(payload)
-	if err != nil {
-		return errors.Wrap(err, "error marshaling payload")
-	}
+// 	payloadBytes, err := json.Marshal(payload)
+// 	if err != nil {
+// 		return errors.Wrap(err, "error marshaling payload")
+// 	}
 
-	url := "https://api.cryptoservice.com/transfer" // Hypothetical URL
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(payloadBytes))
-	if err != nil {
-		return errors.Wrap(err, "error creating transaction")
-	}
-	defer resp.Body.Close()
+// 	url := "https://api.cryptoservice.com/transfer" // Hypothetical URL
+// 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(payloadBytes))
+// 	if err != nil {
+// 		return errors.Wrap(err, "error creating transaction")
+// 	}
+// 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return errors.Errorf("error creating transaction, status code: %d", resp.StatusCode)
-	}
+// 	if resp.StatusCode != http.StatusOK {
+// 		return errors.Errorf("error creating transaction, status code: %d", resp.StatusCode)
+// 	}
 
-	var result map[string]interface{}
-	err = json.NewDecoder(resp.Body).Decode(&result)
-	if err != nil {
-		return errors.Wrap(err, "error decoding response")
-	}
+// 	var result map[string]interface{}
+// 	err = json.NewDecoder(resp.Body).Decode(&result)
+// 	if err != nil {
+// 		return errors.Wrap(err, "error decoding response")
+// 	}
 
-	txid, ok := result["txid"].(string)
-	if !ok {
-		return errors.New("invalid response from server, missing txid")
-	}
+// 	txid, ok := result["txid"].(string)
+// 	if !ok {
+// 		return errors.New("invalid response from server, missing txid")
+// 	}
 
-	fmt.Printf("Transaction successful!\nTXID: %s\n", txid)
-	return nil
-}
+// 	fmt.Printf("Transaction successful!\nTXID: %s\n", txid)
+// 	return nil
+// }
