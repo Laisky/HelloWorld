@@ -15967,6 +15967,33 @@ BTC 允许在交易中携带一些和交易无关的自定义数据，根据这�
 </div>
 </div>
 </div></section><section >
+<div id="cell-id=165cc4cc" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="OpCode">OpCode<a class="anchor-link" href="#OpCode">&#182;</a></h4><p>EVM 实际上执行的是 OpCode，可以理解为 EVM 的汇编。</p>
+<p>Solidity 编写的高级代码会先编译为 OpCode 再发不到链上供 EVM 运行。
+所以虽然区块链是完全透明的，但是并不代表所有的合约都是开源的，未开源的合约只能通过 OpCode 去逆向。</p>
+<p><img src="https://s3.laisky.com/uploads/2024/06/opcode.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
+<div id="cell-id=a933e5a6" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="EVM-Inside">EVM Inside<a class="anchor-link" href="#EVM-Inside">&#182;</a></h4><p><img src="https://s3.laisky.com/uploads/2024/06/evm-inside.jpg" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=89bfe389" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15976,6 +16003,8 @@ BTC 允许在交易中携带一些和交易无关的自定义数据，根据这�
 <h3 id="ERC-20-FT">ERC-20 FT<a class="anchor-link" href="#ERC-20-FT">&#182;</a></h3><p>基于智能合约，我们就可以发行自己的币了， 为了和 layer-1 的 coin 相区分，利用智能合约发行的币我们称为 layer-2 的 token。</p>
 <p>其实原理非常简单，你声明一个 class，然后声明一些内部变量，其中一个变量是 mapping，用来保存 <code>user address -&gt; balance</code> 的账本。
 然后再设计一些方法，比如用于转账的 <code>transfer</code>，用户创造货币的 <code>mint</code>，用户查询余额的 <code>balanceOf</code> 等，这个 smart contract 就相当于定义了一种全新的 token。</p>
+<p>简而言之，就是在 EVM 内创建一个账本，记录每个人（一个钱包地址），有多少钱（token）。
+一个合约对应一种 token，合约的地址就是 token 的地址。</p>
 
 </div>
 </div>
@@ -16037,14 +16066,42 @@ BTC 允许在交易中携带一些和交易无关的自定义数据，根据这�
 </div>
 </div>
 </div></section><section >
+<div id="cell-id=456ef1c6" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>代码非常简单易懂，没有并行和并发，不需要考虑任何数据冲突。</p>
+<p>所谓的挖矿，就是调用一下合约的 <code>mint</code> 方法，然后编辑账本，给某个地址增加一点余额。</p>
+<p>所谓的转账，就是调用一下合约的 <code>transfer</code> 方法，然后编辑账本，给一个地址减少一点余额，给另一个地址增加一点余额。</p>
+<p>只要你的 contract 符合 ERC-20 标准，就可以将合约地址作为一个 FT Token，登记到任何支持 ERC-20 的平台或钱包。</p>
+
+</div>
+</div>
+</div>
+</div></section><section >
 <div id="cell-id=236a0139" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>我发行了一种名为 laisky 的 ERC-20 token</p>
+<p>我发行了一种<a href="https://sepolia.etherscan.io/token/0xe5e908b3afe47f5cc75b5ec8ca843ccb135adb6c?a=0x9ad83bc92782ef8e12842580f276e2e70c2aa6ce">名为 laisky 的 ERC-20 token</a></p>
 <p><img src="https://s3.laisky.com/uploads/2024/06/erc-20-laisky.png" alt="" /></p>
+
+</div>
+</div>
+</div>
+</div>
+<div id="cell-id=5776571d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>利用合约地址 <code>0xe5e908B3Afe47F5CC75b5eC8CA843cCb135AdB6c</code>，可以将其倒入到小狐狸 MetaMask 中</p>
+<p><img src="https://s3.laisky.com/uploads/2024/06/metamask-import-erc20.png" alt="" /></p>
 
 </div>
 </div>
@@ -16678,6 +16735,7 @@ AMM 通过自动调整杠杆，来保证交易对的价格能够和市场保持�
 <h3 id="%E5%AD%98%E5%82%A8:-Arweave">&#23384;&#20648;: Arweave<a class="anchor-link" href="#%E5%AD%98%E5%82%A8:-Arweave">&#182;</a></h3><p>此前介绍过好几次，这里就不再详细介绍了。</p>
 <p>Arweave 作为一个 Layer-1，它的每一个区块都是用户提交的数据。通过鼓励矿工存储稀少的区块，从而实现让所有的区块都有尽可能多的备份。</p>
 <p>以相对低廉的价格实现了永久数据存储，目前 Arweave 已经成为 NFT 等链外数据存储的首选。</p>
+<p><strong>上传时一次付费，永久存储</strong></p>
 
 </div>
 </div>
