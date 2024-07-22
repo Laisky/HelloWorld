@@ -1,0 +1,26 @@
+#include "imports/stdlib.fc";
+
+const msg::send_mode::default = 0;
+const msg::send_mode::separate_gas = 1;
+const msg::send_mode::ignore_errors = 2;
+const msg::send_mode::carry_remaining_balance = 128;
+const msg::send_mode::carry_remaining_value = 64;
+const msg::send_mode::destroy_if_zero = 32;
+
+() msg::send_text(
+    slice to_addr,
+    int value,
+    slice content,
+    int mode
+) impure {
+    var msg = begin_cell()
+        .store_uint(0x10, 6)
+        .store_slice(to_addr)
+        .store_coins(value)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(0, 32)
+        .store_slice(content)
+        .end_cell();
+
+    send_raw_message(msg, mode);
+}

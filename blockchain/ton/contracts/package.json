@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@orbs-network/ton-access": "^2.3.3"
+  }
+}

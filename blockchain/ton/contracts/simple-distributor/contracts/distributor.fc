@@ -1,0 +1,93 @@
+#include "imports/stdlib.fc";
+#include "message.fc";
+
+;;
+;; Distributor contract splits any incoming value between shareholders
+;;
+
+global slice ctx_owner;
+global int ctx_processing_price;
+global cell ctx_shares;
+global int ctx_seed;
+
+() load_data() impure {
+    var ds = get_data().begin_parse();
+
+    ctx_owner = ds~load_msg_addr();
+    ctx_processing_price = ds~load_coins();
+    ctx_shares = ds~load_dict();
+    ctx_seed = ds~load_uint(16);
+
+    ds.end_parse();
+}
+
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    slice cs = in_msg_full.begin_parse();
+    int flags = cs~load_uint(4);
+
+    if (flags & 1) { ;; ignore all bounced messages
+        return ();
+    }
+
+    slice sender_addr = cs~load_msg_addr();
+
+    load_data();
+
+    ;; Admin methods
+    if (equal_slice_bits(sender_addr, ctx_owner) & (~ in_msg_body.slice_empty?())) {
+        int op = in_msg_body~load_uint(32);
+
+        if (op == "op::update_data"c) {
+            set_data(in_msg_body~load_ref());
+        }
+        if (op == "op::update_code"c) {
+            set_code(in_msg_body~load_ref());
+        }
+        if (op == "op::topup"c) {
+            ;; Just accept coins
+            return();
+        }
+        return();
+    }
+
+
+    var value_to_share = my_balance - ctx_processing_price;
+
+    if (value_to_share <= 0) {
+        return ();
+    }
+
+    int i = -1;
+    do {
+        (i, slice share, int notfail) = ctx_shares.udict_get_next?(32, i);
+        if (notfail) {
+            var address = share~load_msg_addr();
+            var factor = share~load_uint(16);
+            var base = share~load_uint(16);
+            var comment = share~load_ref();
+
+            var share_value = muldiv(value_to_share, factor, base);
+
+            msg::send_text(
+                address,
+                share_value,
+                comment.begin_parse(),
+                msg::send_mode::default
+            );
+        }
+    } until (~ notfail);
+}
+
+int processing_price() method_id {
+    load_data();
+    return ctx_processing_price;
+}
+
+slice owner() method_id {
+    load_data();
+    return ctx_owner;
+}
+
+cell config() method_id {
+    return get_data();
+}
