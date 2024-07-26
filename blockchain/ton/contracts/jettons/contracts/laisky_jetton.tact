@@ -5,12 +5,17 @@ message Mint {
     receiver: Address;
 }
 
+// This is your custom jetton's main contract.
+// It defines the rules and core functionality of your token.
 contract LaiskyJetton with Jetton {
+    // Total number of tokens in existence.
     totalSupply: Int as coins;
-    owner: Address;
-    content: Cell;
+    // Flag indicating if new tokens can be created.
     mintable: Bool;
-
+    owner: Address;
+    // Cell to store arbitrary data related to the jetton (e.g., metadata, description).
+    content: Cell;
+    // Maximum number of tokens that can ever exist.
     max_supply: Int as coins;
 
     init(owner: Address, content: Cell, max_supply: Int) {
@@ -19,9 +24,10 @@ contract LaiskyJetton with Jetton {
         self.mintable = true;
         self.content = content;
 
-        self.max_supply = max_supply; // Initial Setting for max_supply
+        self.max_supply = max_supply;
     }
 
+    // Allows the owner to mint new tokens and send them to a specified walletOwner.
     receive(msg: Mint) {
         let ctx: Context = context();
         require(ctx.sender == self.owner, "Not Owner");
@@ -29,12 +35,14 @@ contract LaiskyJetton with Jetton {
         self.mint(msg.receiver, msg.amount, self.owner); // (to, amount, response_destination)
     }
 
+    // Example of a custom message that allows public minting of 100 tokens.
     receive("Mint: 100") { // Public Minting
         let ctx: Context = context();
         require(self.mintable, "Can't Mint Anymore");
         self.mint(ctx.sender, 100, self.owner);
     }
 
+    // Allows the owner to disable further minting.
     receive("Owner: MintClose") {
         let ctx: Context = context();
         require(ctx.sender == self.owner, "Not Owner");
@@ -51,25 +59,34 @@ struct JettonData {
 }
 
 // ============================================================================================================ //
+
+// This trait defines the standard interface and some shared behavior
+// that all jettons on TON should adhere to, ensuring interoperability.
 @interface("org.ton.jetton.master")
 trait Jetton with Ownable {
 
-    totalSupply: Int; // Already set initially
+    // align with TEP-74, declare types without length
+    totalSupply: Int;
     mintable: Bool;
     owner: Address;
     content: Cell;
 
     max_supply: Int; // This is not in the TEP-74 interface
 
+    // Allow changing content only by owner
     receive(msg: TokenUpdateContent) {
-        self.requireOwner();                // Allow changing content only by owner
-        self.content = msg.content;         // Update content
+        self.requireOwner();
+        self.content = msg.content;
     }
 
+    // Handles notifications when someone burns his tokens,
+    // updating the total supply and sending a cashback if needed.
     receive(msg: TokenBurnNotification) {
-        self.requireWallet(msg.owner);                     // Check wallet
-        self.totalSupply = self.totalSupply - msg.amount; // Update supply
+        self.requireWallet(msg.owner);
+        self.totalSupply = self.totalSupply - msg.amount;
 
+        // response_destination acts as a callback walletOwner,
+        // the original sender will receive a response and cashback at that walletOwner.
         if (msg.response_destination != null) { // Cashback
             send(SendParameters{
                 to: msg.response_destination!!,
@@ -85,12 +102,14 @@ trait Jetton with Ownable {
 
     // @to The Address receive the Jetton token after minting
     // @amount The amount of Jetton token being minted
-    // @response_destination The previous owner address
+    // @response_destination The previous owner walletOwner
     fun mint(to: Address, amount: Int, response_destination: Address) {
         require(self.totalSupply + amount <= self.max_supply, "The total supply will be overlapping.");
         self.totalSupply = self.totalSupply + amount; // Update total supply
 
+        // Create wallet for the receiver, this operation is idempotent
         let winit: StateInit = self.getJettonWalletInit(to); // Create message
+
         send(SendParameters{
             to: contractAddress(winit),
             value: 0,
@@ -109,14 +128,17 @@ trait Jetton with Ownable {
         });
     }
 
+    // make sure the message is sent by the owner's jetton wallet
     fun requireWallet(owner: Address) {
         let ctx: Context = context();
         let winit: StateInit = self.getJettonWalletInit(owner);
         require(contractAddress(winit) == ctx.sender, "Invalid sender");
     }
 
-    virtual fun getJettonWalletInit(address: Address): StateInit {
-        return initOf JettonDefaultWallet(myAddress(), address);
+    // create/get the jetton wallet that managed by the master contract,
+    // and owned by the specified walletOwner.
+    virtual fun getJettonWalletInit(walletOwner: Address): StateInit {
+        return initOf JettonDefaultWallet(myAddress(), walletOwner);
     }
 
     // ====== Get Methods ====== //
@@ -138,6 +160,7 @@ trait Jetton with Ownable {
 }
 
 // ============================================================ //
+
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
     const minTonsForStorage: Int = ton("0.01");
