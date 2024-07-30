@@ -7,6 +7,8 @@ message Mint {
 
 // This is your custom jetton's main contract.
 // It defines the rules and core functionality of your token.
+//
+// TEP-74: https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md
 contract LaiskyJetton with Jetton {
     // Total number of tokens in existence.
     totalSupply: Int as coins;
@@ -352,6 +354,8 @@ message(0x595f07bc) TokenBurn {
 message(0x7bdd97de) TokenBurnNotification {
     queryId: Int as uint64;
     amount: Int as coins;
+    // the owner property seems redundant,
+    // the owner can be extracted from the sender of the message.
     owner: Address;
     response_destination: Address?;
 }
