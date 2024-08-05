@@ -3,6 +3,8 @@ import { myAddress } from './env';
 import { LaiskyJetton, Mint, storeMint } from '../wrappers/LaiskyJetton';
 import { compile, NetworkProvider } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
+import { TonClient, WalletContractV4, internal } from "ton";
+
 
 /**
  * Deploy the jetton contract

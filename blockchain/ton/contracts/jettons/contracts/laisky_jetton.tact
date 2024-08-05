@@ -1,9 +1,21 @@
 import "@stdlib/ownable";
 
+// Mint is a message that allows the owner to mint new tokens
+// and send them to a specified walletOwner.
 message Mint {
     amount: Int;
     receiver: Address;
 }
+
+message Noop {
+}
+
+// Withdraw is a message that allows the owner to withdraw tokens from the wallet.
+message Withdraw {
+    amount: Int;
+    to: Address;
+}
+
 
 // This is your custom jetton's main contract.
 // It defines the rules and core functionality of your token.
@@ -37,11 +49,16 @@ contract LaiskyJetton with Jetton {
         self.mint(msg.receiver, msg.amount, self.owner); // (to, amount, response_destination)
     }
 
-    // Example of a custom message that allows public minting of 100 tokens.
-    receive("Mint: 100") { // Public Minting
+    // Allows anyone to deposit tokens to the wallet.
+    // receive(msg: Deposit) {
+    //     // self.deposit();
+    // }
+
+    // Allows the owner to withdraw tokens from the wallet.
+    receive(msg: Withdraw) {
         let ctx: Context = context();
-        require(self.mintable, "Can't Mint Anymore");
-        self.mint(ctx.sender, 100, self.owner);
+        require(ctx.sender == self.owner, "Not Owner");
+        self.withdraw(msg.amount, msg.to);
     }
 
     // Allows the owner to disable further minting.
@@ -84,7 +101,7 @@ trait Jetton with Ownable {
     // Handles notifications when someone burns his tokens,
     // updating the total supply and sending a cashback if needed.
     receive(msg: TokenBurnNotification) {
-        self.requireWallet(msg.owner);
+        self.requireSendFromWallet(msg.owner);
         self.totalSupply = self.totalSupply - msg.amount;
 
         // response_destination acts as a callback walletOwner,
@@ -130,10 +147,49 @@ trait Jetton with Ownable {
         });
     }
 
-    // make sure the message is sent by the owner's jetton wallet
-    fun requireWallet(owner: Address) {
+    receive(msg: Noop) {
+        // let ctx: Context = context();
+
+        // // Create message
+        // send(SendParameters{
+        //     to: myAddress(),
+        //     value: 0,
+        //     bounce: false,
+        //     mode: SendRemainingValue,
+        //     body: TokenTransferInternal{
+        //         queryId: 0,
+        //         amount: amount,
+        //         from: ctx.sender,
+        //         response_destination: ctx.sender,
+        //         forward_ton_amount: 0,
+        //         forward_payload: emptySlice()
+        //     }.toCell()
+        // });
+    }
+
+    // Withdraw Jetton token from the wallet
+    fun withdraw(amount: Int, to: Address) {
         let ctx: Context = context();
-        let winit: StateInit = self.getJettonWalletInit(owner);
+
+        // Create message
+        send(SendParameters{
+            to: myAddress(),
+            value: 0,
+            bounce: false,
+            mode: SendRemainingValue,
+            body: TokenBurn{
+                queryId: 0,
+                amount: amount,
+                owner: ctx.sender,
+                response_destination: ctx.sender
+            }.toCell()
+        });
+    }
+
+    // make sure the message is sent by the address's wallet
+    fun requireSendFromWallet(address: Address) {
+        let ctx: Context = context();
+        let winit: StateInit = self.getJettonWalletInit(address);
         require(contractAddress(winit) == ctx.sender, "Invalid sender");
     }
 
