@@ -49,11 +49,6 @@ contract LaiskyJetton with Jetton {
         self.mint(msg.receiver, msg.amount, self.owner); // (to, amount, response_destination)
     }
 
-    // Allows anyone to deposit tokens to the wallet.
-    // receive(msg: Deposit) {
-    //     // self.deposit();
-    // }
-
     // Allows the owner to withdraw tokens from the wallet.
     receive(msg: Withdraw) {
         let ctx: Context = context();
@@ -148,41 +143,17 @@ trait Jetton with Ownable {
     }
 
     receive(msg: Noop) {
-        // let ctx: Context = context();
-
-        // // Create message
-        // send(SendParameters{
-        //     to: myAddress(),
-        //     value: 0,
-        //     bounce: false,
-        //     mode: SendRemainingValue,
-        //     body: TokenTransferInternal{
-        //         queryId: 0,
-        //         amount: amount,
-        //         from: ctx.sender,
-        //         response_destination: ctx.sender,
-        //         forward_ton_amount: 0,
-        //         forward_payload: emptySlice()
-        //     }.toCell()
-        // });
     }
 
     // Withdraw Jetton token from the wallet
     fun withdraw(amount: Int, to: Address) {
         let ctx: Context = context();
 
-        // Create message
+        // withdraw the specified amount
         send(SendParameters{
-            to: myAddress(),
-            value: 0,
-            bounce: false,
-            mode: SendRemainingValue,
-            body: TokenBurn{
-                queryId: 0,
-                amount: amount,
-                owner: ctx.sender,
-                response_destination: ctx.sender
-            }.toCell()
+            to: to,
+            value: amount,
+            bounce: false
         });
     }
 

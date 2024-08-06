@@ -1,10 +1,12 @@
-import { Address, toNano, beginCell, contractAddress } from '@ton/core';
-import { myAddress } from './env';
-import { LaiskyJetton, Mint, storeMint } from '../wrappers/LaiskyJetton';
-import { compile, NetworkProvider } from '@ton/blueprint';
+import { toNano } from '@ton/core';
+import { myAddress, config as envConfig } from './env';
+// import { myAddress } from './env';
+import { LaiskyJetton } from '../wrappers/LaiskyJetton';
+import { NetworkProvider, Config } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
-import { TonClient, WalletContractV4, internal } from "ton";
 
+
+export const config = envConfig;
 
 /**
  * Deploy the jetton contract
@@ -26,10 +28,14 @@ export async function run(provider: NetworkProvider) {
 
     // deploy
     const laiskyJetton = provider.open(await LaiskyJetton.fromInit(myAddress, content, max_supply));
+    console.log(`Deploying LaiskyJetton at ${laiskyJetton.address}`);
 
-    if (!await provider.isContractDeployed(laiskyJetton.address)) {
-        await provider.waitForDeploy(laiskyJetton.address);
-    }
+    // there is not need to wait for deploy finish,
+    // because the contract will keep uninitialized until the first call.
+    // if (!await provider.isContractDeployed(laiskyJetton.address)) {
+    //     console.log(`Deploying LaiskyJetton at ${laiskyJetton.address}`);
+    //     await provider.waitForDeploy(laiskyJetton.address, 20);
+    // }
 
     return laiskyJetton;
 }
