@@ -1,0 +1,71 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+;;
+;; Header files for Wallet
+;; NOTE: declarations are sorted for optimal order
+;;
+
+;; __tact_verify_address
+slice __tact_verify_address(slice address) inline;
+
+;; __tact_load_address
+(slice, slice) __tact_load_address(slice cs) inline;
+
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
+
+;; __tact_dict_set_slice_int
+(cell, ()) __tact_dict_set_slice_int(cell d, int kl, slice k, int v, int vl) inline;
+
+;; __tact_dict_get_slice_int
+int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline;
+
+;; __tact_int_eq_nullable_one
+int __tact_int_eq_nullable_one(int a, int b) inline;
+
+;; $WalletOperation$_load
+(slice, ((slice, slice))) $WalletOperation$_load(slice sc_0) inline;
+
+;; $ExternalOperation$_load
+(slice, ((slice))) $ExternalOperation$_load(slice sc_0) inline;
+
+;; $Wallet$_store
+builder $Wallet$_store(builder build_0, (int, int, int, cell) v) inline;
+
+;; $Wallet$_load
+(slice, ((int, int, int, cell))) $Wallet$_load(slice sc_0) inline;
+
+;; $Wallet$init$_load
+(slice, ((int, int))) $Wallet$init$_load(slice sc_0) inline;
+
+;; $Wallet$_contract_init
+(int, int, int, cell) $Wallet$_contract_init(int $publicKey, int $walletId) impure inline_ref;
+
+;; $Wallet$_contract_load
+(int, int, int, cell) $Wallet$_contract_load() impure inline_ref;
+
+;; $Wallet$_contract_store
+() $Wallet$_contract_store((int, int, int, cell) v) impure inline;
+
+;; $Wallet$_fun_sendTransfer
+((int, int, int, cell), ()) $Wallet$_fun_sendTransfer((int, int, int, cell) $self, slice $transfer) impure inline_ref;
+
+;; $Wallet$_fun_processOperation
+((int, int, int, cell), ()) $Wallet$_fun_processOperation((int, int, int, cell) $self, slice $pkg) impure inline_ref;
+
+;; $Wallet$_fun_processTransfer
+((int, int, int, cell), ()) $Wallet$_fun_processTransfer((int, int, int, cell) $self, (slice, slice) $msg, int $external) impure inline_ref;
+
+;; $Wallet$_fun_seqno
+((int, int, int, cell), int) $Wallet$_fun_seqno((int, int, int, cell) $self) impure inline_ref;
+
+;; $Wallet$_fun_walletId
+((int, int, int, cell), int) $Wallet$_fun_walletId((int, int, int, cell) $self) impure inline_ref;
+
+;; $Wallet$_fun_publicKey
+((int, int, int, cell), int) $Wallet$_fun_publicKey((int, int, int, cell) $self) impure inline_ref;
+
+;; $Wallet$_fun_allowances
+((int, int, int, cell), cell) $Wallet$_fun_allowances((int, int, int, cell) $self) impure inline_ref;

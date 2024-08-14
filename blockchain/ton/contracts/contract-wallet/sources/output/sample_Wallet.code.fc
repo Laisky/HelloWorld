@@ -1,0 +1,255 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "sample_Wallet.headers.fc";
+#include "sample_Wallet.stdlib.fc";
+#include "sample_Wallet.storage.fc";
+
+;;
+;; Contract Wallet functions
+;;
+
+(int, int, int, cell) $Wallet$_contract_init(int $publicKey, int $walletId) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = (null(), null(), null(), null());
+    $self'publicKey = $publicKey;
+    $self'seqno = 0;
+    $self'walletId = $walletId;
+    return ($self'publicKey, $self'seqno, $self'walletId, $self'allowances);
+}
+
+((int, int, int, cell), ()) $Wallet$_fun_sendTransfer((int, int, int, cell) $self, slice $transfer) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    while ((slice_refs($transfer) > 0)) {
+        int $mode = $transfer~load_int(8);
+        cell $body = $transfer~load_ref();
+        send_raw_message($body, $mode);
+    }
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+((int, int, int, cell), ()) $Wallet$_fun_processOperation((int, int, int, cell) $self, slice $pkg) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    int $mode = $pkg~load_uint(8);
+    if (($mode == 0)) {
+        while ((slice_refs($pkg) > 0)) {
+            ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_processOperation(begin_parse($pkg~load_ref()));
+        }
+    } elseif (($mode == 1)) {
+        ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_sendTransfer($pkg);
+    } elseif (($mode == 2)) {
+        $self'allowances~__tact_dict_set_slice_int(267, $pkg~__tact_load_address(), true, 1);
+    } elseif (($mode == 3)) {
+        $self'allowances~__tact_dict_set_slice_int(267, $pkg~__tact_load_address(), null(), 1);
+    }
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+((int, int, int, cell), ()) $Wallet$_fun_processTransfer((int, int, int, cell) $self, (slice, slice) $msg, int $external) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    var (($msg'signature, $msg'operation)) = $msg;
+    int $op_hash = slice_hash($msg'operation);
+    throw_unless(48401, check_signature($op_hash, $msg'signature, $self'publicKey));
+    slice $pkg = $msg'operation;
+    int $timeout = $pkg~load_int(32);
+    int $seqno = $pkg~load_int(32);
+    int $walletId = $pkg~load_int(64);
+    throw_unless(17654, ($seqno == $self'seqno));
+    throw_unless(8522, ($walletId == $self'walletId));
+    throw_unless(54515, (now() < $timeout));
+    if ($external) {
+        accept_message();
+    }
+    $self'seqno = ($self'seqno + 1);
+    commit();
+    ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_processOperation($pkg);
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+((int, int, int, cell), int) $Wallet$_fun_seqno((int, int, int, cell) $self) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), $self'seqno);
+}
+
+((int, int, int, cell), int) $Wallet$_fun_walletId((int, int, int, cell) $self) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), $self'walletId);
+}
+
+((int, int, int, cell), int) $Wallet$_fun_publicKey((int, int, int, cell) $self) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), $self'publicKey);
+}
+
+((int, int, int, cell), cell) $Wallet$_fun_allowances((int, int, int, cell) $self) impure inline_ref {
+    var (($self'publicKey, $self'seqno, $self'walletId, $self'allowances)) = $self;
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), $self'allowances);
+}
+
+;;
+;; Receivers of a Contract Wallet
+;;
+
+((int, int, int, cell), ()) $Wallet$_internal_any((int, int, int, cell) $self, slice $msg) impure inline {
+    var ($self'publicKey, $self'seqno, $self'walletId, $self'allowances) = $self;
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+(((int, int, int, cell)), ()) $Wallet$_internal_binary_ExternalOperation((int, int, int, cell) $self, (slice) $msg) impure inline {
+    var ($self'publicKey, $self'seqno, $self'walletId, $self'allowances) = $self;
+    var ($msg'operation) = $msg;
+    throw_unless(12383, __tact_int_eq_nullable_one(__tact_dict_get_slice_int($self'allowances, 267, __tact_context_get_sender(), 1), true));
+    ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_processOperation($msg'operation);
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+(((int, int, int, cell)), ()) $Wallet$_internal_binary_WalletOperation((int, int, int, cell) $self, (slice, slice) $msg) impure inline {
+    var ($self'publicKey, $self'seqno, $self'walletId, $self'allowances) = $self;
+    var ($msg'signature, $msg'operation) = $msg;
+    ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_processTransfer(($msg'signature, $msg'operation), false);
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+(((int, int, int, cell)), ()) $Wallet$_external_binary_WalletOperation((int, int, int, cell) $self, (slice, slice) $msg) impure inline {
+    var ($self'publicKey, $self'seqno, $self'walletId, $self'allowances) = $self;
+    var ($msg'signature, $msg'operation) = $msg;
+    ($self'publicKey, $self'seqno, $self'walletId, $self'allowances)~$Wallet$_fun_processTransfer(($msg'signature, $msg'operation), true);
+    return (($self'publicKey, $self'seqno, $self'walletId, $self'allowances), ());
+}
+
+;;
+;; Get methods of a Contract Wallet
+;;
+
+_ %seqno() method_id(85143) {
+    var self = $Wallet$_contract_load();
+    var res = self~$Wallet$_fun_seqno();
+    return res;
+}
+
+_ %walletId() method_id(114762) {
+    var self = $Wallet$_contract_load();
+    var res = self~$Wallet$_fun_walletId();
+    return res;
+}
+
+_ %publicKey() method_id(86520) {
+    var self = $Wallet$_contract_load();
+    var res = self~$Wallet$_fun_publicKey();
+    return res;
+}
+
+_ %allowances() method_id(94547) {
+    var self = $Wallet$_contract_load();
+    var res = self~$Wallet$_fun_allowances();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.any.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmV8CZ64n5tUuWxkVDLCrjTXxwUYUmj1j3pjw9o2MzVF5V";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Wallet
+;;
+
+((int, int, int, cell), int) $Wallet$_contract_router_internal((int, int, int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Receive ExternalOperation message
+    if (op == 3830936038) {
+        var msg = in_msg~$ExternalOperation$_load();
+        self~$Wallet$_internal_binary_ExternalOperation(msg);
+        return (self, true);
+    }
+    
+    ;; Receive WalletOperation message
+    if (op == 2798955402) {
+        var msg = in_msg~$WalletOperation$_load();
+        self~$Wallet$_internal_binary_WalletOperation(msg);
+        return (self, true);
+    }
+    
+    ;; Receiver fallback
+    self~$Wallet$_internal_any(in_msg);
+    return (self, true);
+}
+
+((int, int, int, cell), int) $Wallet$_contract_router_external((int, int, int, cell) self, slice in_msg) impure inline_ref {
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive WalletOperation message
+    if (op == 2798955402) {
+        var msg = in_msg~$WalletOperation$_load();
+        self~$Wallet$_external_binary_WalletOperation(msg);
+        return (self, true);
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Wallet$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Wallet$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Wallet$_contract_store(self);
+}
+
+() recv_external(slice in_msg) impure {
+    ;; Load contract data
+    var self = $Wallet$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Wallet$_contract_router_external(in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(handled, 130);
+    
+    ;; Persist state
+    $Wallet$_contract_store(self);
+}

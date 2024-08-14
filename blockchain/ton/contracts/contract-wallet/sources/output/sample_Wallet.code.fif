@@ -1,0 +1,446 @@
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_dict_set_slice_int
+  DECLPROC __tact_dict_get_slice_int
+  DECLPROC __tact_int_eq_nullable_one
+  DECLPROC $WalletOperation$_load
+  DECLPROC $ExternalOperation$_load
+  DECLPROC $Wallet$_store
+  DECLPROC $Wallet$_load
+  DECLPROC $Wallet$init$_load
+  DECLPROC $Wallet$_contract_init
+  DECLPROC $Wallet$_contract_load
+  DECLPROC $Wallet$_contract_store
+  DECLPROC $Wallet$_fun_sendTransfer
+  DECLPROC $Wallet$_fun_processOperation
+  DECLPROC $Wallet$_fun_processTransfer
+  DECLPROC $Wallet$_fun_seqno
+  DECLPROC $Wallet$_fun_walletId
+  DECLPROC $Wallet$_fun_publicKey
+  DECLPROC $Wallet$_fun_allowances
+  DECLPROC $Wallet$_internal_any
+  DECLPROC $Wallet$_internal_binary_ExternalOperation
+  DECLPROC $Wallet$_internal_binary_WalletOperation
+  DECLPROC $Wallet$_external_binary_WalletOperation
+  85143 DECLMETHOD %seqno
+  114762 DECLMETHOD %walletId
+  86520 DECLMETHOD %publicKey
+  94547 DECLMETHOD %allowances
+  113617 DECLMETHOD supported_interfaces
+  121275 DECLMETHOD get_abi_ipfs
+  115390 DECLMETHOD lazy_deployment_completed
+  DECLPROC $Wallet$_contract_router_internal
+  DECLPROC $Wallet$_contract_router_external
+  DECLPROC recv_internal
+  DECLPROC recv_external
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  DECLGLOBVAR __tact_randomized
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    10 PUSHPOW2
+    EQUAL
+    SWAP
+    1279 PUSHINT
+    EQUAL
+    OR
+    136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_dict_set_slice_int PROCINLINE:<{
+    OVER
+    ISNULL
+    IF:<{
+      2DROP
+      -ROT
+      DICTDEL
+      DROP
+    }>ELSE<{
+      NEWC
+      SWAP
+      STIX
+      s1 s3 s3 XCHG3
+      DICTSETB
+    }>
+  }>
+  __tact_dict_get_slice_int PROCINLINE:<{
+    s1 s3 s3 XCHG3
+    DICTGET
+    NULLSWAPIFNOT
+    IF:<{
+      SWAP
+      LDIX
+      DROP
+    }>ELSE<{
+      2DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_int_eq_nullable_one PROCINLINE:<{
+    OVER
+    ISNULL
+    IF:<{
+      2DROP
+      FALSE
+    }>ELSE<{
+      EQUAL
+    }>
+  }>
+  $WalletOperation$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2798955402 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    9 PUSHPOW2
+    LDSLICEX
+    TUCK
+  }>
+  $ExternalOperation$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    3830936038 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    DUP
+  }>
+  $Wallet$_store PROCINLINE:<{
+    s3 s4 XCHG2
+    256 STU
+    64 STU
+    64 STU
+    STDICT
+  }>
+  $Wallet$_load PROCINLINE:<{
+    256 LDU
+    64 LDU
+    64 LDU
+    LDDICT
+    4 -ROLL
+  }>
+  $Wallet$init$_load PROCINLINE:<{
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    -ROT
+  }>
+  $Wallet$_contract_init PROCREF:<{
+    PUSHNULL
+    0 PUSHINT
+    -ROT
+  }>
+  $Wallet$_contract_load PROCREF:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    SWAP
+    IFJMP:<{
+      $Wallet$_load INLINECALLDICT
+      1 4 BLKDROP2
+    }>
+    $Wallet$init$_load INLINECALLDICT
+    s0 s2 XCHG
+    ENDS
+    SWAP
+    $Wallet$_contract_init INLINECALLDICT
+  }>
+  $Wallet$_contract_store PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    4 -ROLL
+    $Wallet$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $Wallet$_fun_sendTransfer PROCREF:<{
+    WHILE:<{
+      DUP
+      SREFS
+      0 GTINT
+    }>DO<{
+      8 LDI
+      LDREF
+      s0 s2 XCHG
+      SENDRAWMSG
+    }>
+    DROP
+  }>
+  $Wallet$_fun_processOperation PROCREF:<{
+    8 LDU
+    OVER
+    0 EQINT
+    IF:<{
+      NIP
+      WHILE:<{
+        DUP
+        SREFS
+        0 GTINT
+      }>DO<{
+        LDREF
+        SWAP
+        CTOS
+        s1 s5 XCHG
+        s1 s4 XCHG
+        s3 s3 s0 XCHG3
+        $Wallet$_fun_processOperation INLINECALLDICT
+        4 ROLL
+      }>
+      DROP
+    }>ELSE<{
+      OVER
+      1 EQINT
+      IF:<{
+        NIP
+        $Wallet$_fun_sendTransfer INLINECALLDICT
+      }>ELSE<{
+        OVER
+        2 EQINT
+        IF:<{
+          267 PUSHINT
+          s2 POP
+          __tact_load_address INLINECALLDICT
+          NIP
+          TRUE
+          1 PUSHINT
+          __tact_dict_set_slice_int INLINECALLDICT
+        }>ELSE<{
+          SWAP
+          3 EQINT
+          IF:<{
+            267 PUSHINT
+            SWAP
+            __tact_load_address INLINECALLDICT
+            NIP
+            PUSHNULL
+            1 PUSHINT
+            __tact_dict_set_slice_int INLINECALLDICT
+          }>ELSE<{
+            DROP
+          }>
+        }>
+      }>
+    }>
+  }>
+  $Wallet$_fun_processTransfer PROCREF:<{
+    OVER
+    HASHSU
+    48401 PUSHINT
+    s4 s8 XCPU
+    CHKSIGNU
+    s1 s3 XCHG
+    THROWANYIFNOT
+    32 LDI
+    32 LDI
+    64 LDI
+    17654 PUSHINT
+    s3 s8 XCPU
+    EQUAL
+    s1 s3 XCHG
+    THROWANYIFNOT
+    8522 PUSHINT
+    s1 s6 XCPU
+    EQUAL
+    THROWANYIFNOT
+    54515 PUSHINT
+    NOW
+    s0 s3 XCHG2
+    LESS
+    s1 s2 XCHG
+    THROWANYIFNOT
+    SWAP
+    IF:<{
+      ACCEPT
+    }>
+    s0 s3 XCHG
+    INC
+    COMMIT
+    s0 s3 XCHG
+    $Wallet$_fun_processOperation INLINECALLDICT
+  }>
+  $Wallet$_fun_seqno PROCREF:<{
+    s2 PUSH
+  }>
+  $Wallet$_fun_walletId PROCREF:<{
+    OVER
+  }>
+  $Wallet$_fun_publicKey PROCREF:<{
+    s3 PUSH
+  }>
+  $Wallet$_fun_allowances PROCREF:<{
+    DUP
+  }>
+  $Wallet$_internal_any PROCINLINE:<{
+    DROP
+  }>
+  $Wallet$_internal_binary_ExternalOperation PROCINLINE:<{
+    12383 PUSHINT
+    267 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s4 PUSH
+    -ROT
+    1 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    TRUE
+    __tact_int_eq_nullable_one INLINECALLDICT
+    THROWANYIFNOT
+    $Wallet$_fun_processOperation INLINECALLDICT
+  }>
+  $Wallet$_internal_binary_WalletOperation PROCINLINE:<{
+    FALSE
+    $Wallet$_fun_processTransfer INLINECALLDICT
+  }>
+  $Wallet$_external_binary_WalletOperation PROCINLINE:<{
+    TRUE
+    $Wallet$_fun_processTransfer INLINECALLDICT
+  }>
+  %seqno PROC:<{
+    $Wallet$_contract_load INLINECALLDICT
+    $Wallet$_fun_seqno INLINECALLDICT
+    4 1 BLKDROP2
+  }>
+  %walletId PROC:<{
+    $Wallet$_contract_load INLINECALLDICT
+    $Wallet$_fun_walletId INLINECALLDICT
+    4 1 BLKDROP2
+  }>
+  %publicKey PROC:<{
+    $Wallet$_contract_load INLINECALLDICT
+    $Wallet$_fun_publicKey INLINECALLDICT
+    4 1 BLKDROP2
+  }>
+  %allowances PROC:<{
+    $Wallet$_contract_load INLINECALLDICT
+    $Wallet$_fun_allowances INLINECALLDICT
+    4 1 BLKDROP2
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+    42980537499636128163026532310500881091 PUSHINT
+    289074767680806556846472852687671582181 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d5638435a36346e3574557557786b56444c43726a545878775559556d6a316a33706a77396f324d7a56463556} PUSHSLICE
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+  $Wallet$_contract_router_internal PROCREF:<{
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    s0 s2 XCHG
+    IFJMP:<{
+      2DROP
+      TRUE
+    }>
+    OVER
+    3830936038 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      $ExternalOperation$_load INLINECALLDICT
+      NIP
+      $Wallet$_internal_binary_ExternalOperation INLINECALLDICT
+      TRUE
+    }>
+    SWAP
+    2798955402 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $WalletOperation$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $Wallet$_internal_binary_WalletOperation INLINECALLDICT
+      TRUE
+    }>
+    $Wallet$_internal_any INLINECALLDICT
+    TRUE
+  }>
+  $Wallet$_contract_router_external PROCREF:<{
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    2798955402 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $WalletOperation$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $Wallet$_external_binary_WalletOperation INLINECALLDICT
+      TRUE
+    }>
+    DROP
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    NEGATE
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $Wallet$_contract_load INLINECALLDICT
+    2 4 BLKSWAP
+    $Wallet$_contract_router_internal INLINECALLDICT
+    130 THROWIFNOT
+    $Wallet$_contract_store INLINECALLDICT
+  }>
+  recv_external PROC:<{
+    $Wallet$_contract_load INLINECALLDICT
+    4 ROLL
+    $Wallet$_contract_router_external INLINECALLDICT
+    DROP
+    $Wallet$_contract_store INLINECALLDICT
+  }>
+}END>c

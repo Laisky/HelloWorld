@@ -1,0 +1,76 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+;;
+;; Type: WalletOperation
+;; Header: 0xa6d4ab8a
+;; TLB: wallet_operation#a6d4ab8a signature:fixed_bytes64 operation:remainder<slice> = WalletOperation
+;;
+
+(slice, ((slice, slice))) $WalletOperation$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2798955402);
+    var v'signature = sc_0~load_bits(512);
+    var v'operation = sc_0;
+    return (sc_0, (v'signature, v'operation));
+}
+
+;;
+;; Type: ExternalOperation
+;; Header: 0xe45771e6
+;; TLB: external_operation#e45771e6 operation:remainder<slice> = ExternalOperation
+;;
+
+(slice, ((slice))) $ExternalOperation$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3830936038);
+    var v'operation = sc_0;
+    return (sc_0, (v'operation));
+}
+
+;;
+;; Type: Wallet
+;;
+
+builder $Wallet$_store(builder build_0, (int, int, int, cell) v) inline {
+    var (v'publicKey, v'seqno, v'walletId, v'allowances) = v;
+    build_0 = build_0.store_uint(v'publicKey, 256);
+    build_0 = build_0.store_uint(v'seqno, 64);
+    build_0 = build_0.store_uint(v'walletId, 64);
+    build_0 = build_0.store_dict(v'allowances);
+    return build_0;
+}
+
+(slice, ((int, int, int, cell))) $Wallet$_load(slice sc_0) inline {
+    var v'publicKey = sc_0~load_uint(256);
+    var v'seqno = sc_0~load_uint(64);
+    var v'walletId = sc_0~load_uint(64);
+    var v'allowances = sc_0~load_dict();
+    return (sc_0, (v'publicKey, v'seqno, v'walletId, v'allowances));
+}
+
+(slice, ((int, int))) $Wallet$init$_load(slice sc_0) inline {
+    var v'publicKey = sc_0~load_int(257);
+    var v'walletId = sc_0~load_int(257);
+    return (sc_0, (v'publicKey, v'walletId));
+}
+
+(int, int, int, cell) $Wallet$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$Wallet$_load();
+    } else {
+        (int publicKey, int walletId) = $sc~$Wallet$init$_load();
+        $sc.end_parse();
+        return $Wallet$_contract_init(publicKey, walletId);
+    }
+}
+
+() $Wallet$_contract_store((int, int, int, cell) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $Wallet$_store(b, v);
+    set_data(b.end_cell());
+}
