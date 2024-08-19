@@ -22,7 +22,8 @@ contract Wallet {
 
     fun processTransfer(msg: WalletOperation, external: Bool) {
 
-        // Check Signature
+        // Check signature manually
+        // https://docs.tact-lang.org/ref/core-math#checksignature
         let op_hash: Int = msg.operation.hash();
         require(checkSignature(op_hash, msg.signature, self.publicKey), "Invalid signature");
 

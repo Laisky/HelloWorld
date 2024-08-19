@@ -128,7 +128,7 @@ trait Jetton with Ownable {
             to: contractAddress(winit),
             value: 0,
             bounce: false,
-            mode: SendRemainingValue,
+            mode: SendRemainingValue+SendPayGasSeparately,
             body: TokenTransferInternal{
                 queryId: 0,
                 amount: amount,

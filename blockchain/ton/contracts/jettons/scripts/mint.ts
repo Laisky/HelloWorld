@@ -15,7 +15,7 @@ export async function run(provider: NetworkProvider) {
     await laiskyJetton.send(
         provider.sender(),
         {
-            value: toNano('0.05')
+            value: toNano('0'),
         },
         {
             $$type: 'Mint',
