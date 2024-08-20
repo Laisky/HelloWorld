@@ -1,5 +1,5 @@
 import { Address, toNano, beginCell, contractAddress } from '@ton/core';
-import { Attest } from '../wrappers/Attest';
+import { Attest, WalletWithdraw, storeWalletWithdraw } from '../wrappers/Attest';
 import { compile, NetworkProvider } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
 import { run as deploy } from "./deploy";
@@ -9,17 +9,21 @@ export async function run(provider: NetworkProvider) {
     // const ui = provider.ui();
     // const receiver = Address.parse(await ui.input('receiver\'s address'));
 
-    const contract = await deploy(provider);
+    // const masterContract = await deploy(provider);
 
-    // register
-    await contract.send(
+    const walletContract = provider.provider(Address.parse("kQBrEvO7SD20ReRXeIBxKEeBIROEvAppETHuGihnEhjDZZ5E"));
+
+
+    const cell = beginCell().store(
+        storeWalletWithdraw({
+            $$type: 'WalletWithdraw',
+        })).asCell();
+
+    await walletContract.internal(
         provider.sender(),
         {
             value: toNano('0.05'),
+            body: cell
         },
-        {
-            $$type: 'RegisterBot',
-            manifest_url: "https://ario.laisky.com/alias/attest-manifest.json"
-        },
-    )
+    );
 }

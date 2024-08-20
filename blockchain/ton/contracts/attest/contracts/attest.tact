@@ -16,9 +16,17 @@ message WalletInfo {
     master: Address;
 }
 
-message WalletManifestChangedLog {
+message WalletManifestChangedEvent {
     old_manifest_url: String;
     new_manifest_url: String;
+}
+
+message WalletCreatedEvent {
+    wallet: Address;
+    owner: Address;
+}
+
+message WalletWithdraw {
 }
 
 // this is the master contract of TON.
@@ -32,13 +40,17 @@ contract Attest with Deployable, Ownable {
     receive(msg: RegisterBot){
         let walletInit: StateInit = self.getWalletInit(sender());
         let walletAddr: Address = contractAddress(walletInit);
+
         send(SendParameters{
                 to: walletAddr,
                 value: 0,
                 bounce: false,
                 mode: SendRemainingValue,
-                body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell()
+                body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell(),
+                code: walletInit.code,
+                data: walletInit.data
             });
+
     }
 
     fun getWalletInit(walletOwner: Address): StateInit {
@@ -54,7 +66,7 @@ contract Attest with Deployable, Ownable {
             value: 0,
             bounce: false,
             mode: SendRemainingValue,
-            body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell()
+            body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell(),
         });
     }
 }
@@ -70,9 +82,9 @@ contract AttestWallet with Ownable {
     }
 
     receive(msg: SetWalletManifest){
-        require(self.owner == sender(), "Only master can set manifest");
+        require(self.master == sender(), "Only master can set manifest");
 
-        emit(WalletManifestChangedLog{
+        emit(WalletManifestChangedEvent{
             old_manifest_url: self.manifest_url,
             new_manifest_url: msg.manifest_url
         }.toCell());
@@ -80,11 +92,22 @@ contract AttestWallet with Ownable {
         self.manifest_url = msg.manifest_url;
     }
 
-    get fun info(): WalletInfo {
-        return WalletInfo{
-            manifest_url: self.manifest_url,
-            owner: self.owner,
-            master: self.master
-        };
+    receive(msg: WalletWithdraw){
+        require(self.owner == sender(), "Only master can withdraw");
+
+        send(SendParameters{
+            to: sender(),
+            value: myBalance() - context().value - ton("0.01"),
+            bounce: false,
+            mode: SendRemainingValue
+        });
+    }
+
+    get fun master(): String {
+        return self.master.toString();
+    }
+
+    get fun manifest_url(): String {
+        return self.manifest_url;
     }
 }
