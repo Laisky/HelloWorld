@@ -1,37 +1,90 @@
 import "@stdlib/deploy";
 import "@stdlib/ownable";
+
+
 message RegisterBot {
     manifest_url: String;
+}
+
+message SetWalletManifest {
+    manifest_url: String;
+}
+
+message WalletInfo {
+    manifest_url: String;
+    owner: Address;
+    master: Address;
+}
+
+message WalletManifestChangedLog {
+    old_manifest_url: String;
+    new_manifest_url: String;
 }
 
 // this is the master contract of TON.
 contract Attest with Deployable, Ownable {
     owner: Address;
-
     init(){
         self.owner = sender();
     }
 
     // create AttestWallet for the sender
     receive(msg: RegisterBot){
-        let walletInit: StateInit = self.getWalletInit(sender(), msg.manifest_url);
+        let walletInit: StateInit = self.getWalletInit(sender());
         let walletAddr: Address = contractAddress(walletInit);
-        send(SendParameters{to: walletAddr, value: 0, bounce: false, mode: SendRemainingValue});
+        send(SendParameters{
+                to: walletAddr,
+                value: 0,
+                bounce: false,
+                mode: SendRemainingValue,
+                body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell()
+            });
     }
 
-    fun getWalletInit(walletOwner: Address, manifest_url: String): StateInit {
-        return initOf AttestWallet(myAddress(), walletOwner, manifest_url);
+    fun getWalletInit(walletOwner: Address): StateInit {
+        return initOf AttestWallet(myAddress(), walletOwner);
+    }
+
+    receive(msg: SetWalletManifest) {
+        let walletInit: StateInit = self.getWalletInit(sender());
+        let walletAddr: Address = contractAddress(walletInit);
+
+        send(SendParameters{
+            to: walletAddr,
+            value: 0,
+            bounce: false,
+            mode: SendRemainingValue,
+            body: SetWalletManifest{manifest_url: msg.manifest_url}.toCell()
+        });
     }
 }
 
 contract AttestWallet with Ownable {
     owner: Address;
     master: Address;
-    manifest_url: String;
+    manifest_url: String = "";
 
-    init(master: Address, owner: Address, manifest_url: String){
+    init(master: Address, owner: Address){
         self.master = master;
         self.owner = owner;
-        self.manifest_url = manifest_url;
+    }
+
+    receive(msg: SetWalletManifest){
+        require(self.owner == sender(), "Only master can set manifest");
+
+        emit(WalletManifestChangedLog{
+            old_manifest_url: self.manifest_url,
+            new_manifest_url: msg.manifest_url
+        }.toCell());
+
+        self.manifest_url = msg.manifest_url;
+    }
+
+    get fun info(): WalletInfo {
+        return WalletInfo{
+            manifest_url: self.manifest_url,
+            owner: self.owner,
+            master: self.master
+        };
     }
 }
