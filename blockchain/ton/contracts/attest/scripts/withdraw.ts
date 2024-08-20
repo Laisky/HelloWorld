@@ -3,7 +3,7 @@ import { Attest, WalletWithdraw, storeWalletWithdraw } from '../wrappers/Attest'
 import { compile, NetworkProvider } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
 import { run as deploy } from "./deploy";
-import { myAddress } from './env';
+import { myAddress, walletAddress } from './env';
 
 export async function run(provider: NetworkProvider) {
     // const ui = provider.ui();
@@ -11,8 +11,7 @@ export async function run(provider: NetworkProvider) {
 
     // const masterContract = await deploy(provider);
 
-    const walletContract = provider.provider(Address.parse("kQBrEvO7SD20ReRXeIBxKEeBIROEvAppETHuGihnEhjDZZ5E"));
-
+    const walletContract = provider.provider(walletAddress);
 
     const cell = beginCell().store(
         storeWalletWithdraw({

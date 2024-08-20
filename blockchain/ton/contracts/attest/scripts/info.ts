@@ -3,10 +3,10 @@ import { Attest } from '../wrappers/Attest';
 import { compile, NetworkProvider } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
 import { run as deploy } from "./deploy";
-import { myAddress } from './env';
+import { myAddress, walletAddress } from './env';
 
 export async function run(provider: NetworkProvider) {
-    const walletContract = provider.provider(Address.parse("kQBKSD7eVlItjEE3Z40EOZCznB6L6ydk-RHdWmmBirqTlk1-"));
+    const walletContract = provider.provider(walletAddress);
 
     const results = await Promise.all([
         walletContract.get("owner", []),
