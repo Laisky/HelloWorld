@@ -19,7 +19,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'RegisterBot',
-            manifest_url: "https://ario.laisky.com/alias/attest-manifest.json"
+            manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json"
         },
     )
 }

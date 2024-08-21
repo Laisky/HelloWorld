@@ -237,7 +237,12 @@ contract AttestWallet with Ownable {
         return self.manifestUrl;
     }
 
-    get fun taskIncentives(taskId: Int): Int? {
-        return self.attestTaskIncentives.get(taskId);
+    get fun taskIncentives(taskId: Int): Int {
+        let val = self.attestTaskIncentives.get(taskId);
+        if (val == null) {
+            return 0;
+        }
+
+        return val!!;
     }
 }
