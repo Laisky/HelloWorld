@@ -4,14 +4,27 @@ import { compile, NetworkProvider } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
 import { run as deploy } from "./deploy";
 import { myAddress } from './env';
+import axios from 'axios';
+
+
+export const fetchAndParseTrace = async function (txId: string) {
+    const url = `https://testnet.tonapi.io/v2/traces/${txId}`;
+    const response = await axios.get(url);
+    const data = response.data;
+
+    // Access the desired field in the JSON response
+    const lastChild = data.children[data.children.length - 1];
+    const lastGrandChild = lastChild.children[lastChild.children.length - 1];
+    const lastTransaction = lastGrandChild.transaction;
+    const lastOutMsg = lastTransaction.out_msgs[lastTransaction.out_msgs.length - 1];
+    const rawBody = lastOutMsg.raw_body;
+
+    const cells = Cell.fromBoc(Buffer.from(rawBody, 'hex'));
+    return cells[0].asSlice();
+}
 
 export async function run(provider: NetworkProvider) {
-    // get emitted log from trace:
-    //   curl -s https://testnet.tonapi.io/v2/traces/db96ca304b4126371b15db4ba4f64f8e7bcbffec8581c019abafc16b2eae9733 | jq '.children[-1].children[-1].transaction.out_msgs[-1].raw_body'
-    const hexmsg = 'b5ee9c7201010301003e000208ae59284b01020000006468747470733a2f2f6172696f2e6c6169736b792e636f6d2f616c6961732f6174746573742d6d616e69666573742e6a736f6e';
-
-    const cells = Cell.fromBoc(Buffer.from(hexmsg, 'hex'));
-    const msg = loadWalletManifestChangedEvent(cells[0].asSlice());
+    const msg = loadWalletManifestChangedEvent(await fetchAndParseTrace('db96ca304b4126371b15db4ba4f64f8e7bcbffec8581c019abafc16b2eae9733'));
 
     console.log(`oldManifestUrl: ${msg.oldManifestUrl}`);
     console.log(`newManifestUrl: ${msg.newManifestUrl}`);

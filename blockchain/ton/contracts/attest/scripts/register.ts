@@ -12,7 +12,7 @@ export async function run(provider: NetworkProvider) {
     const contract = await deploy(provider);
 
     // register
-    await contract.send(
+    const resp = await contract.send(
         provider.sender(),
         {
             value: toNano('0.05'),
@@ -22,4 +22,6 @@ export async function run(provider: NetworkProvider) {
             manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json"
         },
     )
+
+    console.log(resp);
 }

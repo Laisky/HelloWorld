@@ -63,18 +63,16 @@ message AttestTaskResult {
 // this is the master contract of TON.
 contract Attest with Deployable, Ownable {
     owner: Address;
-    // setManifestNounce: map<Address, Int as uint32> = emptyMap();
     attestTaskId: Int as uint64 = 0;
 
     init(){
         self.owner = sender();
     }
 
-    // create AttestWallet for the sender
+    // create Bot for the sender
     receive(msg: RegisterBot){
         let walletInit: StateInit = self.getWalletInit(sender());
         let walletAddr: Address = contractAddress(walletInit);
-        // let nonce = self.getManifestNonce(walletAddr);
 
         send(SendParameters{
                 to: walletAddr,
@@ -89,22 +87,13 @@ contract Attest with Deployable, Ownable {
                 data: walletInit.data
             }
         );
-        // self.setManifestNonce.set(walletAddr, nonce + 1);
     }
 
     fun getWalletInit(walletOwner: Address): StateInit {
-        return initOf AttestWallet(myAddress(), walletOwner);
+        return initOf Bot(myAddress(), walletOwner);
     }
 
-    // fun getManifestNonce(walletOwner: Address): Int {
-    //     let nonce: Int = 0;
-    //     if (self.setManifestNonce.get(sender()) != null) {
-    //         nonce = self.setManifestNonce.get(sender())!!;
-    //     }
-    //     return nonce;
-    // }
-
-    // update manifest of AttestWallet
+    // update manifest of Bot
     receive(msg: SetWalletManifest){
         let walletInit: StateInit = self.getWalletInit(sender());
         let walletAddr: Address = contractAddress(walletInit);
@@ -137,11 +126,7 @@ contract Attest with Deployable, Ownable {
         msg.status = "pending";
         msg.walletAddress = walletAddr;
 
-        // notify to the submiter
-        // emit(msg.toCell());
-        dump(msg.toCell());
-
-        // send the task to AttestWallet
+        // send the task to Bot
         send(SendParameters{
                 to: walletAddr,
                 value: 0,
@@ -155,14 +140,13 @@ contract Attest with Deployable, Ownable {
     }
 }
 
-// AttestWallet is the wallet contract, will be deployed by the master contract
+// Bot is the wallet contract, will be deployed by the master contract
 // to every submiter/bot. wallet contract will take the responsibility of
 // storing the manifest and the attest task.
-contract AttestWallet with Ownable {
+contract Bot with Ownable {
     owner: Address;
     master: Address;
     manifestUrl: String = "";
-    // manifestNonce: Int as uint64 = 0;
     // attestTaskIncentives is the balance of the attest task,
     // the key is the task id, the value is the incentive of the task.
     attestTaskIncentives: map<Int as uint64, Int> = emptyMap();
@@ -174,10 +158,9 @@ contract AttestWallet with Ownable {
         self.owner = owner;
     }
 
-    // master can set manifest of AttestWallet
+    // master can set manifest of Bot
     receive(msg: SetWalletManifest){
         require(self.master == sender(), "Only master can set manifest");
-        // require(msg.nonce == self.manifestNonce, "Nonce not match");
 
         emit(WalletManifestChangedEvent{
             oldManifestUrl: self.manifestUrl,
@@ -185,7 +168,6 @@ contract AttestWallet with Ownable {
         }.toCell());
 
         self.manifestUrl = msg.manifestUrl;
-        // self.manifestNonce = self.manifestNonce + 1;
     }
 
     // owner can withdraw all balance
