@@ -1,0 +1,12 @@
+{
+    "projects": [{
+        "name": "attest",
+        "path": "./contracts/attest.tact",
+        "output": "./build",
+        "options":{
+            "debug": true,
+            "external": true,
+            "masterchain": true
+        }
+    }]
+}
