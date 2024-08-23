@@ -74,17 +74,41 @@ contract Attest with Deployable, Ownable {
         let walletInit: StateInit = self.getWalletInit(sender());
         let walletAddr: Address = contractAddress(walletInit);
 
+        let ctx = context();
+        require(ctx.value >= ton("0.1"), "Value must be greater than 0.1");
+
+        nativeReserve(myBalance() - context().value, ReserveExact);
+
+        // Assuming this will use 0.02.
+        // In actual, it will cost around 0.007 on the test network.
+        emit("hello".asComment());  // this line will let the transaction failed
+
         send(SendParameters{
                 to: walletAddr,
-                value: 0,
+                value: ton("0.03"),
                 bounce: false,
-                mode: SendRemainingValue,
                 body: SetWalletManifest{
-                    // nonce: nonce,
                     manifestUrl: msg.manifestUrl
                 }.toCell(),
                 code: walletInit.code,
                 data: walletInit.data
+            }
+        );
+
+        send(SendParameters{
+                to: sender(),
+                value: ton("0.03"),
+                bounce: false,
+                body: "hello".asComment(),
+            }
+        );
+
+        send(SendParameters{
+                to: sender(),
+                value: ctx.value - ton("0.08"),
+                bounce: false,
+                // mode: SendRemainingBalance,
+                body: "word".asComment(),
             }
         );
     }

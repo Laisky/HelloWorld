@@ -15,7 +15,7 @@ export async function run(provider: NetworkProvider) {
     const resp = await contract.send(
         provider.sender(),
         {
-            value: toNano('0.05'),
+            value: toNano('1'),
         },
         {
             $$type: 'RegisterBot',
