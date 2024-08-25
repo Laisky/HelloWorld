@@ -102,7 +102,7 @@ contract Attest with Deployable, OwnableTransferable, Txable {
     // create Bot for the sender
     receive(msg: RegisterBot){
         let ctx = context();
-        nativeReserve(myBalance() - context().value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
 
         require(ctx.value >= self.forwardFee + self.emitFee + self.taxFee, "Value not enough");
 
@@ -134,7 +134,7 @@ contract Attest with Deployable, OwnableTransferable, Txable {
     // update manifest of Bot
     receive(msg: SetWalletManifest){
         let ctx = context();
-        nativeReserve(myBalance() - context().value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
 
         require(ctx.value >= self.forwardFee + self.taxFee, "Value not enough");
 
@@ -156,7 +156,7 @@ contract Attest with Deployable, OwnableTransferable, Txable {
     // submit attest task
     receive(msg: SubmitAttestTask){
         let ctx = context();
-        nativeReserve(myBalance() - context().value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
 
         require(msg.attestValue >= self.minimalAttestFee, "Attest value should be greater than 0.05");
         require(ctx.value >= msg.attestValue + self.forwardFee + self.taxFee + self.emitFee, "Value not enough");
@@ -256,6 +256,9 @@ contract Bot with Ownable {
         let incentive = self.attestTaskIncentives.get(msg.taskId);
         require(incentive != null, "Task not found");
 
+        let ctx = context();
+        nativeReserve(myBalance() - ctx.value - incentive!!, ReserveExact);
+
         msg.verifier = sender();
         emit(msg.toCell());
 
@@ -266,12 +269,13 @@ contract Bot with Ownable {
         // release the incentive after some period of time to give the submiter a chance to challenge.
         send(SendParameters{
                 to: sender(),
-                value: incentive!!,
+                value: ctx.value + incentive!!,
                 bounce: false,
-                mode: SendRemainingValue
             }
         );
+
         self.attestTaskIncentives.set(msg.taskId, null);
+        self.lockedValue = self.lockedValue - incentive!!;
     }
 
     get fun master(): String {
