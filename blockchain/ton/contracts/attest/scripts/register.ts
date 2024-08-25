@@ -15,11 +15,12 @@ export async function run(provider: NetworkProvider) {
     const resp = await contract.send(
         provider.sender(),
         {
-            value: toNano('1'),
+            value: toNano('0.1'),
         },
         {
             $$type: 'RegisterBot',
-            manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json"
+            manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json",
+            botAddress: null
         },
     )
 

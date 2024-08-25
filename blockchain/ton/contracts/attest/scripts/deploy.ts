@@ -18,5 +18,7 @@ export async function run(provider: NetworkProvider) {
     const masterContract = provider.open(await Attest.fromInit());
     console.log(`Deploying Attest at ${masterContract.address}`);
 
+    // await provider.waitForDeploy(masterContract.address);
+
     return masterContract;
 }

@@ -3,7 +3,7 @@ import "@stdlib/ownable";
 
 message RegisterBot {
     manifestUrl: String;
-    botAddress: Address?;
+    botAddress: Address? = null;
 }
 
 message SetWalletManifest {
@@ -86,13 +86,13 @@ trait Txable with Ownable {
 }
 
 // this is the master contract of TON.
-contract Attest with Deployable, Ownable, Txable {
+contract Attest with Deployable, OwnableTransferable, Txable {
     owner: Address;
     attestTaskId: Int as uint64 = 0;
     minimalAttestFee: Int = ton("0.05");
     forwardFee : Int = ton("0.03");
     taxFee: Int = ton("0.01");
-    emitFee: Int = ton("0.02");
+    emitFee: Int = ton("0.01");
     staticTaxFee: Int = ton("0.01");
 
     init(){
@@ -170,7 +170,7 @@ contract Attest with Deployable, Ownable, Txable {
 
         // emit attest task to offchain oracle workers
         //
-        // Assuming this will use 0.02.
+        // Assuming this will use 0.01.
         // In actual, it will cost around 0.007 on the test network.
         emit(msg.toCell());
 
