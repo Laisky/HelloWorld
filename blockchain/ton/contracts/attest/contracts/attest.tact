@@ -99,7 +99,7 @@ trait Txable with Ownable {
     owner: Address;
     staticTaxFee: Int = ton("0");
 
-    fun getStaticTaxFee(): Int {
+    get fun staticTaxFee(): Int {
         return self.staticTaxFee;
     }
 
@@ -128,7 +128,7 @@ trait Common with Ownable {
     emitFee: Int = ton("0.01");
     nonce: Int = 0;
 
-    fun getEmitFee(): Int {
+    get fun emitFee(): Int {
         return self.emitFee;
     }
 
@@ -255,7 +255,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
 // Bot is the wallet contract, will be deployed by the master contract
 // to every submiter/bot. wallet contract will take the responsibility of
 // storing the manifest and the attest task.
-contract Bot with Ownable, Common {
+contract Bot with Deployable ,Ownable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
     master: Address;
@@ -397,7 +397,7 @@ contract Bot with Ownable, Common {
     }
 }
 
-contract Oracle with Ownable, Common {
+contract Oracle with Deployable, Ownable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
     master: Address;
