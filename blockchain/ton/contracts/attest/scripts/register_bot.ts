@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
         {
             $$type: 'RegisterBot',
             manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json",
-            botAddress: null
+            botOwner: provider.sender().address!!
         },
     )
 
