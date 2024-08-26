@@ -174,10 +174,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // all remaining value will be sent to the bot contract.
     receive(msg: RegisterBot){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
-
-        emit(ctx.value.toString().asComment());
-        require(ctx.value >= self.forwardFee + self.emitFee + self.staticTaxFee, "Value not enough");
+        nativeReserve(myBalance() - ctx.value + self.emitFee + self.staticTaxFee, ReserveExact);
 
         msg.botOwner = sender();
         emit(msg.toCell());
@@ -188,7 +185,8 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         // deploy bot contract and send the manifest to the bot
         send(SendParameters{
                 to: botAddr,
-                value: ctx.value - self.emitFee - self.staticTaxFee,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
                 body: SetBotManifest{
                     nonce: 0,
@@ -204,9 +202,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // all remaining value will be sent to the oracle contract.
     receive(msg: RegisterOracle){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
-
-        require(ctx.value >= self.forwardFee + self.emitFee + self.staticTaxFee + MinimalOraclePledgeValue, "Value not enough");
+        nativeReserve(myBalance() - ctx.value + self.emitFee + self.staticTaxFee, ReserveExact);
 
         msg.oracleOwner = sender();
         emit(msg.toCell());
@@ -217,7 +213,8 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         // deploy oracle contract
         send(SendParameters{
                 to: oracleAddr,
-                value: ctx.value - self.emitFee - self.staticTaxFee,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
                 code: oracle.code,
                 data: oracle.data
@@ -228,7 +225,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // publish attest task
     receive(msg: PublishAttestTask){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + self.emitFee + self.staticTaxFee, ReserveExact);
 
         // verify sender is the owner of the bot
         let bot = self.getBot(msg.botOwner);
@@ -246,7 +243,8 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         // refund the rest value to the bot
         send(SendParameters{
                 to: botAddr,
-                value: ctx.value - self.emitFee - self.staticTaxFee,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
                 body: "PublishAttestTask".asComment()
             }
@@ -298,7 +296,7 @@ contract Bot with Ownable, Common {
     // submit attest task
     receive(msg: SubmitAttestTask){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + msg.attestValue, ReserveExact);
 
         self.requireOwner();
         require(self.manifestUrl != "", "Manifest not set");
@@ -325,7 +323,8 @@ contract Bot with Ownable, Common {
         };
         send(SendParameters{
                 to: self.master,
-                value: ctx.value - msg.attestValue,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
                 body: pubMsg.toCell()
             }
@@ -339,7 +338,7 @@ contract Bot with Ownable, Common {
 
         let ctx = context();
         // myBalance() - ctx.value - incentive!! must be non-negative
-        nativeReserve(myBalance() - ctx.value - incentive!!, ReserveExact);
+        nativeReserve(myBalance() - ctx.value - incentive!! + self.emitFee, ReserveExact);
 
         // sender must be oracle contract
         let oracle = initOf Oracle(self.master, msg.oracleOwner);
@@ -351,7 +350,8 @@ contract Bot with Ownable, Common {
         // send the incentive to the verifier
         send(SendParameters{
                 to: sender(),
-                value: ctx.value + incentive!! - self.emitFee,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
             }
         );
