@@ -3,7 +3,7 @@ import "@stdlib/ownable";
 import "@stdlib/stoppable";
 
 
-const MinimalOraclePledgeValue: Int = ton("1");
+const MinimalOraclePledgeValue: Int = ton("0.01");
 
 
 message RegisterBot {
@@ -170,6 +170,8 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         return initOf Oracle(myAddress(), owner);
     }
 
+    receive("deposit") {}
+
     // create bot contract for the sender,
     // all remaining value will be sent to the bot contract.
     receive(msg: RegisterBot){
@@ -216,6 +218,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
+                body: "deposit".asComment(),
                 code: oracle.code,
                 data: oracle.data
             }
@@ -244,7 +247,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
-                body: "PublishAttestTask refund".asComment()
+                body: "deposit".asComment()
             }
         );
     }
@@ -253,7 +256,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
 // Bot is the wallet contract, will be deployed by the master contract
 // to every submiter/bot. wallet contract will take the responsibility of
 // storing the manifest and the attest task.
-contract Bot with Deployable ,Ownable, Common {
+contract Bot with Ownable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
     master: Address;
@@ -274,6 +277,8 @@ contract Bot with Deployable ,Ownable, Common {
         self.master = master;
         self.owner = owner;
     }
+
+    receive("deposit") {}
 
     // master can set manifest of Bot
     receive(msg: SetBotManifest){
@@ -409,7 +414,7 @@ contract Bot with Deployable ,Ownable, Common {
     }
 }
 
-contract Oracle with Deployable, Ownable, Common {
+contract Oracle with Ownable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
     master: Address;
@@ -432,6 +437,8 @@ contract Oracle with Deployable, Ownable, Common {
         self.owner = owner;
         self.lockedValue = self.lockedValue + MinimalOraclePledgeValue;
     }
+
+    receive("deposit") {}
 
     // oracle wallet submit the attest task result by this message,
     // then the oracle contract will forward the result to the
@@ -498,7 +505,7 @@ contract Oracle with Deployable, Ownable, Common {
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
-                body: "PayAttestIncentive refund".asComment()
+                body: "deposit".asComment()
             }
         );
     }
@@ -539,7 +546,7 @@ contract Oracle with Deployable, Ownable, Common {
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
-                body: "gather_incentive refund".asComment()
+                body: "deposit".asComment()
             }
         );
     }

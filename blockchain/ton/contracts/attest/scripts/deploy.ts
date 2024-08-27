@@ -1,8 +1,5 @@
-import { toNano } from '@ton/core';
-import { myAddress } from './env';
 import { Attest } from '../wrappers/Attest';
-import { NetworkProvider, Config } from '@ton/blueprint';
-import { buildOnchainMetadata } from './utils/jetton-helpers';
+import { NetworkProvider } from '@ton/blueprint';
 
 
 /**
