@@ -1,11 +1,9 @@
 import { toNano } from '@ton/core';
-import { myAddress, config as envConfig } from './env';
+import { myAddress } from './env';
 import { Attest } from '../wrappers/Attest';
 import { NetworkProvider, Config } from '@ton/blueprint';
 import { buildOnchainMetadata } from './utils/jetton-helpers';
 
-
-export const config = envConfig;
 
 /**
  * Deploy the master contract
