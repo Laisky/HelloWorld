@@ -48,7 +48,7 @@ message WalletCreatedEvent {
 message SubmitAttestTask {
     // proofUrl is the url of the proof, better be stored at arweave
     proofUrl: String;
-    // attestValue is the value that will be paid to the attester,
+    // attestValue is the value that will be paid to the verifier,
     // the value in the message should be greater than attestValue.
     attestValue: Int;
 }
@@ -63,7 +63,7 @@ message PublishAttestTask {
     botOwner: Address;
     // proofUrl is the url of the proof, better be stored at arweave
     proofUrl: String;
-    // attestValue is the value that will be paid to the attester,
+    // attestValue is the value that will be paid to the verifier,
     // the value in the message should be greater than attestValue.
     attestValue: Int;
 }
@@ -83,7 +83,7 @@ message AttestTaskResult {
     oracleOwner: Address;
 }
 
-message GainAttestIncentive {
+message PayAttestIncentive {
     taskId: Int as uint64;
     incentive: Int;
     // releaseTime when to release the incentive
@@ -234,10 +234,8 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
 
         require(ctx.value >= self.emitFee + self.staticTaxFee, "Value not enough");
 
-        // emit attest task to offchain oracle workers
-        //
-        // Assuming this will use 0.01.
-        // In actual, it will cost around 0.007 on the test network.
+        // publish the attest task via emit.
+        // the task will be picked by the distributed verifier oracle.
         emit(msg.toCell());
 
         // refund the rest value to the bot
@@ -293,7 +291,9 @@ contract Bot with Deployable ,Ownable, Common {
         self.manifestUrl = msg.manifestUrl;
     }
 
-    // submit attest task
+    // bot wallet publish attest task,
+    // bot contract will forward the task to the master contract.
+    // then distributed verifier oracle will pick the task.
     receive(msg: SubmitAttestTask){
         let ctx = context();
         nativeReserve(myBalance() - ctx.value + msg.attestValue, ReserveExact);
@@ -307,7 +307,7 @@ contract Bot with Deployable ,Ownable, Common {
         // the contract will not be allowed to receive new attest task.
         require(myBalance() - self.lockedValue - msg.attestValue >= 0, "Balance is less than the locked value");
 
-        // lock the incentive of the task for the attester
+        // lock the incentive of the task for the verifier
         self.lockedValue = self.lockedValue + msg.attestValue;
 
         // save the incentive of the task
@@ -321,6 +321,8 @@ contract Bot with Deployable ,Ownable, Common {
             proofUrl: msg.proofUrl,
             attestValue: msg.attestValue
         };
+        self.attestTaskId = self.attestTaskId + 1;
+
         send(SendParameters{
                 to: self.master,
                 value: 0,
@@ -331,28 +333,38 @@ contract Bot with Deployable ,Ownable, Common {
         );
     }
 
-    // attest task result, and send the incentive to the verifier
+    // verifier contract will submit the attest task result by
+    // this message, and the incentive will be sent to the verifier.
     receive(msg: AttestTaskResult) {
         let incentive = self.attestTaskIncentives.get(msg.taskId);
         require(incentive != null, "Task not found");
+
+        // sender must be an oracle contract
+        let oracle = initOf Oracle(self.master, msg.oracleOwner);
+        let oracleAddr = contractAddress(oracle);
+        require(oracleAddr == sender(), "Only oracle contract can submit attest task result");
 
         let ctx = context();
         // myBalance() - ctx.value - incentive!! must be non-negative
         nativeReserve(myBalance() - ctx.value - incentive!! + self.emitFee, ReserveExact);
 
-        // sender must be oracle contract
-        let oracle = initOf Oracle(self.master, msg.oracleOwner);
-        let oracleAddr = contractAddress(oracle);
-        require(oracleAddr == sender(), "Only oracle contract can submit attest task result");
-
+        // publish the attest task result,
+        // The bot owner can listen to the attest results
+        // and choose the appropriate way to notify the user.
         emit(msg.toCell());
 
-        // send the incentive to the verifier
+        // pay the incentive to the verifier
         send(SendParameters{
                 to: sender(),
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
+                body: PayAttestIncentive{
+                    taskId: msg.taskId,
+                    incentive: incentive!!,
+                    releaseTime: now() + 3600 * 24 * 3,
+                    botOwner: msg.botOwner
+                }.toCell()
             }
         );
 
@@ -360,7 +372,7 @@ contract Bot with Deployable ,Ownable, Common {
         self.lockedValue = self.lockedValue - incentive!!;
     }
 
-    // owner can withdraw all balance
+    // owner can withdraw all balance that is not locked
     receive("withdraw"){
         self.requireOwner();
 
@@ -369,7 +381,7 @@ contract Bot with Deployable ,Ownable, Common {
         send(SendParameters{
                 to: sender(),
                 value: ton("0"),
-                bounce: false,
+                bounce: true,
                 mode: SendRemainingBalance
             }
         );
@@ -408,7 +420,7 @@ contract Oracle with Deployable, Ownable, Common {
 
     // lockedIncentives stores the unreleased incentives of the attest task,
     // the key is the index, the value is the incentive.
-    lockedIncentives: map<Int as uint64, GainAttestIncentive> = emptyMap();
+    lockedIncentives: map<Int as uint64, PayAttestIncentive> = emptyMap();
     lockedIncentiveMaxIdx: Int as uint64 = 0;
 
     init(master: Address, owner: Address){
@@ -421,30 +433,17 @@ contract Oracle with Deployable, Ownable, Common {
         self.lockedValue = self.lockedValue + MinimalOraclePledgeValue;
     }
 
-    // owner can withdraw all balance
-    receive("withdraw"){
-        self.requireOwner();
-
-        nativeReserve(self.lockedValue, ReserveExact);
-
-        send(SendParameters{
-                to: sender(),
-                value: ton("0"),
-                bounce: false,
-                mode: SendRemainingBalance
-            }
-        );
-    }
-
-    // submit attest task result
+    // oracle wallet submit the attest task result by this message,
+    // then the oracle contract will forward the result to the
+    // wallet contract to earn the incentive.
     receive(msg: AttestTaskResult){
-        let ctx = context();
-        nativeReserve(self.lockedValue, ReserveExact);
-
         self.requireOwner();
         require(myBalance() > self.lockedValue, "Balance is less than the locked value");
 
-        // get bot address
+        let ctx = context();
+        nativeReserve(self.lockedValue, ReserveExact);
+
+        // get the address of bot contract
         let bot = initOf Bot(self.master, msg.botOwner);
         let botAddr = contractAddress(bot);
 
@@ -459,17 +458,21 @@ contract Oracle with Deployable, Ownable, Common {
         );
     }
 
-    receive(msg: GainAttestIncentive){
-        let ctx = context();
-        nativeReserve(self.lockedValue, ReserveExact);
-
+    // bot contract pay the incentive to the oracle contract
+    // by this message, the incentive will be locked in the contract
+    // until the release time.
+    receive(msg: PayAttestIncentive){
         // sender must be the bot contract
         let bot = initOf Bot(self.master, msg.botOwner);
         let botAddr = contractAddress(bot);
         require(botAddr == sender(), "Only bot contract can pay incentive");
 
+        let ctx = context();
+        nativeReserve(myBalance() - ctx.value + msg.incentive, ReserveExact);
         require(ctx.value >= msg.incentive, "Value not enough");
 
+        // if the release time is greater than now, lock the incentive.
+        // otherwise, refund the rest value to the bot
         if (now() < msg.releaseTime) {
             // lock the incentive
             let i = 0;
@@ -483,44 +486,75 @@ contract Oracle with Deployable, Ownable, Common {
                     }
 
                     i = -1;
+                }else {
+                    i = i + 1;
                 }
-
-                i = i + 1;
             }
         }
 
         // refund the rest value to the bot
         send(SendParameters{
                 to: sender(),
-                value: ctx.value - msg.incentive,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
+                body: "PayAttestIncentive refund".asComment()
             }
         );
     }
 
     receive("gather_incentive"){
         let ctx = context();
-        nativeReserve(self.lockedValue, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
 
         let nowTime = now();
 
+        // iterate the lockedIncentives to release the incentive
+        // if the release time is less than now.
         let i: Int = 0;
+        let lastNonEmptyIdx: Int = -1;
         while (i <= self.lockedIncentiveMaxIdx) {
             let incentive = self.lockedIncentives.get(i);
-            if (incentive != null && nowTime >= incentive!!.releaseTime) {
-                // release the incentive
-                self.lockedIncentives.set(i, null);
-                self.lockedValue = self.lockedValue - incentive!!.incentive;
+            if (incentive != null) {
+                lastNonEmptyIdx = i;
+
+                if (nowTime >= incentive!!.releaseTime) {
+                    // release the incentive
+                    self.lockedIncentives.set(i, null);
+                    self.lockedValue = self.lockedValue - incentive!!.incentive;
+                }
             }
 
             i = i + 1;
         }
 
+        // reset the lockedIncentiveMaxIdx
+        if (lastNonEmptyIdx >= 0) {
+            self.lockedIncentiveMaxIdx = lastNonEmptyIdx;
+        }
+
         // refund the rest value to the bot
         send(SendParameters{
                 to: sender(),
-                value: ctx.value,
+                value: 0,
+                mode: SendRemainingBalance,
                 bounce: false,
+                body: "gather_incentive refund".asComment()
+            }
+        );
+    }
+
+    // owner can withdraw all balance
+    receive("withdraw"){
+        self.requireOwner();
+
+        nativeReserve(self.lockedValue, ReserveExact);
+
+        send(SendParameters{
+                to: sender(),
+                value: ton("0"),
+                bounce: false,
+                mode: SendRemainingBalance
             }
         );
     }
