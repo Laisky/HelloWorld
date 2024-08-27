@@ -25,7 +25,7 @@ export async function run(provider: NetworkProvider) {
     await botContract.internal(
         provider.sender(),
         {
-            value: toNano('0.05'),
+            value: toNano('0.1'),
             body: cell
         },
     );

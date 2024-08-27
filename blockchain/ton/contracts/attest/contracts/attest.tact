@@ -246,7 +246,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
-                body: "PublishAttestTask".asComment()
+                body: "PublishAttestTask refund".asComment()
             }
         );
     }
