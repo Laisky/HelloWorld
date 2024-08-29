@@ -2,13 +2,13 @@ import { toNano } from '@ton/core';
 import { Attest } from '../build/Attest/tact_Attest';
 import { Oracle } from '../build/Attest/tact_Oracle';
 import { NetworkProvider } from '@ton/blueprint';
-import { myAddress  } from './env';
+
 
 export async function run(provider: NetworkProvider) {
     const masterContract = provider.open(await Attest.fromInit());
     const oracleContract = provider.open(await Oracle.fromInit(
         masterContract.address,
-        myAddress
+        provider.sender().address!!
     ));
 
     await oracleContract.send(
@@ -22,8 +22,8 @@ export async function run(provider: NetworkProvider) {
             taskId: BigInt("0"),
             status: "verified",
             verifiedUrl: "https://ario.laisky.com/alias/attest-verified.json",
-            botOwner: myAddress,
-            oracleOwner: myAddress
+            botOwner: provider.sender().address!!,
+            oracleOwner: provider.sender().address!!
         }
     );
 }
