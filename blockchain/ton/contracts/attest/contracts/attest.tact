@@ -94,6 +94,9 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     receive(msg: RegisterOracle){
         let ctx = context();
 
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee + msg.stakeValue);
+        nativeThrowUnless(codeStakeValueNotSufficient, msg.stakeValue >= MinimalOracleStakeValue);
+
         msg.oracleOwner = sender();
         emit(msg.toCell());
 
