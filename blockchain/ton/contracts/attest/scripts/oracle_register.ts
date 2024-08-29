@@ -10,12 +10,11 @@ export async function run(provider: NetworkProvider) {
     await masterContract.send(
         provider.sender(),
         {
-            value: toNano('1.1'),
-            bounce: false
+            value: toNano('0.1'),
         },
         {
             $$type: "RegisterOracle",
-            stakeValue: toNano("0.05"),
+            stakeValue: toNano("0.05"), // should bigger than MinimalOracleStakeValue
             oracleOwner: provider.sender().address!!
         }
     );

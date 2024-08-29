@@ -5,7 +5,7 @@ import "./errcodes.tact";
 import "./messages.tact";
 
 
-const MinimalOracleStakeValue: Int = ton("1");
+const MinimalOracleStakeValue: Int = ton("0.01");
 
 
 trait Txable with Ownable {
@@ -168,7 +168,7 @@ contract Bot with Ownable, Common {
     attestTaskIncentives: map<Int as uint64, Int> = emptyMap();
     // lockedValue is the value that is locked in the contract, cannot be withdrawed.
     // To ensure there is enough rent, a deposit of at least 1 TON is necessary.
-    lockedValue: Int = ton("0.01");
+    lockedValue: Int = ton("0");
     emitFee: Int = ton("0.01");
     attestTaskId: Int as uint64 = 0;
 
@@ -207,7 +207,7 @@ contract Bot with Ownable, Common {
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
         nativeThrowUnless(codeManifestNotSet, self.manifestUrl != "");
         nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.attestValue);
-        nativeThrowUnless(codeBalanceNotSufficient, myBalance() - self.lockedValue - msg.attestValue >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue + msg.attestValue);
         nativeThrowUnless(codeAttestValueNotSufficient, msg.attestValue >= ton("0.05"));
 
         // lock the incentive of the task for the verifier

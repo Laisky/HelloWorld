@@ -7,9 +7,21 @@ import { run as oracle_create_attest_result } from './oracle_create_attest_resul
 
 
 export async function run(provider: NetworkProvider) {
-    await bot_register(provider);
-    await bot_create_attest_task(provider);
-    await oracle_register(provider);
-    await oracle_create_attest_result(provider);
-    await withdraw_all(provider);
+    try {
+        console.log(">> bot_register");
+        await bot_register(provider);
+
+        console.log(">> bot_create_attest_task");
+        await bot_create_attest_task(provider);
+
+        console.log(">> oracle_register");
+        await oracle_register(provider);
+
+        console.log(">> oracle_create_attest_result");
+        await oracle_create_attest_result(provider);
+
+    } finally {
+        console.log(">> withdraw_all");
+        await withdraw_all(provider);
+    }
 }
