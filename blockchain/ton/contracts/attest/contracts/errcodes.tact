@@ -12,3 +12,4 @@ const codeNonceInvalid: Int = 1004;
 const codeManifestNotSet: Int = 20000;
 const codeAttestValueNotSufficient: Int = 20001;
 const codeAttestTaskNotFound: Int = 20002;
+const codeAttestTaskStatusInvalid: Int = 20003;

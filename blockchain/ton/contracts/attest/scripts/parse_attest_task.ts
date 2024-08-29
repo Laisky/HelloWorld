@@ -2,7 +2,6 @@ import { Cell } from '@ton/core';
 import { Bot } from '../build/Attest/tact_Bot';
 import { Attest, loadPublishAttestTask } from '../build/Attest/tact_Attest';
 import { NetworkProvider } from '@ton/blueprint';
-import { run as deploy } from "./deploy";
 import { myAddress } from './env';
 
 export async function run(provider: NetworkProvider) {

@@ -1,9 +1,6 @@
-import { Address, toNano, beginCell, contractAddress, Cell } from '@ton/core';
-import { Attest, loadWalletManifestChangedEvent } from '../wrappers/Attest';
-import { compile, NetworkProvider } from '@ton/blueprint';
-import { buildOnchainMetadata } from './utils/jetton-helpers';
-import { run as deploy } from "./deploy";
-import { myAddress } from './env';
+import { Cell } from '@ton/core';
+import { loadWalletManifestChangedEvent } from '../build/Attest/tact_Attest';
+import { NetworkProvider } from '@ton/blueprint';
 import axios from 'axios';
 
 

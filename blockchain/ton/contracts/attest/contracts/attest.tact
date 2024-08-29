@@ -5,7 +5,7 @@ import "./errcodes.tact";
 import "./messages.tact";
 
 
-const MinimalOraclePledgeValue: Int = ton("0.01");
+const MinimalOracleStakeValue: Int = ton("1");
 
 
 trait Txable with Ownable {
@@ -65,7 +65,6 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // all remaining value will be sent to the bot contract.
     receive(msg: RegisterBot){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
 
         msg.botOwner = sender();
         emit(msg.toCell());
@@ -74,6 +73,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         let botAddr = contractAddress(bot);
 
         // deploy bot contract and send the manifest to the bot
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
                 to: botAddr,
                 value: 0,
@@ -93,7 +93,6 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // all remaining value will be sent to the oracle contract.
     receive(msg: RegisterOracle){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
 
         msg.oracleOwner = sender();
         emit(msg.toCell());
@@ -102,6 +101,7 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         let oracleAddr = contractAddress(oracle);
 
         // deploy oracle contract
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
                 to: oracleAddr,
                 value: 0,
@@ -117,7 +117,6 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
     // publish attest task
     receive(msg: PublishAttestTask){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
 
         // verify sender is the owner of the bot
         let bot = self.getBot(msg.botOwner);
@@ -131,12 +130,25 @@ contract Attest with Deployable, OwnableTransferable, Txable, Common {
         emit(msg.toCell());
 
         // refund the rest value to the bot
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
                 to: botAddr,
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
                 body: "deposit".asComment()
+            }
+        );
+    }
+
+    receive("withdraw"){
+        nativeThrowUnless(codeUnauthorized, sender() == self.owner);
+
+        send(SendParameters{
+                to: sender(),
+                value: 0,
+                bounce: false,
+                mode: SendRemainingBalance
             }
         );
     }
@@ -190,7 +202,6 @@ contract Bot with Ownable, Common {
     // then distributed verifier oracle will pick the task.
     receive(msg: SubmitAttestTask){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value + msg.attestValue, ReserveExact);
 
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
         nativeThrowUnless(codeManifestNotSet, self.manifestUrl != "");
@@ -214,6 +225,7 @@ contract Bot with Ownable, Common {
         };
         self.attestTaskId = self.attestTaskId + 1;
 
+        nativeReserve(myBalance() - ctx.value + msg.attestValue, ReserveExact);
         send(SendParameters{
                 to: self.master,
                 value: 0,
@@ -238,7 +250,6 @@ contract Bot with Ownable, Common {
         nativeThrowUnless(codeSenderAddressInvalid, oracleAddr == sender());
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - incentive!! >= 0);
 
-        nativeReserve(myBalance() - ctx.value - incentive!!, ReserveExact);
 
         // publish the attest task result,
         // The bot owner can listen to the attest results
@@ -246,6 +257,7 @@ contract Bot with Ownable, Common {
         emit(msg.toCell());
 
         // pay the incentive to the verifier
+        nativeReserve(myBalance() - ctx.value - incentive!!, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: 0,
@@ -268,8 +280,12 @@ contract Bot with Ownable, Common {
     receive("withdraw"){
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
 
-        nativeReserve(self.lockedValue, ReserveExact);
+        // if the balance is not enough, reserve the rest value
+        if (myBalance() < self.lockedValue) {
+            return;
+        }
 
+        nativeReserve(self.lockedValue, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: ton("0"),
@@ -305,9 +321,9 @@ contract Oracle with Ownable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
     master: Address;
-    // lockedValue is the pledge value that is locked in the contract,
+    // lockedValue is the stake value that is locked in the contract,
     // cannot be withdrawed.
-    lockedValue: Int = ton("0.01");
+    lockedValue: Int = ton("0");
 
     // lockedIncentives stores the unreleased incentives of the attest task,
     // the key is the index, the value is the incentive.
@@ -317,11 +333,11 @@ contract Oracle with Ownable, Common {
     init(master: Address, owner: Address){
         let ctx = context();
 
-        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.lockedValue + MinimalOraclePledgeValue);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.lockedValue + MinimalOracleStakeValue);
 
         self.master = master;
         self.owner = owner;
-        self.lockedValue = self.lockedValue + MinimalOraclePledgeValue;
+        self.lockedValue = self.lockedValue + MinimalOracleStakeValue;
     }
 
     // receive deposit or refund
@@ -333,15 +349,16 @@ contract Oracle with Ownable, Common {
     receive(msg: AttestTaskResult){
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue);
+        nativeThrowUnless(codeAttestTaskStatusInvalid, msg.status == "verified" || msg.status == "rejected");
 
         let ctx = context();
-        nativeReserve(self.lockedValue, ReserveExact);
 
         // get the address of bot contract
         let bot = initOf Bot(self.master, msg.botOwner);
         let botAddr = contractAddress(bot);
 
         // forward the result to the bot
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
                 to: botAddr,
                 value: ton("0"),
@@ -364,7 +381,6 @@ contract Oracle with Ownable, Common {
         nativeThrowUnless(codeSenderAddressInvalid, botAddr == sender());
         nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.incentive);
 
-        nativeReserve(myBalance() - ctx.value + msg.incentive, ReserveExact);
 
         // if the release time is greater than now, lock the incentive.
         // otherwise, refund the rest value to the bot
@@ -388,6 +404,7 @@ contract Oracle with Ownable, Common {
         }
 
         // refund the rest value to the bot
+        nativeReserve(myBalance() - ctx.value + msg.incentive, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: 0,
@@ -400,7 +417,6 @@ contract Oracle with Ownable, Common {
 
     receive("gather_incentive"){
         let ctx = context();
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
 
         // iterate the lockedIncentives to release the incentive
         // if the release time is less than now.
@@ -428,12 +444,13 @@ contract Oracle with Ownable, Common {
         }
 
         // refund the rest value to the bot
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: false,
-                body: "deposit".asComment()
+                body: (myBalance() - ctx.value - self.lockedValue).toString().asComment()
             }
         );
     }
@@ -442,8 +459,12 @@ contract Oracle with Ownable, Common {
     receive("withdraw"){
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
 
-        nativeReserve(self.lockedValue, ReserveExact);
+        // if the balance is not enough, reserve the rest value
+        if (myBalance() < self.lockedValue) {
+            return;
+        }
 
+        nativeReserve(self.lockedValue, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: ton("0"),

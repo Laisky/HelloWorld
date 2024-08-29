@@ -1,14 +1,11 @@
-import { Address, toNano, beginCell, contractAddress, SenderArguments } from '@ton/core';
-import { Bot } from '../build/Attest/tact_Bot';
+import { toNano } from '@ton/core';
 import { Attest } from '../build/Attest/tact_Attest';
 import { Oracle } from '../build/Attest/tact_Oracle';
 import { NetworkProvider } from '@ton/blueprint';
-import { run as deploy } from "./deploy";
-import { myAddress } from './env';
+import { myAddress  } from './env';
 
 export async function run(provider: NetworkProvider) {
-    const masterContract = await deploy(provider);
-
+    const masterContract = provider.open(await Attest.fromInit());
     const oracleContract = provider.open(await Oracle.fromInit(
         masterContract.address,
         myAddress
@@ -22,7 +19,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'AttestTaskResult',
-            taskId: BigInt("99"),
+            taskId: BigInt("0"),
             status: "verified",
             verifiedUrl: "https://ario.laisky.com/alias/attest-verified.json",
             botOwner: myAddress,

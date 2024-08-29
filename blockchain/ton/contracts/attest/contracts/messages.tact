@@ -4,9 +4,9 @@ message RegisterBot {
     botOwner: Address;
 }
 message RegisterOracle {
-    // pledgeValue is the value that the oracle will pledge,
-    // the minimum pledge value is 1 TON.
-    pledgeValue: Int;
+    // stakeValue is the value that the oracle will stake,
+    // the minimum stake value is 1 TON.
+    stakeValue: Int;
     // oracleOwner is the address of the oracle owner
     oracleOwner: Address;
 }
