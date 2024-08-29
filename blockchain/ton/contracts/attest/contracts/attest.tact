@@ -43,8 +43,6 @@ trait Common with Ownable {
 contract Attest with Deployable, OwnableTransferable, Txable, Common {
     owner: Address;
     nonce: Int as uint64 = 0;
-    minimalAttestFee: Int = ton("0.05");
-    forwardFee : Int = ton("0.03");
     staticTaxFee: Int = ton("0.01");
 
     init(){
