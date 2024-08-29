@@ -22,7 +22,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'AttestTaskResult',
-            taskId: BigInt("0"),
+            taskId: BigInt("99"),
             status: "verified",
             verifiedUrl: "https://ario.laisky.com/alias/attest-verified.json",
             botOwner: myAddress,
