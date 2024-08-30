@@ -1,0 +1,12 @@
+{
+    "projects": [{
+        "name": "nft",
+        "path": "./contracts/nft.tact",
+        "output": "./build",
+        "options":{
+            "debug": true,
+            "external": true,
+            "masterchain": true
+        }
+    }]
+}
