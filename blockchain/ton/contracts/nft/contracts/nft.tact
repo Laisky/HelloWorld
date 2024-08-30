@@ -70,6 +70,7 @@ contract NftCollection with Txable {
         let ctx: Context = context();
 
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee);
 
         let nftItemContract = self.getNftItem(self.nextItemIndex);
         let customPayload = msg.individualContent;
@@ -86,7 +87,7 @@ contract NftCollection with Txable {
             forwardPayload: emptySlice(),
         }.toCell();
 
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
                 to: contractAddress(nftItemContract),
                 value: 0,
@@ -98,8 +99,6 @@ contract NftCollection with Txable {
             });
 
         self.nextItemIndex = self.nextItemIndex + 1;
-
-        emit(transferMsg);
     }
 
     receive("deposit") {}
@@ -110,7 +109,7 @@ contract NftCollection with Txable {
             to: self.owner,
             value: msg.amount,
             bounce: false,
-            body: beginString().concat("withdraw ").concat(msg.amount.toString()).toString().asComment(),
+            body: msg.amount.toString().asComment(),
         });
     }
 
@@ -143,101 +142,85 @@ contract NftItem {
     owner: Address;
     collection: Address;
 
-    nextItemIndex: Int;
-    initialized: Bool;
+    itemIndex: Int;
+    initialized: Bool = false;
     individualContent: Cell;
 
-    init(collection: Address, nextItemIndex: Int){
+    init(collection: Address, itemIndex: Int){
         nativeThrowUnless(codeUnauthorized, sender() == collection);
 
+        self.owner = sender();
         self.collection = collection;
-        self.nextItemIndex = nextItemIndex;
-        self.initialized = false;
+        self.itemIndex = itemIndex;
+        self.individualContent = emptyCell();
     }
 
-    // https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#1-transfer
     receive(msg: Transfer){
         let ctx: Context = context();
-        let msgValue: Int = self.msgValue(ctx.value);
 
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.forwardAmount);
+        nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+
+        self.owner = msg.newOwner;
         if (self.initialized == false) {
+            // only the collection contract can initialize the NFT
             nativeThrowUnless(codeUnauthorized, ctx.sender == self.collection);
+            nativeThrowUnless(codeNftCustomPayloadInvalid, msg.customPayload != null);
 
             self.initialized = true;
-            self.owner = msg.newOwner;
-            self.individualContent = msg.customPayload;
-
-            send(SendParameters{
-                to: msg.responseDestination!!,
-                value: msgValue,
-                mode: SendPayGasSeparately,
-                body: Excesses { queryId: msg.queryId }.toCell()
-            });
-        } else {
-            require(ctx.sender == self.owner!!, "not owner");
-            self.owner = msg.newOwner;  // change current owner to the newOwner
-            if (msg.forwardAmount > 0) {
-                send(SendParameters{
-                    to: msg.newOwner,
-                    value: msg.forwardAmount,
-                    mode:  SendPayGasSeparately,
-                    bounce: true,
-                    body: OwnershipAssigned{
-                        queryId: msg.queryId,
-                        prev_owner: ctx.sender,
-                        forwardPayload: msg.forwardPayload
-                    }.toCell()
-                });
-            }
-
-            msgValue = msgValue - ctx.readForwardFee();
-            if (msg.responseDestination != null) {
-                send(SendParameters{
-                    to: msg.responseDestination!!,
-                    value: msgValue - msg.forwardAmount,
-                    mode: SendPayGasSeparately,
-                    bounce: true,
-                    body: Excesses { queryId: msg.queryId }.toCell()
-                });
-            }
+            self.individualContent = msg.customPayload!!;
         }
+
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
+
+        // forward fee
+        if (msg.forwardAmount > 0) {
+            send(SendParameters{
+                to: msg.newOwner,
+                value: msg.forwardAmount,
+                bounce: false,
+                body: OwnershipAssigned{
+                    queryId: msg.queryId,
+                    prevOwner: sender(),
+                    forwardPayload: msg.forwardPayload,
+                }.toCell(),
+            });
+        }
+
+        // refund the remaining balance to the responseDestination
+        send(SendParameters{
+            to: msg.responseDestination,
+            value: 0,
+            mode: SendRemainingBalance,
+            body: Excesses{
+                queryId: msg.queryId
+            }.toCell(),
+        });
     }
 
     receive(msg: GetStaticData){
         let ctx: Context = context();
+
         send(SendParameters {
             to: ctx.sender,
             value: 0,
-            mode: 64,  // (return msg amount except gas fees)
-            bounce: true,
+            mode: SendRemainingValue,
+            bounce: false,
             body: ReportStaticData{
                 queryId: msg.queryId,
-                index_id: self.nextItemIndex,
+                index: self.itemIndex,
                 collection: self.collection
-            }.toCell()
+            }.toCell(),
         });
     }
 
-    fun msgValue(value: Int): Int {
-        let tonBalanceBeforeMsg: Int = myBalance() - value;
-        let storageFee: Int = minTonsForStorage - min(tonBalanceBeforeMsg, minTonsForStorage);
-        return value - (storageFee + gasConsumption);
-    }
-
-    // --------- Get Function  --------- //
     get fun get_nft_data(): GetNftData {
-        let b: StringBuilder = beginString();
-        let collectionData: String = (self.individualContent!!).asSlice().asString();
-        b.append(collectionData);
-        b.append(self.nextItemIndex.toString());
-        b.append(".json");
-
         return GetNftData {
-            initialized: self.initialized,
-            index: self.nextItemIndex,
-            collection: self.collection,
-            owner: self.owner!!,
-            individualContent: b.toCell()
+            init: self.initialized,
+            index: self.itemIndex,
+            collectionAddress: self.collection,
+            ownerAddress: self.owner,
+            individualContent: self.individualContent,
         };
     }
 }

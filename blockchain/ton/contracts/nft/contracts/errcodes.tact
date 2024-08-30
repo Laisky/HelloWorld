@@ -10,3 +10,4 @@ const codeNonceInvalid: Int = 1004;
 // Project specific error codes
 // =====================================
 const codeNftIndexNotExists: Int = 20000;
+const codeNftCustomPayloadInvalid: Int = 20001;

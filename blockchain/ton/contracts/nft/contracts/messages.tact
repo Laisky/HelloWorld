@@ -17,12 +17,21 @@ message(0xa8cb00ad) ReportRoyaltyParams {
     destination: Address;
 }
 
+// https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#1-transfer
 message(0x5fcc3d14) Transfer {
     queryId: Int as uint64;
+    // newOwner is address of the new owner of the NFT item.
     newOwner: Address;
-    responseDestination: Address?;
+    // responseDestination is the address where to send a response
+    // with confirmation of a successful transfer and the rest of
+    // the incoming message coins.
+    responseDestination: Address;
+    // customPayload is the optional custom data.
     customPayload: Cell?;
+    // forwardAmount is the amount of nanotons to be sent to the new owner.
     forwardAmount: Int as coins;
+    // forwardPayload is the optional custom data that should be
+    // sent to the new owner.
     forwardPayload: Slice as remaining;
 }
 
@@ -42,7 +51,7 @@ message(0x2fcb26a2) GetStaticData {
 
 message(0x8b771735) ReportStaticData {
     queryId: Int as uint64;
-    indexId: Int;
+    index: Int;
     collection: Address;
 }
 
@@ -74,7 +83,7 @@ message LogEventMintRecord {
 // =====================================
 
 struct GetNftData {
-    initialized: Bool;
+    init: Bool;
     index: Int;
     collectionAddress: Address;
     ownerAddress: Address;
