@@ -48,7 +48,7 @@ trait Common with Ownable {
 
 contract NftCollection with Txable {
     owner: Address;
-    staticTaxFee: Int = ton("0.02");
+    staticTaxFee: Int = ton("0.01");
 
     nextItemIndex: Int as uint64 = 0;
     // collectionContent should follow the format of the TEP-64
@@ -58,9 +58,9 @@ contract NftCollection with Txable {
     // e.g. "https://s3.laisky.com/public/nft/ton-demo/{individualContent}.json"
     collectionContent: Cell;
 
-    init(owner: Address, collectionContent: Cell){
+    init(owner: Address, collectionContent: String){
         self.owner = owner;
-        self.collectionContent = collectionContent;
+        self.collectionContent = collectionContent.asSlice().asCell();
     }
 
     bounced(msg: bounced<Mint>) {}
@@ -73,16 +73,11 @@ contract NftCollection with Txable {
         nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee);
 
         let nftItemContract = self.getNftItem(self.nextItemIndex);
-        let customPayload = msg.individualContent;
-        if (customPayload == null) {
-            customPayload = self.collectionContent;
-        }
-
         let transferMsg = Transfer {
             queryId: 0,
             newOwner: msg.newOwner,
             responseDestination: myAddress(),
-            customPayload: customPayload,
+            customPayload: self.nextItemIndex.toString().asSlice().asCell(),
             forwardAmount: 0,
             forwardPayload: emptySlice(),
         }.toCell();
@@ -120,7 +115,10 @@ contract NftCollection with Txable {
     get fun get_collection_data(): CollectionData {
         return CollectionData{
             nextItemIndex: self.nextItemIndex,
-            collectionContent: self.collectionContent,
+            collectionContent: beginString()
+                .concat(self.collectionContent.asSlice().asString())
+                .concat("collection.json")
+                .toCell(),
             ownerAddress: self.owner,
         };
     }
@@ -135,7 +133,6 @@ contract NftCollection with Txable {
             .concat(self.collectionContent.asSlice().asString())
             .concat(individualContent.asSlice().asString())
             .concat(".json").toCell();
-    }
 }
 
 contract NftItem {
@@ -192,6 +189,7 @@ contract NftItem {
             to: msg.responseDestination,
             value: 0,
             mode: SendRemainingBalance,
+            bounce: false,
             body: Excesses{
                 queryId: msg.queryId
             }.toCell(),
@@ -211,6 +209,19 @@ contract NftItem {
                 index: self.itemIndex,
                 collection: self.collection
             }.toCell(),
+        });
+    }
+
+    receive("deposit") {}
+
+    receive(msg: Withdraw) {
+        nativeThrowUnless(codeUnauthorized, sender() == self.owner);
+        send(SendParameters{
+            to: self.owner,
+            value: msg.amount,
+            // mode: SendRemainingBalance,
+            bounce: false,
+            body: msg.amount.toString().asComment(),
         });
     }
 

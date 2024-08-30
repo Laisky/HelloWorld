@@ -61,7 +61,6 @@ message(0x8b771735) ReportStaticData {
 
 message(0xa32a5c5f) Mint {
     newOwner: Address;
-    individualContent: Cell?;
 }
 
 message(0x4ca83dc8) Withdraw {
@@ -72,11 +71,6 @@ message(0x4ca83dc8) Withdraw {
 // Logs
 // =====================================
 
-message LogEventMintRecord {
-    minter: Address;
-    itemId: Int;
-    generate_number: Int;
-}
 
 // =====================================
 // Responsed structures
