@@ -4,8 +4,7 @@ import { NetworkProvider } from '@ton/blueprint';
 
 
 export async function run(provider: NetworkProvider) {
-    // const collectionContract = provider.sender().address!!
-    const collectionContract = Address.parse("kQBbnIwFR35CjnAJro6ZBHolwpgiWtgne_8khS4sqe4qHYyf");
+    const collectionContract = provider.sender().address!!
 
     const masterContract = provider.open(await NftCollection.fromInit(
         collectionContract,
@@ -17,5 +16,6 @@ export async function run(provider: NetworkProvider) {
         beginCell().storeStringTail("0").endCell()
     )
 
-    console.log(result.asSlice().toString());
+    console.log(result.toBoc().toString());
+    // ��rA2`https://s3.laisky.com/public/nft/ton-demo/0.jsonh��
 }

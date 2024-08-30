@@ -133,6 +133,19 @@ contract NftCollection with Txable {
             .concat(self.collectionContent.asSlice().asString())
             .concat(individualContent.asSlice().asString())
             .concat(".json").toCell();
+        // return beginString()
+        //     .concat("{")
+        //     .concat("\"description\": \"Laisky's first TON NFT\",")
+        //     .concat("\"image\": \"https://ario.laisky.com/alias/head\",")
+        //     .concat("\"marketplace\": \"getgems.io\",")
+        //     .concat("\"name\": \"Laisky's TON NFT\",")
+        //     .concat("\"social_links\": [")
+        //     .concat("\"https://twitter.com/LaiskyCai\",")
+        //     .concat("\"https://t.me/laiskynotes\"")
+        //     .concat("]")
+        //     .concat("}")
+        //     .toCell();
+    }
 }
 
 contract NftItem {
