@@ -27,9 +27,9 @@ message(0x5fcc3d14) Transfer {
     // the incoming message coins.
     responseDestination: Address;
     // customPayload is the optional custom data.
-    customPayload: Cell?;
+    customPayload: Cell;
     // forwardAmount is the amount of nanotons to be sent to the new owner.
-    forwardAmount: Int as coins;
+    forwardAmount: Int as uint16;
     // forwardPayload is the optional custom data that should be
     // sent to the new owner.
     forwardPayload: Slice as remaining;

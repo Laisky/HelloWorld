@@ -77,7 +77,10 @@ contract NftCollection with Txable {
             queryId: 0,
             newOwner: msg.newOwner,
             responseDestination: myAddress(),
-            customPayload: self.nextItemIndex.toString().asSlice().asCell(),
+            customPayload: beginString()
+                .concat(self.nextItemIndex.toString())
+                .concat(".json")
+                .toCell(),
             forwardAmount: 0,
             forwardPayload: emptySlice(),
         }.toCell();
@@ -132,7 +135,7 @@ contract NftCollection with Txable {
         return beginString()
             .concat(self.collectionContent.asSlice().asString())
             .concat(individualContent.asSlice().asString())
-            .concat(".json").toCell();
+            .toCell();
         // return beginString()
         //     .concat("{")
         //     .concat("\"description\": \"Laisky's first TON NFT\",")
