@@ -46,7 +46,8 @@ export async function run(provider: NetworkProvider) {
     const myAddr = provider.sender().address!!
     const masterContract = provider.open(await NftCollection.fromInit(
         myAddr,
-        "https://s3.laisky.com/public/nft/ton-demo/"
+        "https://s3.laisky.com/public/nft/ton-demo/",
+        null
     ));
     const itemContract = provider.open(await NftItem.fromInit(
         masterContract.address,

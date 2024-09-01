@@ -87,9 +87,10 @@ struct GetNftData {
 struct CollectionData {
     nextItemIndex: Int;
     collectionContent: Cell;
-    ownerAddress: Address;
+    ownerAddress: Slice;
 }
 
+// https://github.com/ton-blockchain/TEPs/blob/master/text/0066-nft-royalty-standard.md#get-methods
 struct RoyaltyParams {
     numerator: Int;
     denominator: Int;

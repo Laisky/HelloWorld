@@ -6,7 +6,8 @@ import { NetworkProvider } from '@ton/blueprint';
 export async function run(provider: NetworkProvider) {
     const masterContract = provider.open(await NftCollection.fromInit(
         provider.sender().address!!,
-        "https://s3.laisky.com/public/nft/ton-demo/"
+        "https://s3.laisky.com/public/nft/ton-demo/",
+        null
     ));
 
     // register

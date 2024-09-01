@@ -46,7 +46,7 @@ trait Common with Ownable {
 // =====================================
 
 
-contract NftCollection with Txable {
+contract NftCollection with Txable, Deployable {
     owner: Address;
     staticTaxFee: Int = ton("0.01");
 
@@ -57,10 +57,21 @@ contract NftCollection with Txable {
     // in most cases, it should be a url prefix of the NFT's metadata json url.
     // e.g. "https://s3.laisky.com/public/nft/ton-demo/{individualContent}.json"
     collectionContent: Cell;
+    royalty: RoyaltyParams;
 
-    init(owner: Address, collectionContent: String){
+    init(owner: Address, collectionContent: String, royalty: RoyaltyParams?) {
         self.owner = owner;
         self.collectionContent = collectionContent.asSlice().asCell();
+
+        if (royalty != null) {
+            self.royalty = royalty!!;
+        } else {
+            self.royalty = RoyaltyParams{
+                numerator: 0,
+                denominator: 0,
+                destination: myAddress(),
+            };
+        }
     }
 
     bounced(msg: bounced<Mint>) {}
@@ -77,10 +88,7 @@ contract NftCollection with Txable {
             queryId: 0,
             newOwner: msg.newOwner,
             responseDestination: myAddress(),
-            customPayload: beginString()
-                .concat(self.nextItemIndex.toString())
-                .concat(".json")
-                .toCell(),
+            customPayload: self.nextItemIndex.toString().asSlice().asCell(),
             forwardAmount: 0,
             forwardPayload: emptySlice(),
         }.toCell();
@@ -97,6 +105,21 @@ contract NftCollection with Txable {
             });
 
         self.nextItemIndex = self.nextItemIndex + 1;
+    }
+
+    receive(msg: GetRoyaltyParams) {
+        send(SendParameters {
+            to: sender(),
+            value: 0,
+            mode: SendRemainingValue,
+            bounce: false,
+            body: ReportRoyaltyParams{
+                queryId: msg.queryId,
+                numerator: self.royalty.numerator,
+                denominator: self.royalty.denominator,
+                destination: self.royalty.destination,
+            }.toCell(),
+        });
     }
 
     receive("deposit") {}
@@ -122,35 +145,28 @@ contract NftCollection with Txable {
                 .concat(self.collectionContent.asSlice().asString())
                 .concat("collection.json")
                 .toCell(),
-            ownerAddress: self.owner,
+            ownerAddress: self.owner.asSlice(),
         };
     }
 
-    get fun get_nft_address_by_index(itemIndex: Int): Address {
-        nativeThrowUnless(codeNftIndexNotExists, itemIndex < self.nextItemIndex);
-        return contractAddress(self.getNftItem(itemIndex));
+    get fun get_nft_address_by_index(index: Int): Slice {
+        nativeThrowUnless(codeNftIndexNotExists, index < self.nextItemIndex);
+        return contractAddress(self.getNftItem(index)).asSlice();
     }
 
     get fun get_nft_content(index: Int, individualContent: Cell): Cell {
-        return individualContent;
-        // return beginString()
-        //     .concat(self.collectionContent.asSlice().asString())
-        //     .concat(individualContent.asSlice().asString())
-        //     .toCell();
-        // return beginString()
-        //     .concat("{")
-        //     .concat("\"description\": \"Laisky's first TON NFT\",")
-        //     .concat("\"image\": \"https://ario.laisky.com/alias/head\",")
-        //     .concat("\"marketplace\": \"getgems.io\",")
-        //     .concat("\"name\": \"Laisky's TON NFT\",")
-        //     .concat("\"social_links\": [")
-        //     .concat("\"https://twitter.com/LaiskyCai\",")
-        //     .concat("\"https://t.me/laiskynotes\"")
-        //     .concat("]")
-        //     .concat("}")
-        //     .toCell();
+        return beginString()
+            .concat(self.collectionContent.asSlice().asString())
+            .concat(individualContent.asSlice().asString())
+            .concat(".json")
+            .toCell();
+    }
+
+    get fun royalty_params(): RoyaltyParams {
+        return self.royalty;
     }
 }
+
 
 contract NftItem {
     owner: Address;
@@ -248,10 +264,11 @@ contract NftItem {
             index: self.itemIndex,
             collectionAddress: self.collection,
             ownerAddress: self.owner,
-            individualContent: beginString()
-                .concat("https://s3.laisky.com/public/nft/ton-demo/")
-                .concat(self.individualContent.asSlice().asString())
-                .toCell(),
+            individualContent: self.individualContent
+            // individualContent: beginString()
+            //     .concat("https://s3.laisky.com/public/nft/ton-demo/")
+            //     .concat(self.individualContent.asSlice().asString())
+            //     .toCell(),
         };
     }
 }
