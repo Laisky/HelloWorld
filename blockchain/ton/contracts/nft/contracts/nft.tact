@@ -247,7 +247,10 @@ contract NftItem {
             index: self.itemIndex,
             collectionAddress: self.collection,
             ownerAddress: self.owner,
-            individualContent: self.individualContent,
+            individualContent: beginString()
+                .concat("https://s3.laisky.com/public/nft/ton-demo/")
+                .concat(self.individualContent.asSlice().asString())
+                .toCell(),
         };
     }
 }
