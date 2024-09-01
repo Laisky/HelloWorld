@@ -3,7 +3,6 @@ import { NftCollection, loadGetNftData } from '../build/Nft/tact_NftCollection';
 import { NftItem } from '../build/Nft/tact_NftItem';
 import { NetworkProvider } from '@ton/blueprint';
 
-// Using file: get_nft_content
 // Connected to wallet at address: EQARnduCSjymI91urfHE_jXlnTHrmr0e4yaPubtPQkgy53uU
 // // -------------------------------------
 // // demo nft contract
@@ -25,14 +24,21 @@ import { NetworkProvider } from '@ton/blueprint';
 // >>> get nft collection data
 // collectionContent: https://s3.laisky.com/public/nft/ton-demo/collection.json
 // >>> get nft item data
-// individualContent: 0.json
+// individualContent: https://s3.laisky.com/public/nft/ton-demo/0.json
 // getGetNftContent: https://s3.laisky.com/public/nft/ton-demo/0.json
 
 
 export async function run(provider: NetworkProvider) {
-    await showDemoNftInfo(provider);
+    // show demo nft info
+    console.log("// -------------------------------------");
+    console.log("// demo nft contract");
+    console.log("// -------------------------------------");
+    await showNftInfo(provider,
+        "kQBbnIwFR35CjnAJro6ZBHolwpgiWtgne_8khS4sqe4qHYyf",
+        "kQB0hPpfiU9lchOrt1ML3wrKPxKEdS2Wnq3pCQ5G0Tk98kyT"
+    );
 
-    // my nft contract
+    // show my nft contract
     console.log("// -------------------------------------");
     console.log("// my nft contract");
     console.log("// -------------------------------------");
@@ -47,40 +53,43 @@ export async function run(provider: NetworkProvider) {
         BigInt("0")
     ));
 
-    // get nft collection data
-    console.log(">>> get nft collection data");
-    const nftCollectionData = await masterContract.getGetCollectionData();
-    console.log(`collectionContent: ${nftCollectionData.collectionContent.asSlice().loadStringTail()}`);
-    // https://s3.laisky.com/public/nft/ton-demo/collection.json
+    await showNftInfo(provider,
+        masterContract.address.toString(),
+        itemContract.address.toString()
+    );
+
 
     // get nft item's data
-    console.log(">>> get nft item data");
-    const nftItemData = await itemContract.getGetNftData();
-    console.log(`individualContent: ${nftItemData.individualContent.asSlice().loadStringTail()}`);
-    // 0.json
+    // console.log(">>> get nft item data");
+    // const nftItemData = await itemContract.getGetNftData();
+    // console.log(`init: ${nftItemData.init}`);
+    // console.log(`owner: ${nftItemData.ownerAddress.toString()}`);
+    // console.log(`collectionAddress: ${nftItemData.collectionAddress.toString()}`);
+    // console.log(`index: ${nftItemData.index}`);
+    // console.log(`individualContent: ${nftItemData.individualContent.asSlice().loadStringTail()}`);
 
-    // get nft metadata
-    const result = await masterContract.getGetNftContent(
-        BigInt("0"),
-        beginCell().storeStringTail("0.json").endCell()
-    )
-    console.log(`getGetNftContent: ${result.asSlice().loadStringTail()}`);
-    // https://s3.laisky.com/public/nft/ton-demo/0.json
+    // // get nft collection data
+    // console.log(">>> get nft collection data");
+    // const nftCollectionData = await masterContract.getGetCollectionData();
+    // console.log(`collectionContent: ${nftCollectionData.collectionContent.asSlice().loadStringTail()}`);
+
+    // // get nft metadata
+    // const result = await masterContract.getGetNftContent(
+    //     BigInt("0"),
+    //     beginCell().storeStringTail("0.json").endCell()
+    // )
+    // console.log(`getGetNftContent: ${result.asSlice().loadStringTail()}`);
 }
 
 /**
  * show demo nft info
  */
-async function showDemoNftInfo(provider: NetworkProvider) {
-    console.log("// -------------------------------------");
-    console.log("// demo nft contract");
-    console.log("// -------------------------------------");
-
-    const demoNftCollectionContract = provider.provider(Address.parse("kQBbnIwFR35CjnAJro6ZBHolwpgiWtgne_8khS4sqe4qHYyf"))
-    const demoNftItemContract = provider.provider(Address.parse("kQB0hPpfiU9lchOrt1ML3wrKPxKEdS2Wnq3pCQ5G0Tk98kyT"))
+async function showNftInfo(provider: NetworkProvider, collectionAddr: string, itemAddr: string) {
+    const demoNftCollectionContract = provider.provider(Address.parse(collectionAddr));
+    const demoNftItemContract = provider.provider(Address.parse(itemAddr));
 
     // get nft item info
-    console.log(">>> get nft item data");
+    console.log(">>> item.get_nft_data");
     const demoNftItemData = await demoNftItemContract.get("get_nft_data", []);
     console.log(`init: ${demoNftItemData.stack.readBoolean()}`);
     console.log(`index: ${demoNftItemData.stack.readBigNumber()}`);
@@ -88,14 +97,25 @@ async function showDemoNftInfo(provider: NetworkProvider) {
     console.log(`owner: ${demoNftItemData.stack.readAddress().toString()}`);
     console.log(`individualContent: ${demoNftItemData.stack.readCell().asSlice().loadStringTail()}`);
 
-    // get nft collection data
-    console.log(">>> get nft collection data");
+    // collection.get_collection_data
+    console.log(">>> collection.get_collection_data");
     const demoNftCollectionData = await demoNftCollectionContract.get("get_collection_data", []);
     console.log(`nextItemIndex: ${demoNftCollectionData.stack.readBigNumber()}`);
     console.log(`collectionContent: ${demoNftCollectionData.stack.readCell().asSlice().loadStringTail()}`);
     console.log(`ownerAddress: ${demoNftCollectionData.stack.readAddress().toString()}`);
 
-    // get nft metadata
+    // collection.get_nft_address_by_index
+    console.log(">>> collection.get_nft_address_by_index");
+    const nftAddr = await demoNftCollectionContract.get("get_nft_address_by_index", [
+        {
+            "type": "int",
+            "value": BigInt("0")
+        }
+    ]);
+    console.log(`nft item address: ${nftAddr.stack.readAddress().toString()}`);
+
+    // collection.get_nft_content
+    console.log(">>> collection.get_nft_content");
     const nftMedata = await demoNftCollectionContract.get("get_nft_content", [
         {
             "type": "int",

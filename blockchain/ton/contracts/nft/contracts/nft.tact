@@ -132,10 +132,11 @@ contract NftCollection with Txable {
     }
 
     get fun get_nft_content(index: Int, individualContent: Cell): Cell {
-        return beginString()
-            .concat(self.collectionContent.asSlice().asString())
-            .concat(individualContent.asSlice().asString())
-            .toCell();
+        return individualContent;
+        // return beginString()
+        //     .concat(self.collectionContent.asSlice().asString())
+        //     .concat(individualContent.asSlice().asString())
+        //     .toCell();
         // return beginString()
         //     .concat("{")
         //     .concat("\"description\": \"Laisky's first TON NFT\",")
