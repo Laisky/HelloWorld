@@ -99,6 +99,10 @@ contract JettonMaster with OwnableTransferable {
                 walletCode: self.getJettonContract(myAddress()).code
             };
     }
+
+    get fun get_wallet_address(owner: Address): Address {
+        return contractAddress(self.getJettonContract(owner));
+    }
 }
 
 
