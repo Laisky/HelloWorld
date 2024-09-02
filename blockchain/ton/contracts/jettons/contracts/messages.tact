@@ -82,7 +82,7 @@ struct JettonMasterData {
     totalSupply: Int;
     mintable: Bool;
     owner: Address;
-    content: Metadata;
+    content: Cell;
     walletCode: Cell;
 }
 

@@ -10,7 +10,7 @@ contract JettonMaster with OwnableTransferable {
     // Cell to store arbitrary data related to the jetton
     //
     // https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#jetton-metadata-example-offchain
-    content: Metadata;
+    content: Cell;
     // Total number of tokens in existence.
     totalSupply: Int as coins;
     mintable: Bool;
@@ -21,7 +21,7 @@ contract JettonMaster with OwnableTransferable {
         self.content = Metadata{
             flag: 1,
             content: contentUrl,
-        };
+        }.toCell();
         self.totalSupply = 0;
         self.mintable = true;
     }
@@ -87,7 +87,7 @@ contract JettonMaster with OwnableTransferable {
         self.content = Metadata{
             flag: 1,
             content: msg.contentUrl,
-        };
+        }.toCell();
     }
 
     get fun get_jetton_data(): JettonMasterData {
