@@ -43,6 +43,8 @@ trait Common with Ownable {
 
 // =====================================
 // Main contract
+//
+// https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md
 // =====================================
 
 
@@ -50,7 +52,7 @@ contract NftCollection with Txable, Deployable {
     owner: Address;
     staticTaxFee: Int = ton("0.01");
 
-    nextItemIndex: Int as uint64 = 0;
+    nextItemIndex: Int as uint256 = 0;
     // collectionContent should follow the format of the TEP-64
     // https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md
     //
@@ -155,11 +157,14 @@ contract NftCollection with Txable, Deployable {
     }
 
     get fun get_nft_content(index: Int, individualContent: Cell): Cell {
-        return beginString()
-            .concat(self.collectionContent.asSlice().asString())
-            .concat(individualContent.asSlice().asString())
-            .concat(".json")
-            .toCell();
+        return GetNftContentResp{
+            flag: 1,
+            content: beginString()
+                .concat(self.collectionContent.asSlice().asString())
+                .concat(individualContent.asSlice().asString())
+                .concat(".json")
+                .toString(),
+        }.toCell();
     }
 
     get fun royalty_params(): RoyaltyParams {
@@ -265,10 +270,6 @@ contract NftItem {
             collectionAddress: self.collection,
             ownerAddress: self.owner,
             individualContent: self.individualContent
-            // individualContent: beginString()
-            //     .concat("https://s3.laisky.com/public/nft/ton-demo/")
-            //     .concat(self.individualContent.asSlice().asString())
-            //     .toCell(),
         };
     }
 }

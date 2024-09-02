@@ -51,7 +51,7 @@ message(0x2fcb26a2) GetStaticData {
 
 message(0x8b771735) ReportStaticData {
     queryId: Int as uint64;
-    index: Int;
+    index: Int as uint256;
     collection: Address;
 }
 
@@ -78,14 +78,14 @@ message(0x4ca83dc8) Withdraw {
 
 struct GetNftData {
     init: Bool;
-    index: Int;
+    index: Int as uint256;
     collectionAddress: Address;
     ownerAddress: Address;
     individualContent: Cell;
 }
 
 struct CollectionData {
-    nextItemIndex: Int;
+    nextItemIndex: Int as uint256;
     collectionContent: Cell;
     ownerAddress: Slice;
 }
@@ -95,4 +95,14 @@ struct RoyaltyParams {
     numerator: Int;
     denominator: Int;
     destination: Address;
+}
+
+struct GetNftContentResp {
+    // flag is the flag of the content type.
+    // 1 means off-chain, 2 means on-chain.
+    //
+    // https://github.com/ton-blockchain/TEPs/pull/191/files
+    // https://github.com/ton-blockchain/token-contract/blob/21e7844fa6dbed34e0f4c70eb5f0824409640a30/nft/nft-collection.fc#L161
+    flag: Int as uint8;
+    content: String;
 }
