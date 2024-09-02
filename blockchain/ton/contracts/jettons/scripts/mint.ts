@@ -1,26 +1,25 @@
-import { Address, toNano, beginCell, contractAddress } from '@ton/core';
-import { LaiskyJetton, Mint, storeMint } from '../wrappers/LaiskyJetton';
-import { compile, NetworkProvider } from '@ton/blueprint';
-import { buildOnchainMetadata } from './utils/jetton-helpers';
-import { run as deploy } from "./deploy";
-import { myAddress } from './env';
+import { toNano } from '@ton/core';
+import { NetworkProvider } from '@ton/blueprint';
+import { JettonMaster } from "../build/LaiskyJetton/tact_JettonMaster.ts";
+
+
 
 export async function run(provider: NetworkProvider) {
-    const ui = provider.ui();
-    const receiver = Address.parse(await ui.input('receiver\'s address'));
+    const laiskyJetton = provider.open(await JettonMaster.fromInit(
+        provider.sender().address!!,
+        "https://s3.laisky.com/public/nft/ton-jetton/demo.json",
+    ));
 
-    const laiskyJetton = await deploy(provider);
-
-    // mint
     await laiskyJetton.send(
         provider.sender(),
         {
-            value: toNano('0.05'),
+            value: toNano(0.1),
+            bounce: false,
         },
         {
-            $$type: 'Mint',
-            amount: toNano('50'),
-            receiver: receiver,
-        },
+            $$type: "Mint",
+            amount: BigInt("10"),
+            receiver: provider.sender().address!!,
+        }
     )
 }

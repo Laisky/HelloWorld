@@ -22,5 +22,5 @@ npx blueprint build
 ### Run
 
 ```sh
-npx blueprint run --testnet --tonconnect all
+npx blueprint run --testnet --tonconnect mint
 ```
