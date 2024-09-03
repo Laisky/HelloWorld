@@ -33,6 +33,9 @@ contract JettonMaster with OwnableTransferable {
     // this is a non-standard method, it's used to mint new tokens to specified user.
     receive(msg: Mint){
         let ctx: Context = context();
+
+        // This is my personal preference: I think nativeThrowUnless more useful
+        // than require because it lets you customize the code.
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
         nativeThrowUnless(codeNotMintable, self.mintable);
 
@@ -60,7 +63,8 @@ contract JettonMaster with OwnableTransferable {
         );
     }
 
-    // Allows the owner to withdraw tokens from the wallet.
+    // this is a non-standard method,
+    // allows the owner to withdraw tokens from the wallet.
     receive(msg: Withdraw){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
@@ -79,19 +83,9 @@ contract JettonMaster with OwnableTransferable {
         );
     }
 
-    // a convenience method to deposit
-    receive("deposit"){}
-
-    // Allow changing content only by owner
-    receive(msg: TokenUpdateContent){
-        nativeThrowUnless(codeUnauthorized, context().sender == self.owner);
-
-        self.content = Metadata{
-            flag: 1,
-            content: msg.contentUrl,
-        }.toCell();
-    }
-
+    // Generate a new jetton wallet contract for any user.
+    // This is the standard way to get a contract address.
+    // Remember, it only generates the address, not the actual deployment!
     get fun get_jetton_data(): JettonMasterData {
         return JettonMasterData{
                 totalSupply: self.totalSupply,
@@ -216,6 +210,26 @@ contract JettonWallet {
                 body: Excesses{
                     queryId: msg.queryId
                 }.toCell(),
+            }
+        );
+    }
+
+    // this is a non-standard method,
+    // allows the owner to withdraw tokens from the wallet.
+    receive(msg: Withdraw){
+        let ctx: Context = context();
+        nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+        nativeThrowUnless(codeInflowValueNotSufficient, msg.amount >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.amount);
+
+        send(SendParameters{
+                to: self.owner,
+                value: msg.amount,
+                bounce: false,
+                body: beginString()
+                    .concat("withdraw ")
+                    .concat(msg.amount.toString())
+                    .toString().asComment(),
             }
         );
     }

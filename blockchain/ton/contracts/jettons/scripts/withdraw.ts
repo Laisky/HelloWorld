@@ -1,34 +1,29 @@
-import { Address, toNano, beginCell, contractAddress } from '@ton/core';
-import { LaiskyJetton, Mint, storeMint } from '../wrappers/LaiskyJetton';
-import { compile, NetworkProvider } from '@ton/blueprint';
-import { buildOnchainMetadata } from './utils/jetton-helpers';
-import { run as deploy } from "./deploy";
-import { run as deposit } from "./deposit";
-import { myAddress, config as envConfig } from './env';
+import { toNano } from '@ton/core';
+import { NetworkProvider } from '@ton/blueprint';
+import { JettonMaster } from "../build/LaiskyJetton/tact_JettonMaster.ts";
+import { JettonWallet } from "../build/LaiskyJetton/tact_JettonWallet.ts";
 
-export const config = envConfig;
+
 
 export async function run(provider: NetworkProvider) {
-    const laiskyJetton = await deploy(provider);
+    const jettonMaster = provider.open(await JettonMaster.fromInit(
+        provider.sender().address!!,
+        "https://s3.laisky.com/public/nft/ton-jetton/demo.json",
+    ));
+    const jettonWallet = provider.open(await JettonWallet.fromInit(
+        jettonMaster.address,
+        provider.sender().address!!
+    ));
 
-
-    const ui = provider.ui();
-    const amount = toNano(await ui.input('amount'));
-    const toAddress = Address.parse(await ui.input('to address'));
-
-    // for test
-    await deposit(provider);
-
-    // withdraw
-    await laiskyJetton.send(
+    await jettonWallet.send(
         provider.sender(),
         {
-            value: toNano("0.05")
+            value: toNano(1),
+            bounce: false,
         },
         {
-            $$type: 'Withdraw',
-            to: toAddress,
-            amount: amount,
-        },
+            $$type: "Withdraw",
+            amount: BigInt("100000000"),
+        }
     )
 }

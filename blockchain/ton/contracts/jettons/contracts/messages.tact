@@ -13,6 +13,7 @@ message(0xf8a7ea5) TokenTransfer {
     forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
 }
 
+// transfer tokens between jetton wallets or master contract
 message(0x178d4519) TokenTransferInternal {
     queryId: Int as uint64;
     amount: Int as coins;
@@ -62,10 +63,6 @@ message(0xa32a5c5f) Mint {
 // Withdraw is a message that allows the owner to withdraw tokens from the wallet.
 message(0x4ca83dc8) Withdraw {
     amount: Int;
-}
-
-message(0x6f08b23c) TokenUpdateContent {
-    contentUrl: String;
 }
 
 // =====================================
