@@ -30,7 +30,7 @@ contract JettonMaster with OwnableTransferable {
         return initOf JettonWallet(myAddress(), owner);
     }
 
-    // this is non-standard method, it's used to mint new tokens to specified walletOwner.
+    // this is a non-standard method, it's used to mint new tokens to specified user.
     receive(msg: Mint){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
@@ -51,7 +51,7 @@ contract JettonMaster with OwnableTransferable {
                     amount: msg.amount,
                     from: myAddress(),
                     response_destination: sender(),
-                    forward_ton_amount: 0,
+                    forward_ton_amount: ton("0.03"),
                     forward_payload: emptySlice()
                 }.toCell(),
                 code: jettonWallet.code,
@@ -64,6 +64,8 @@ contract JettonMaster with OwnableTransferable {
     receive(msg: Withdraw){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+        nativeThrowUnless(codeInflowValueNotSufficient, msg.amount >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.amount);
 
         send(SendParameters{
                 to: self.owner,
@@ -125,6 +127,7 @@ contract JettonWallet {
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
         nativeThrowUnless(codeBalanceNotSufficient, self.balance >= msg.amount);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.forward_ton_amount);
 
         self.balance = self.balance - msg.amount;
 
@@ -150,6 +153,7 @@ contract JettonWallet {
         );
     }
 
+    // receive tokens from another jetton wallet
     receive(msg: TokenTransferInternal){
         let ctx: Context = context();
 
@@ -159,20 +163,19 @@ contract JettonWallet {
             nativeThrowUnless(codeUnauthorized, ctx.sender == peerJettonContractAddr);
         }
 
-        nativeThrowUnless(codeInflowValueNotSufficient, myBalance() + msg.amount >= 0);
-        if (msg.amount > 0) {
-            nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.amount + msg.forward_ton_amount);
-        }
+        nativeThrowUnless(codeInflowValueNotSufficient, self.balance + msg.amount >= 0);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value > msg.forward_ton_amount);
 
         // Update balance
         self.balance = self.balance + msg.amount;
 
+        // send TransferNotification only if forward_ton_amount > 0
         if (msg.forward_ton_amount > 0) {
             send(SendParameters{
                     to: msg.response_destination,
                     value: msg.forward_ton_amount,
                     bounce: false,
-                    mode: SendPayGasSeparately | SendIgnoreErrors,
+                    mode: SendIgnoreErrors,
                     body: TransferNotification{
                         queryId: msg.queryId,
                         amount: msg.amount,
@@ -183,7 +186,8 @@ contract JettonWallet {
             );
         }
 
-        nativeReserve(myBalance() - ctx.value + msg.amount, ReserveExact);
+        // return the excess TON to the sender
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
                 to: msg.response_destination,
                 value: 0,
@@ -203,11 +207,11 @@ contract JettonWallet {
         // Update balance
         self.balance = self.balance - msg.amount;
 
-        nativeReserve(myBalance() - ctx.value - msg.amount, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
                 to: sender(),
                 value: 0,
-                mode: SendRemainingBalance,
+                mode: SendRemainingBalance | SendIgnoreErrors,
                 bounce: true,
                 body: Excesses{
                     queryId: msg.queryId

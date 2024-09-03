@@ -13,12 +13,12 @@ export async function run(provider: NetworkProvider) {
     await laiskyJetton.send(
         provider.sender(),
         {
-            value: toNano(0.1),
+            value: toNano(1),
             bounce: false,
         },
         {
             $$type: "Mint",
-            amount: BigInt("10"),
+            amount: BigInt("100000000"),
             receiver: provider.sender().address!!,
         }
     )
