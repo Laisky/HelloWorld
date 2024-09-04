@@ -3,19 +3,9 @@ import { NetworkProvider } from '@ton/blueprint';
 import { JettonMaster } from "../build/LaiskyJetton/tact_JettonMaster.ts";
 
 
-
-export async function run(provider: NetworkProvider) {
-    const laiskyJetton = provider.open(await JettonMaster.fromInit(
+export async function getMasterContract(provider: NetworkProvider) {
+    return provider.open(await JettonMaster.fromInit(
         provider.sender().address!!,
-        "https://s3.laisky.com/public/nft/ton-jetton/demo.json",
+        "https://s3.laisky.com/public/nft/ton-jetton/laisky-v2.json",
     ));
-
-    await laiskyJetton.send(
-        provider.sender(),
-        {
-            value: toNano(0.1),
-            bounce: false,
-        },
-        "deposit"
-    )
 }

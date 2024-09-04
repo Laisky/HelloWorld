@@ -26,7 +26,7 @@ message(0x178d4519) TokenTransferInternal {
 message(0x7362d09c) TransferNotification {
     queryId: Int as uint64;
     amount: Int as coins;
-    from: Address;
+    sender: Address;
     forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
 }
 
@@ -62,7 +62,8 @@ message(0xa32a5c5f) Mint {
 
 // Withdraw is a message that allows the owner to withdraw tokens from the wallet.
 message(0x4ca83dc8) Withdraw {
-    amount: Int;
+    // remain is the amount of values that will remain in the wallet after the withdrawal.
+    remain: Int as coins;
 }
 
 // =====================================

@@ -2,14 +2,11 @@ import { toNano } from '@ton/core';
 import { NetworkProvider } from '@ton/blueprint';
 import { JettonMaster } from "../build/LaiskyJetton/tact_JettonMaster.ts";
 import { JettonWallet } from "../build/LaiskyJetton/tact_JettonWallet.ts";
-
+import { getMasterContract } from './deploy.ts';
 
 
 export async function run(provider: NetworkProvider) {
-    const jettonMaster = provider.open(await JettonMaster.fromInit(
-        provider.sender().address!!,
-        "https://s3.laisky.com/public/nft/ton-jetton/demo.json",
-    ));
+    const jettonMaster = await getMasterContract(provider);
     const jettonWallet = provider.open(await JettonWallet.fromInit(
         jettonMaster.address,
         provider.sender().address!!
@@ -23,7 +20,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: "Withdraw",
-            amount: BigInt("100000000"),
+            remain: toNano(0.01),
         }
     )
 }

@@ -45,42 +45,41 @@ contract JettonMaster with OwnableTransferable {
         // deploy the wallet if it's not deployed yet,
         // then send the minted tokens to the wallet.
         send(SendParameters{
-                to: contractAddress(jettonWallet),
-                value: 0,
-                bounce: false,
-                mode: SendRemainingValue,
-                body: TokenTransferInternal{
-                    queryId: 0,
-                    amount: msg.amount,
-                    from: myAddress(),
-                    response_destination: sender(),
-                    forward_ton_amount: ton("0.03"),
-                    forward_payload: emptySlice()
-                }.toCell(),
-                code: jettonWallet.code,
-                data: jettonWallet.data
-            }
-        );
+            to: contractAddress(jettonWallet),
+            value: 0,
+            bounce: false,
+            mode: SendRemainingValue,
+            body: TokenTransferInternal{
+                queryId: 0,
+                amount: msg.amount,
+                from: myAddress(),
+                response_destination: sender(),
+                forward_ton_amount: ton("0.03"),
+                forward_payload: emptySlice()
+            }.toCell(),
+            code: jettonWallet.code,
+            data: jettonWallet.data
+        });
     }
+
+    receive("deposit") {}
 
     // this is a non-standard method,
     // allows the owner to withdraw tokens from the wallet.
     receive(msg: Withdraw){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
-        nativeThrowUnless(codeInflowValueNotSufficient, msg.amount >= 0);
-        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.amount);
+        nativeThrowUnless(codeInflowValueNotSufficient, msg.remain >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.remain);
 
+        nativeReserve(msg.remain, ReserveExact);
         send(SendParameters{
-                to: self.owner,
-                value: msg.amount,
-                bounce: false,
-                body: beginString()
-                    .concat("withdraw ")
-                    .concat(msg.amount.toString())
-                    .toString().asComment(),
-            }
-        );
+            to: self.owner,
+            value: 0,
+            mode: SendRemainingBalance,
+            bounce: false,
+            body: "withdraw".asComment(),
+        });
     }
 
     // Generate a new jetton wallet contract for any user.
@@ -88,12 +87,12 @@ contract JettonMaster with OwnableTransferable {
     // Remember, it only generates the address, not the actual deployment!
     get fun get_jetton_data(): JettonMasterData {
         return JettonMasterData{
-                totalSupply: self.totalSupply,
-                mintable: self.mintable,
-                owner: self.owner,
-                content: self.content,
-                walletCode: self.getJettonContract(myAddress()).code
-            };
+            totalSupply: self.totalSupply,
+            mintable: self.mintable,
+            owner: self.owner,
+            content: self.content,
+            walletCode: self.getJettonContract(myAddress()).code
+        };
     }
 
     get fun get_wallet_address(owner: Address): Address {
@@ -129,22 +128,21 @@ contract JettonWallet {
         // then transfer the tokens to the wallet.
         let jettonContract = self.getJettonContract(msg.destination);
         send(SendParameters{
-                to: contractAddress(jettonContract),
-                value: 0,
-                mode: SendRemainingValue,
-                bounce: true,
-                body: TokenTransferInternal{
-                    queryId: msg.queryId,
-                    amount: msg.amount,
-                    from: self.owner,
-                    response_destination: msg.response_destination,
-                    forward_ton_amount: msg.forward_ton_amount,
-                    forward_payload: msg.forward_payload
-                }.toCell(),
-                code: jettonContract.code,
-                data: jettonContract.data
-            }
-        );
+            to: contractAddress(jettonContract),
+            value: 0,
+            mode: SendRemainingValue,
+            bounce: true,
+            body: TokenTransferInternal{
+                queryId: msg.queryId,
+                amount: msg.amount,
+                from: self.owner,
+                response_destination: msg.response_destination,
+                forward_ton_amount: msg.forward_ton_amount,
+                forward_payload: msg.forward_payload
+            }.toCell(),
+            code: jettonContract.code,
+            data: jettonContract.data
+        });
     }
 
     // receive tokens from another jetton wallet
@@ -166,30 +164,28 @@ contract JettonWallet {
         // send TransferNotification only if forward_ton_amount > 0
         if (msg.forward_ton_amount > 0) {
             send(SendParameters{
-                    to: msg.response_destination,
-                    value: msg.forward_ton_amount,
-                    bounce: false,
-                    mode: SendIgnoreErrors,
-                    body: TransferNotification{
-                        queryId: msg.queryId,
-                        amount: msg.amount,
-                        from: msg.from,
-                        forward_payload: msg.forward_payload
-                    }.toCell()
-                }
-            );
+                to: msg.response_destination,
+                value: msg.forward_ton_amount,
+                bounce: false,
+                mode: SendIgnoreErrors,
+                body: TransferNotification{
+                    queryId: msg.queryId,
+                    amount: msg.amount,
+                    sender: msg.from,
+                    forward_payload: msg.forward_payload
+                }.toCell()
+            });
         }
 
         // return the excess TON to the sender
         nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
-                to: msg.response_destination,
-                value: 0,
-                bounce: false,
-                mode: SendRemainingBalance | SendIgnoreErrors,
-                body: Excesses{queryId: msg.queryId}.toCell(),
-            }
-        );
+            to: msg.response_destination,
+            value: 0,
+            bounce: false,
+            mode: SendRemainingBalance | SendIgnoreErrors,
+            body: Excesses{queryId: msg.queryId}.toCell(),
+        });
     }
 
     receive(msg: Burn){
@@ -203,35 +199,34 @@ contract JettonWallet {
 
         nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
-                to: sender(),
-                value: 0,
-                mode: SendRemainingBalance | SendIgnoreErrors,
-                bounce: true,
-                body: Excesses{
-                    queryId: msg.queryId
-                }.toCell(),
-            }
-        );
+            to: sender(),
+            value: 0,
+            mode: SendRemainingBalance | SendIgnoreErrors,
+            bounce: true,
+            body: Excesses{
+                queryId: msg.queryId
+            }.toCell(),
+        });
     }
+
+    receive("deposit") {}
 
     // this is a non-standard method,
     // allows the owner to withdraw tokens from the wallet.
     receive(msg: Withdraw){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
-        nativeThrowUnless(codeInflowValueNotSufficient, msg.amount >= 0);
-        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.amount);
+        nativeThrowUnless(codeInflowValueNotSufficient, msg.remain >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= msg.remain);
 
+        nativeReserve(msg.remain, ReserveExact);
         send(SendParameters{
-                to: self.owner,
-                value: msg.amount,
-                bounce: false,
-                body: beginString()
-                    .concat("withdraw ")
-                    .concat(msg.amount.toString())
-                    .toString().asComment(),
-            }
-        );
+            to: self.owner,
+            value: 0,
+            mode: SendRemainingBalance,
+            bounce: false,
+            body: "withdraw".asComment(),
+        });
     }
 
     bounced(src: bounced<TokenTransferInternal>){
@@ -240,10 +235,10 @@ contract JettonWallet {
 
     get fun get_wallet_data(): JettonWalletData {
         return JettonWalletData{
-                balance: self.balance,
-                owner: self.owner,
-                master: self.master,
-                walletCode: self.getJettonContract(self.owner).code,
-            };
+            balance: self.balance,
+            owner: self.owner,
+            master: self.master,
+            walletCode: self.getJettonContract(self.owner).code,
+        };
     }
 }
