@@ -13,7 +13,7 @@ message(0x693d3950) GetRoyaltyParams {
 message(0xa8cb00ad) ReportRoyaltyParams {
     queryId: Int as uint64;
     numerator: Int as uint16;
-    denominator: Int as uint16;
+    denominator: Int as coins;
     destination: Address;
 }
 
@@ -29,16 +29,16 @@ message(0x5fcc3d14) Transfer {
     // customPayload is the optional custom data.
     customPayload: Cell?;
     // forwardAmount is the amount of nanotons to be sent to the new owner.
-    forwardAmount: Int as uint16;
+    forwardAmount: Int as coins;
     // forwardPayload is the optional custom data that should be
     // sent to the new owner.
-    forwardPayload: Slice as remaining;
+    forwardPayload: Cell?;
 }
 
 message(0x05138d91) OwnershipAssigned {
     queryId: Int as uint64;
     prevOwner: Address;
-    forwardPayload: Slice as remaining;
+    forwardPayload: Cell?;
 }
 
 message(0xd53276db) Excesses {

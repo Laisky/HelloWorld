@@ -48,6 +48,8 @@ trait Common with OwnableTransferable {
 // =====================================
 
 
+const forwardFee: Int = ton("0.03");
+
 contract NftCollection with Txable, Deployable {
     owner: Address;
     staticTaxFee: Int = ton("0.01");
@@ -83,16 +85,21 @@ contract NftCollection with Txable, Deployable {
         let ctx: Context = context();
 
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
-        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee + forwardFee);
 
+        self.mint(msg);
+    }
+
+    fun mint(msg: Mint){
+        let ctx: Context = context();
         let nftItemContract = self.getNftItem(self.nextItemIndex);
         let transferMsg = Transfer {
             queryId: 0,
             newOwner: msg.newOwner,
-            responseDestination: myAddress(),
+            responseDestination: sender(),
             customPayload: self.nextItemIndex.toString().asSlice().asCell(),
-            forwardAmount: 0,
-            forwardPayload: emptySlice(),
+            forwardAmount: forwardFee,
+            forwardPayload: emptyCell(),
         }.toCell();
 
         nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
@@ -133,6 +140,13 @@ contract NftCollection with Txable, Deployable {
             value: msg.amount,
             bounce: false,
             body: msg.amount.toString().asComment(),
+        });
+    }
+
+    receive("airdrop") {
+        let ctx = context();
+        self.mint(Mint{
+            newOwner: sender(),
         });
     }
 
@@ -206,14 +220,13 @@ contract NftItem {
             self.individualContent = msg.customPayload!!;
         }
 
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
-
         // forward fee
         if (msg.forwardAmount > 0) {
             send(SendParameters{
                 to: msg.newOwner,
                 value: msg.forwardAmount,
                 bounce: false,
+                // mode: SendIgnoreErrors,
                 body: OwnershipAssigned{
                     queryId: msg.queryId,
                     prevOwner: sender(),
@@ -223,6 +236,7 @@ contract NftItem {
         }
 
         // refund the remaining balance to the responseDestination
+        nativeReserve(myBalance() - ctx.value + msg.forwardAmount, ReserveExact);
         send(SendParameters{
             to: msg.responseDestination,
             value: 0,

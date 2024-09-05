@@ -33,10 +33,14 @@ contract JettonMaster with OwnableTransferable {
     // this is a non-standard method, it's used to mint new tokens to specified user.
     receive(msg: Mint){
         let ctx: Context = context();
-
         // This is my personal preference: I think nativeThrowUnless more useful
         // than require because it lets you customize the code.
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+
+        self.mint(msg);
+    }
+
+    fun mint(msg: Mint){
         nativeThrowUnless(codeNotMintable, self.mintable);
 
         self.totalSupply = self.totalSupply + msg.amount;
@@ -55,7 +59,7 @@ contract JettonMaster with OwnableTransferable {
                 from: myAddress(),
                 response_destination: sender(),
                 forward_ton_amount: ton("0.03"),
-                forward_payload: emptySlice()
+                forward_payload: emptyCell(),
             }.toCell(),
             code: jettonWallet.code,
             data: jettonWallet.data
@@ -79,6 +83,14 @@ contract JettonMaster with OwnableTransferable {
             mode: SendRemainingBalance,
             bounce: false,
             body: "withdraw".asComment(),
+        });
+    }
+
+    receive("airdrop") {
+        let ctx = context();
+        self.mint(Mint{
+            amount: ton("1"),
+            receiver: sender(),
         });
     }
 
@@ -167,7 +179,7 @@ contract JettonWallet {
                 to: msg.response_destination,
                 value: msg.forward_ton_amount,
                 bounce: false,
-                mode: SendIgnoreErrors,
+                // mode: SendIgnoreErrors,
                 body: TransferNotification{
                     queryId: msg.queryId,
                     amount: msg.amount,
@@ -178,12 +190,12 @@ contract JettonWallet {
         }
 
         // return the excess TON to the sender
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + msg.forward_ton_amount, ReserveExact);
         send(SendParameters{
             to: msg.response_destination,
             value: 0,
             bounce: false,
-            mode: SendRemainingBalance | SendIgnoreErrors,
+            mode: SendRemainingBalance,
             body: Excesses{queryId: msg.queryId}.toCell(),
         });
     }
@@ -201,7 +213,7 @@ contract JettonWallet {
         send(SendParameters{
             to: sender(),
             value: 0,
-            mode: SendRemainingBalance | SendIgnoreErrors,
+            mode: SendRemainingBalance,
             bounce: true,
             body: Excesses{
                 queryId: msg.queryId

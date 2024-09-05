@@ -10,7 +10,7 @@ message(0xf8a7ea5) TokenTransfer {
     response_destination: Address;
     custom_payload: Cell?;
     forward_ton_amount: Int as coins;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
+    forward_payload: Cell?;
 }
 
 // transfer tokens between jetton wallets or master contract
@@ -20,21 +20,21 @@ message(0x178d4519) TokenTransferInternal {
     from: Address;
     response_destination: Address;
     forward_ton_amount: Int as coins;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
+    forward_payload: Cell?;
 }
 
 message(0x7362d09c) TransferNotification {
     queryId: Int as uint64;
     amount: Int as coins;
     sender: Address;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
+    forward_payload: Cell?;
 }
 
 message(0x59f07bc) Burn {
     queryId: Int as uint64;
     amount: Int as coins;
     response_destination: Address;
-    custom_payload: Cell?;
+    forward_payload: Cell?;
 }
 
 message(0x7bdd97de) TokenBurnNotification {
