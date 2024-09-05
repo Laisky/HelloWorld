@@ -10,7 +10,7 @@ message(0x1509a420) SetStaticTaxFee {
 }
 
 
-trait Txable with Ownable {
+trait Txable with OwnableTransferable {
     owner: Address;
     staticTaxFee: Int = ton("0");
 
@@ -32,7 +32,7 @@ trait Txable with Ownable {
 
 
 // Common is the common trait that will be used by the master contract
-trait Common with Ownable {
+trait Common with OwnableTransferable {
     owner: Address;
     nonce: Int = 0;
 
