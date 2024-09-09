@@ -176,7 +176,7 @@ contract JettonWallet with Txable {
     }
 
     fun getJettonContract(owner: Address): StateInit {
-        return initOf JettonWallet(owner, owner);
+        return initOf JettonWallet(self.master, owner);
     }
 
     receive(msg: TokenTransfer){
