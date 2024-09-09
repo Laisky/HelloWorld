@@ -3,9 +3,54 @@ import "./errcodes.tact";
 import "./messages.tact";
 
 
-// This is your custom jetton's master contract.
-contract JettonMaster with OwnableTransferable {
+// SetStaticTaxFee is the message that used to set the static tax fee.
+message(0x1509a420) SetStaticTaxFee {
+    staticTaxFee: Int;
+}
+
+
+trait Txable with OwnableTransferable {
     owner: Address;
+    staticTaxFee: Int = ton("0");
+
+    get fun staticTaxFee(): Int {
+        return self.staticTaxFee;
+    }
+
+    receive(msg: SetStaticTaxFee){
+        nativeThrowUnless(codeUnauthorized, sender() == self.owner);
+
+        self.staticTaxFee = msg.staticTaxFee;
+        let answer = beginString()
+            .concat("set static tax fee to ")
+            .concat(msg.staticTaxFee.toString())
+            .toString();
+        self.reply(answer.asComment());
+    }
+}
+
+// Common is the common trait that will be used by the master contract
+trait Common with OwnableTransferable {
+    owner: Address;
+    nonce: Int = 0;
+
+    get fun nonce(): Int {
+        return self.nonce;
+    }
+}
+
+// =====================================
+// Main contract
+//
+// https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md
+// =====================================
+
+
+
+// This is your custom jetton's master contract.
+contract JettonMaster with Txable {
+    owner: Address;
+    staticTaxFee: Int as coins = ton("0.01");
 
     // Cell to store arbitrary data related to the jetton
     //
@@ -50,11 +95,12 @@ contract JettonMaster with OwnableTransferable {
 
         // deploy the wallet if it's not deployed yet,
         // then send the minted tokens to the wallet.
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
             to: contractAddress(jettonWallet),
             value: 0,
             bounce: false,
-            mode: SendRemainingValue,
+            mode: SendRemainingBalance,
             body: TokenTransferInternal{
                 queryId: 0,
                 amount: msg.amount,
@@ -90,6 +136,7 @@ contract JettonMaster with OwnableTransferable {
 
     receive("airdrop") {
         let ctx = context();
+
         self.mint(Mint{
             amount: ton("1"),
             receiver: sender(),
@@ -116,8 +163,9 @@ contract JettonMaster with OwnableTransferable {
 }
 
 
-contract JettonWallet {
+contract JettonWallet with Txable {
     owner: Address;
+    staticTaxFee: Int as coins = ton("0.01");
     master: Address;
     balance: Int;
 
@@ -128,7 +176,7 @@ contract JettonWallet {
     }
 
     fun getJettonContract(owner: Address): StateInit {
-        return initOf JettonWallet(myAddress(), owner);
+        return initOf JettonWallet(owner, owner);
     }
 
     receive(msg: TokenTransfer){
@@ -141,11 +189,12 @@ contract JettonWallet {
 
         // deploy the wallet if it's not deployed yet,
         // then transfer the tokens to the wallet.
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         let jettonContract = self.getJettonContract(msg.destination);
         send(SendParameters{
             to: contractAddress(jettonContract),
             value: 0,
-            mode: SendRemainingValue,
+            mode: SendRemainingBalance,
             bounce: true,
             body: TokenTransferInternal{
                 queryId: msg.queryId,
@@ -212,7 +261,7 @@ contract JettonWallet {
         // Update balance
         self.balance = self.balance - msg.amount;
 
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
             to: sender(),
             value: 0,
