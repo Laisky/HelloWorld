@@ -67,6 +67,11 @@ message(0x4ca83dc8) Withdraw {
     remain: Int as coins;
 }
 
+message(0xe78d9033) MultiMint {
+    receivers: map<Int as uint32, MultiMintReceiver>;
+    receiverCount: Int as uint32;
+}
+
 // =====================================
 // Structs
 // =====================================
@@ -91,4 +96,10 @@ struct Metadata {
     flag: Int as uint8;
     // if flag is 1, then the content is a URL to the offchain metadata.
     content: String;
+}
+
+struct MultiMintReceiver {
+    address: Address;
+    amount: Int;
+    tonAmount: Int as coins;
 }

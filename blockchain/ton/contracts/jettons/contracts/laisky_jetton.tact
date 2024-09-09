@@ -114,6 +114,53 @@ contract JettonMaster with Txable {
         });
     }
 
+    receive(msg: MultiMint){
+        let ctx: Context = context();
+        nativeThrowUnless(codeNotMintable, self.mintable);
+        nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
+
+        let totalTonAmount: Int = 0;
+        let i: Int = 0;
+        while (i < msg.receiverCount) {
+            let receiver = msg.receivers.get(i);
+            nativeThrowUnless(codeMapIndexNotExists, receiver != null);
+
+            self.totalSupply = self.totalSupply + receiver!!.amount;
+            totalTonAmount = totalTonAmount + receiver!!.tonAmount;
+
+            let jettonWallet = self.getJettonContract(receiver!!.address);
+            send(SendParameters{
+                to: contractAddress(jettonWallet),
+                value: receiver!!.tonAmount,
+                bounce: false,
+                body: TokenTransferInternal{
+                    queryId: 0,
+                    amount: receiver!!.amount,
+                    from: myAddress(),
+                    response_destination: sender(),
+                    forward_ton_amount: 0,
+                    forward_payload: emptyCell(),
+                }.toCell(),
+                code: jettonWallet.code,
+                data: jettonWallet.data
+            });
+
+            i = i + 1;
+        }
+
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= totalTonAmount);
+
+        // refund
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
+        send(SendParameters{
+            to: sender(),
+            value: 0,
+            bounce: false,
+            mode: SendRemainingBalance,
+            body: Excesses{queryId: 0}.toCell(),
+        });
+    }
+
     receive("deposit") {}
 
     // this is a non-standard method,
@@ -242,7 +289,7 @@ contract JettonWallet with Txable {
         }
 
         // return the excess TON to the sender
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
             to: msg.response_destination,
             value: 0,
