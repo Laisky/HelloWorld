@@ -28,7 +28,7 @@ export async function run(provider: NetworkProvider) {
             newOwner: provider.sender().address!!,
             responseDestination: provider.sender().address!!,
             customPayload: null,
-            forwardAmount: toNano('0.1'),
+            forwardAmount: toNano('0.5'),
             forwardPayload: null,
         },
     );

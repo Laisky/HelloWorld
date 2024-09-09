@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
         {
             $$type: 'Mint',
             newOwner: provider.sender().address!!,
-            forwardAmount: toNano('0.01'),
+            forwardAmount: toNano('0.5'),
         },
     );
 }

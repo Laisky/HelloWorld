@@ -125,10 +125,13 @@ contract NftCollection with Txable, Deployable {
     }
 
     receive(msg: GetRoyaltyParams) {
+        let ctx: Context = context();
+
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters {
             to: sender(),
             value: 0,
-            mode: SendRemainingValue,
+            mode: SendRemainingBalance,
             bounce: false,
             body: ReportRoyaltyParams{
                 queryId: msg.queryId,
@@ -192,9 +195,10 @@ contract NftCollection with Txable, Deployable {
 }
 
 
-contract NftItem {
+contract NftItem with Txable {
     owner: Address;
     collection: Address;
+    staticTaxFee: Int = ton("0.01");
 
     itemIndex: Int;
     initialized: Bool = false;
@@ -246,8 +250,7 @@ contract NftItem {
         }
 
         // refund the remaining balance to the responseDestination
-        // nativeReserve(myBalance() - ctx.value, ReserveExact);
-        nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
             to: msg.responseDestination,
             value: 0,
@@ -262,10 +265,11 @@ contract NftItem {
     receive(msg: GetStaticData){
         let ctx: Context = context();
 
+        nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters {
             to: ctx.sender,
             value: 0,
-            mode: SendRemainingValue,
+            mode: SendRemainingBalance,
             bounce: true,
             body: ReportStaticData{
                 queryId: msg.queryId,
