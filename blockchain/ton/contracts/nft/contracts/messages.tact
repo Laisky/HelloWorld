@@ -80,15 +80,15 @@ message(0x4ca83dc8) Withdraw {
 struct GetNftData {
     init: Bool;
     index: Int as uint256;
-    collectionAddress: Slice;
-    ownerAddress: Slice;
+    collectionAddress: Address;
+    ownerAddress: Address;
     individualContent: Cell;
 }
 
 struct CollectionData {
     nextItemIndex: Int;
     collectionContent: Cell;
-    ownerAddress: Slice;
+    ownerAddress: Address;
 }
 
 // https://github.com/ton-blockchain/TEPs/blob/master/text/0066-nft-royalty-standard.md#get-methods

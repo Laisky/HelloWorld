@@ -58,6 +58,7 @@ message(0xd53276db) Excesses {
 message(0xa32a5c5f) Mint {
     amount: Int;
     receiver: Address;
+    forwardTonAmount: Int as coins;
 }
 
 // Withdraw is a message that allows the owner to withdraw tokens from the wallet.

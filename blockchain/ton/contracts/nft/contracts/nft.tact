@@ -166,13 +166,13 @@ contract NftCollection with Txable, Deployable {
         return CollectionData{
             nextItemIndex: self.nextItemIndex,
             collectionContent: self.collectionContent,
-            ownerAddress: self.owner.asSlice(),
+            ownerAddress: self.owner,
         };
     }
 
-    get fun get_nft_address_by_index(index: Int): Slice {
+    get fun get_nft_address_by_index(index: Int): Address {
         nativeThrowUnless(codeNftIndexNotExists, index < self.nextItemIndex);
-        return contractAddress(self.getNftItem(index)).asSlice();
+        return contractAddress(self.getNftItem(index));
     }
 
     get fun get_nft_content(index: Int, individualContent: Cell): Cell {
@@ -219,6 +219,7 @@ contract NftItem {
         nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.forwardAmount);
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
 
+        let prevOwner = self.owner;
         self.owner = msg.newOwner;
         if (self.initialized == false) {
             // only the collection contract can initialize the NFT
@@ -234,23 +235,24 @@ contract NftItem {
             send(SendParameters{
                 to: msg.newOwner,
                 value: msg.forwardAmount,
-                bounce: true,
+                bounce: false,
                 // mode: SendIgnoreErrors,
                 body: OwnershipAssigned{
                     queryId: msg.queryId,
-                    prevOwner: sender(),
+                    prevOwner: prevOwner,
                     forwardPayload: msg.forwardPayload,
                 }.toCell(),
             });
         }
 
         // refund the remaining balance to the responseDestination
-        nativeReserve(myBalance() - ctx.value + msg.forwardAmount, ReserveExact);
+        // nativeReserve(myBalance() - ctx.value, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
             to: msg.responseDestination,
             value: 0,
             mode: SendRemainingBalance,
-            bounce: true,
+            bounce: false,
             body: Excesses{
                 queryId: msg.queryId
             }.toCell(),
@@ -290,8 +292,8 @@ contract NftItem {
         return GetNftData {
             init: self.initialized,
             index: self.itemIndex,
-            collectionAddress: self.collection.asSlice(),
-            ownerAddress: self.owner.asSlice(),
+            collectionAddress: self.collection,
+            ownerAddress: self.owner,
             individualContent: self.individualContent
         };
     }

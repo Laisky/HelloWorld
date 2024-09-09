@@ -17,6 +17,7 @@ export async function run(provider: NetworkProvider) {
             $$type: "Mint",
             amount: toNano("1"),
             receiver: provider.sender().address!!,
+            forwardTonAmount: toNano("0.5"),
         }
     )
 }

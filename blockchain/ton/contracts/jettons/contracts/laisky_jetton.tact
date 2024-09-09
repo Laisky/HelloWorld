@@ -41,7 +41,9 @@ contract JettonMaster with OwnableTransferable {
     }
 
     fun mint(msg: Mint){
+        let ctx = context();
         nativeThrowUnless(codeNotMintable, self.mintable);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.forwardTonAmount);
 
         self.totalSupply = self.totalSupply + msg.amount;
         let jettonWallet = self.getJettonContract(msg.receiver);
@@ -58,7 +60,7 @@ contract JettonMaster with OwnableTransferable {
                 amount: msg.amount,
                 from: myAddress(),
                 response_destination: sender(),
-                forward_ton_amount: ton("0.03"),
+                forward_ton_amount: msg.forwardTonAmount,
                 forward_payload: emptyCell(),
             }.toCell(),
             code: jettonWallet.code,
@@ -91,6 +93,7 @@ contract JettonMaster with OwnableTransferable {
         self.mint(Mint{
             amount: ton("1"),
             receiver: sender(),
+            forwardTonAmount: ton("0"),
         });
     }
 
@@ -190,7 +193,7 @@ contract JettonWallet {
         }
 
         // return the excess TON to the sender
-        nativeReserve(myBalance() - ctx.value + msg.forward_ton_amount, ReserveExact);
+        nativeReserve(myBalance() - ctx.value, ReserveExact);
         send(SendParameters{
             to: msg.response_destination,
             value: 0,
