@@ -6,6 +6,7 @@ import { NetworkProvider } from '@ton/blueprint';
 export async function run(provider: NetworkProvider) {
     const masterContract = provider.open(await NftCollection.fromInit(
         provider.sender().address!!,
+        "https://s3.laisky.com/uploads/2024/09/collection.json",
         "https://s3.laisky.com/public/nft/ton-demo/",
         null
     ));
@@ -19,6 +20,7 @@ export async function run(provider: NetworkProvider) {
         {
             $$type: 'Mint',
             newOwner: provider.sender().address!!,
+            forwardAmount: toNano('0.01'),
         },
     );
 }

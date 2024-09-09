@@ -11,3 +11,4 @@ const codeNonceInvalid: Int = 1004;
 // =====================================
 const codeNftIndexNotExists: Int = 20000;
 const codeNftCustomPayloadInvalid: Int = 20001;
+const codeRoyaltyNumInvalid: Int = 20002;

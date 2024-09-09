@@ -48,8 +48,6 @@ trait Common with OwnableTransferable {
 // =====================================
 
 
-const forwardFee: Int = ton("0.03");
-
 contract NftCollection with Txable, Deployable {
     owner: Address;
     staticTaxFee: Int = ton("0.01");
@@ -57,25 +55,35 @@ contract NftCollection with Txable, Deployable {
     nextItemIndex: Int as uint256 = 0;
     // collectionContent should follow the format of the TEP-64
     // https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md
-    //
-    // in most cases, it should be a url prefix of the NFT's metadata json url.
-    // e.g. "https://s3.laisky.com/public/nft/ton-demo/{individualContent}.json"
     collectionContent: Cell;
+    // itemContentUrlPrefix is the prefix of the individual NFT's content url.
+    // e.g. "https://s3.laisky.com/public/nft/ton-demo/"
+    itemContentUrlPrefix: String;
     royalty: RoyaltyParams;
 
-    init(owner: Address, collectionContent: String, royalty: RoyaltyParams?) {
+    init(owner: Address,
+        collectionContentUrl: String,
+        itemContentUrlPrefix: String,
+        royalty: RoyaltyParams?) {
         self.owner = owner;
-        self.collectionContent = collectionContent.asSlice().asCell();
+        self.collectionContent = Tep64TokenData{
+            flag: 1,
+            content: collectionContentUrl,
+        }.toCell();
+        self.itemContentUrlPrefix = itemContentUrlPrefix;
 
         if (royalty != null) {
             self.royalty = royalty!!;
         } else {
             self.royalty = RoyaltyParams{
                 numerator: 0,
-                denominator: 0,
-                destination: myAddress(),
+                denominator: 10,
+                destination: owner,
             };
         }
+
+        nativeThrowUnless(codeRoyaltyNumInvalid, self.royalty.numerator < self.royalty.denominator);
+        nativeThrowUnless(codeRoyaltyNumInvalid, self.royalty.denominator > 0);
     }
 
     bounced(msg: bounced<Mint>) {}
@@ -85,7 +93,7 @@ contract NftCollection with Txable, Deployable {
         let ctx: Context = context();
 
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
-        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee + forwardFee);
+        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= self.staticTaxFee + msg.forwardAmount);
 
         self.mint(msg);
     }
@@ -98,7 +106,7 @@ contract NftCollection with Txable, Deployable {
             newOwner: msg.newOwner,
             responseDestination: sender(),
             customPayload: self.nextItemIndex.toString().asSlice().asCell(),
-            forwardAmount: forwardFee,
+            forwardAmount: msg.forwardAmount,
             forwardPayload: emptyCell(),
         }.toCell();
 
@@ -157,10 +165,7 @@ contract NftCollection with Txable, Deployable {
     get fun get_collection_data(): CollectionData {
         return CollectionData{
             nextItemIndex: self.nextItemIndex,
-            collectionContent: beginString()
-                .concat(self.collectionContent.asSlice().asString())
-                .concat("collection.json")
-                .toCell(),
+            collectionContent: self.collectionContent,
             ownerAddress: self.owner.asSlice(),
         };
     }
@@ -171,10 +176,10 @@ contract NftCollection with Txable, Deployable {
     }
 
     get fun get_nft_content(index: Int, individualContent: Cell): Cell {
-        return GetNftContentResp{
+        return Tep64TokenData{
             flag: 1,
             content: beginString()
-                .concat(self.collectionContent.asSlice().asString())
+                .concat(self.itemContentUrlPrefix)
                 .concat(individualContent.asSlice().asString())
                 .concat(".json")
                 .toString(),
@@ -204,6 +209,10 @@ contract NftItem {
         self.individualContent = emptyCell();
     }
 
+    bounced(msg: bounced<OwnershipAssigned>) {}
+    bounced(msg: bounced<ReportStaticData>) {}
+    bounced(msg: Excesses) {}
+
     receive(msg: Transfer){
         let ctx: Context = context();
 
@@ -225,7 +234,7 @@ contract NftItem {
             send(SendParameters{
                 to: msg.newOwner,
                 value: msg.forwardAmount,
-                bounce: false,
+                bounce: true,
                 // mode: SendIgnoreErrors,
                 body: OwnershipAssigned{
                     queryId: msg.queryId,
@@ -241,7 +250,7 @@ contract NftItem {
             to: msg.responseDestination,
             value: 0,
             mode: SendRemainingBalance,
-            bounce: false,
+            bounce: true,
             body: Excesses{
                 queryId: msg.queryId
             }.toCell(),
@@ -255,7 +264,7 @@ contract NftItem {
             to: ctx.sender,
             value: 0,
             mode: SendRemainingValue,
-            bounce: false,
+            bounce: true,
             body: ReportStaticData{
                 queryId: msg.queryId,
                 index: self.itemIndex,
@@ -281,8 +290,8 @@ contract NftItem {
         return GetNftData {
             init: self.initialized,
             index: self.itemIndex,
-            collectionAddress: self.collection,
-            ownerAddress: self.owner,
+            collectionAddress: self.collection.asSlice(),
+            ownerAddress: self.owner.asSlice(),
             individualContent: self.individualContent
         };
     }

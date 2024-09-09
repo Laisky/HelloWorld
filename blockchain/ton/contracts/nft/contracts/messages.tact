@@ -61,6 +61,7 @@ message(0x8b771735) ReportStaticData {
 
 message(0xa32a5c5f) Mint {
     newOwner: Address;
+    forwardAmount: Int as coins = 0;
 }
 
 message(0x4ca83dc8) Withdraw {
@@ -79,13 +80,13 @@ message(0x4ca83dc8) Withdraw {
 struct GetNftData {
     init: Bool;
     index: Int as uint256;
-    collectionAddress: Address;
-    ownerAddress: Address;
+    collectionAddress: Slice;
+    ownerAddress: Slice;
     individualContent: Cell;
 }
 
 struct CollectionData {
-    nextItemIndex: Int as uint256;
+    nextItemIndex: Int;
     collectionContent: Cell;
     ownerAddress: Slice;
 }
@@ -97,7 +98,7 @@ struct RoyaltyParams {
     destination: Address;
 }
 
-struct GetNftContentResp {
+struct Tep64TokenData {
     // flag is the flag of the content type.
     // 0 means on-chain, 1 means off-chain.
     //
