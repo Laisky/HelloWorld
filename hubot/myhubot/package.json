@@ -4,6 +4,10 @@
   "private": true,
   "author": "Laisky <ppcelery@gmail.com>",
   "description": "A simple helpful robot for your Company",
+  "scripts": {
+    "build": "npx webpack",
+    "watch": "npx webpack --watch"
+  },
   "dependencies": {
     "hubot": "^2.18.0",
     "hubot-diagnostics": "0.0.1",

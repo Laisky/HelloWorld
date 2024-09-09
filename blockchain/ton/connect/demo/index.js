@@ -10,9 +10,15 @@ const tonConnectUI = new TonConnectUI({
 tonConnectUI.onStatusChange(async (walletInfo) => {
     console.log('walletInfo', walletInfo);
 
-    // enable buttons
-    document.getElementById("getJetton").disabled = false;
-    document.getElementById("getNft").disabled = false;
+    if (walletInfo) {
+        // enable buttons
+        document.getElementById("getJetton").disabled = false;
+        document.getElementById("getNft").disabled = false;
+    }else {
+        // disable buttons
+        document.getElementById("getJetton").disabled = true;
+        document.getElementById("getNft").disabled = true;
+    }
 });
 
 document.getElementById("getJetton")
