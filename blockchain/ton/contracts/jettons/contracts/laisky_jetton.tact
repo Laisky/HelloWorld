@@ -1,3 +1,7 @@
+// =====================================
+// https://blog.laisky.com/p/ton-tact/
+// =====================================
+
 import "@stdlib/ownable";
 import "./errcodes.tact";
 import "./messages.tact";

@@ -1,3 +1,8 @@
+// =====================================
+// https://blog.laisky.com/p/ton-tact/
+// =====================================
+
+
 import "@stdlib/deploy";
 import "@stdlib/ownable";
 import "./messages.tact";
