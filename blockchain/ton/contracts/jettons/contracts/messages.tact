@@ -67,6 +67,8 @@ message(0x4ca83dc8) Withdraw {
     remain: Int as coins;
 }
 
+// MultiMint is a message that allows the owner to mint new tokens for
+// multiple receivers and send them to their wallets at once.
 message(0xe78d9033) MultiMint {
     receivers: map<Int as uint32, MultiMintReceiver>;
     receiverCount: Int as uint32;

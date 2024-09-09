@@ -50,7 +50,6 @@ trait Common with OwnableTransferable {
 // =====================================
 
 
-
 // This is your custom jetton's master contract.
 contract JettonMaster with Txable {
     owner: Address;
@@ -118,6 +117,7 @@ contract JettonMaster with Txable {
         });
     }
 
+    // this is a non-standard method, it's used to mint new tokens to multiple users.
     receive(msg: MultiMint){
         let ctx: Context = context();
         nativeThrowUnless(codeNotMintable, self.mintable);
@@ -165,6 +165,7 @@ contract JettonMaster with Txable {
         });
     }
 
+    // this is a non-standard method, it's used to deposit coins to the wallet.
     receive("deposit") {}
 
     // this is a non-standard method,
@@ -185,6 +186,7 @@ contract JettonMaster with Txable {
         });
     }
 
+    // this is a non-standard method, it's used by some experimental projects.
     receive("airdrop") {
         let ctx = context();
 
@@ -195,9 +197,7 @@ contract JettonMaster with Txable {
         });
     }
 
-    // Generate a new jetton wallet contract for any user.
-    // This is the standard way to get a contract address.
-    // Remember, it only generates the address, not the actual deployment!
+    // this is a TEP-074 standard getter method
     get fun get_jetton_data(): JettonMasterData {
         return JettonMasterData{
             totalSupply: self.totalSupply,
@@ -208,6 +208,8 @@ contract JettonMaster with Txable {
         };
     }
 
+    // this is a TEP-074 standard getter method,
+    // generate the jetton wallet address for any user.
     get fun get_wallet_address(owner: Address): Address {
         return contractAddress(self.getJettonContract(owner));
     }
@@ -215,11 +217,19 @@ contract JettonMaster with Txable {
 
 
 contract JettonWallet with Txable {
+    // owner is the address of the user who owns the wallet.
     owner: Address;
-    staticTaxFee: Int as coins = ton("0.01");
+    // master is the address of the master contract that deployed this wallet.
     master: Address;
+    // balance is the number of tokens that the wallet currently holds.
+    // unlike the centralized ledger of Ethereum Tokens,
+    // TON users keep track of the number of tokens they own in their own wallets.
     balance: Int;
+    // staticTaxFee is the fee that will be charged for each transaction.
+    staticTaxFee: Int as coins = ton("0.01");
 
+    // The parameters of the init function should not be too complex,
+    // as it will be called frequently when generating the jetton wallet address.
     init(master: Address, owner: Address){
         self.balance = 0;
         self.owner = owner;
@@ -230,6 +240,13 @@ contract JettonWallet with Txable {
         return initOf JettonWallet(self.master, owner);
     }
 
+    bounced(src: bounced<TokenTransferInternal>){
+        self.balance = self.balance + src.amount;
+    }
+
+    // this is a TEP-074 standard receiver method,
+    // owner can transfer tokens to another jetton wallet
+    // by sending TokenTransfer message to the contract.
     receive(msg: TokenTransfer){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
@@ -246,6 +263,10 @@ contract JettonWallet with Txable {
             to: contractAddress(jettonContract),
             value: 0,
             mode: SendRemainingBalance,
+            // amount could be negative, it is impossible to pre-confirm whether
+            // the receiver has enough balance to cover the negative amount,
+            // which means the transfer may fail. If that happens,
+            // the contract's balance must be adjusted using a bounced message.
             bounce: true,
             body: TokenTransferInternal{
                 queryId: msg.queryId,
@@ -260,6 +281,7 @@ contract JettonWallet with Txable {
         });
     }
 
+    // this is unspecified by standard, but suggested format of internal message.
     // receive tokens from another jetton wallet
     receive(msg: TokenTransferInternal){
         let ctx: Context = context();
@@ -292,7 +314,11 @@ contract JettonWallet with Txable {
             });
         }
 
-        // return the excess TON to the sender
+        // refund the excess TON to the sender.
+        //
+        // using the SendRemainingBalance mode will transfer all balances
+        // that are not locked by nativeReserve.
+        // https://docs.tact-lang.org/ref/core-advanced#nativereserve
         nativeReserve(myBalance() - ctx.value + self.staticTaxFee, ReserveExact);
         send(SendParameters{
             to: msg.response_destination,
@@ -303,6 +329,7 @@ contract JettonWallet with Txable {
         });
     }
 
+    // this is a TEP-074 standard receiver method
     receive(msg: Burn){
         let ctx: Context = context();
         nativeThrowUnless(codeUnauthorized, ctx.sender == self.owner);
@@ -344,10 +371,7 @@ contract JettonWallet with Txable {
         });
     }
 
-    bounced(src: bounced<TokenTransferInternal>){
-        self.balance = self.balance + src.amount;
-    }
-
+    // this is a TEP-074 standard getter method
     get fun get_wallet_data(): JettonWalletData {
         return JettonWalletData{
             balance: self.balance,
