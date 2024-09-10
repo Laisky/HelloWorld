@@ -203,7 +203,7 @@ contract Attest with Common {
 contract Bot with Common {
     owner: Address;
     nonce: Int as uint64 = 0;
-    staticTaxFee: Int as coins = ton("0");
+    staticTaxFee: Int as coins = ton("0.01");
     master: Address;
     manifestUrl: String = "";
     // attestTaskIncentives is the balance of the attest task,
@@ -212,7 +212,6 @@ contract Bot with Common {
     // lockedValue is the value that is locked in the contract, cannot be withdrawed.
     // To ensure there is enough rent, a deposit of at least 1 TON is necessary.
     lockedValue: Int as coins = ton("0");
-    emitFee: Int as coins = ton("0.01");
     attestTaskId: Int as uint64 = 0;
 
     init(master: Address, owner: Address){
@@ -238,7 +237,6 @@ contract Bot with Common {
     receive(msg: SetBotManifest){
         let ctx = context();
         nativeThrowUnless(codeUnauthorized, sender() == self.master || sender() == self.owner);
-        nativeThrowUnless(codeNonceInvalid, msg.nonce == self.nonce);
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue);
 
         emit(WalletManifestChangedEvent{
@@ -430,7 +428,6 @@ contract Oracle with Common {
     receive(msg: SetOracleManifest) {
         let ctx = context();
         nativeThrowUnless(codeUnauthorized, sender() == self.master || sender() == self.owner);
-        nativeThrowUnless(codeNonceInvalid, msg.nonce == self.nonce);
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue);
 
         emit(WalletManifestChangedEvent{

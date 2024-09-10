@@ -14,13 +14,13 @@ export async function run(provider: NetworkProvider) {
     await botContract.send(
         provider.sender(),
         {
-            value: toNano('0.1'),
+            value: toNano('1'),
         },
         {
             $$type: 'SubmitAttestTask',
             queryId: BigInt("123"),
             proofUrl: "https://ario.laisky.com/alias/attest-proof.json",
-            attestValue: toNano("0.05"),
+            attestValue: toNano("0.01"),
         }
     );
 }
