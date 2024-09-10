@@ -3,6 +3,7 @@ import "@stdlib/ownable";
 import "@stdlib/stoppable";
 import "./errcodes.tact";
 import "./messages.tact";
+import "./library/jetton/jetton.tact";
 
 
 const MinimalOracleStakeValue: Int = ton("0.01");
@@ -13,52 +14,52 @@ const MinimalAttestValue: Int = ton("0.01");
 // =====================================
 
 
-// SetStaticTaxFee is the message that used to set the static tax fee.
-message(0x1509a420) SetStaticTaxFee {
-    staticTaxFee: Int;
-}
+// // SetStaticTaxFee is the message that used to set the static tax fee.
+// message(0x1509a420) SetStaticTaxFee {
+//     staticTaxFee: Int;
+// }
 
-trait Txable with OwnableTransferable {
-    owner: Address;
-    staticTaxFee: Int = ton("0");
+// trait Txable with OwnableTransferable {
+//     owner: Address;
+//     staticTaxFee: Int = ton("0");
 
-    get fun staticTaxFee(): Int {
-        return self.staticTaxFee;
-    }
+//     get fun staticTaxFee(): Int {
+//         return self.staticTaxFee;
+//     }
 
-    receive(msg: SetStaticTaxFee){
-        nativeThrowUnless(codeUnauthorized, sender() == self.owner);
+//     receive(msg: SetStaticTaxFee){
+//         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
 
-        self.staticTaxFee = msg.staticTaxFee;
-        let answer = beginString()
-            .concat("set static tax fee to ")
-            .concat(msg.staticTaxFee.toString())
-            .toString();
-        self.reply(answer.asComment());
-    }
-}
+//         self.staticTaxFee = msg.staticTaxFee;
+//         let answer = beginString()
+//             .concat("set static tax fee to ")
+//             .concat(msg.staticTaxFee.toString())
+//             .toString();
+//         self.reply(answer.asComment());
+//     }
+// }
 
 
-// Common is the common trait that will be used by the master contract
-trait Common with Txable {
-    owner: Address;
-    nonce: Int = 0;
-    staticTaxFee: Int = ton("0.01");
+// // Common is the common trait that will be used by the master contract
+// trait Common with Txable {
+//     owner: Address;
+//     nonce: Int = 0;
+//     staticTaxFee: Int = ton("0.01");
 
-    get fun nonce(): Int {
-        return self.nonce;
-    }
+//     get fun nonce(): Int {
+//         return self.nonce;
+//     }
 
-    fun checkAndUpdateNonce(receivedNonce: Int){
-        nativeThrowUnless(codeNonceInvalid, receivedNonce > self.nonce);
-        self.nonce = receivedNonce;
-    }
+//     fun checkAndUpdateNonce(receivedNonce: Int){
+//         nativeThrowUnless(codeNonceInvalid, receivedNonce > self.nonce);
+//         self.nonce = receivedNonce;
+//     }
 
-    fun getNonce(): Int {
-        self.nonce = self.nonce + 1;
-        return self.nonce;
-    }
-}
+//     fun getNonce(): Int {
+//         self.nonce = self.nonce + 1;
+//         return self.nonce;
+//     }
+// }
 
 // =====================================
 // Master Contract

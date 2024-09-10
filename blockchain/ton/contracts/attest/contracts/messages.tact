@@ -94,11 +94,6 @@ message(0x43a5c8c5) PayAttestIncentive {
     botOwner: Address;
 }
 
-message(0xd53276db) Excesses {
-    queryId: Int as uint64;
-}
-
-
 // =====================================
 // Events
 // =====================================
@@ -110,12 +105,4 @@ message(0x6f368da8) WalletManifestChangedEvent {
 message(0xce1a8739) WalletCreatedEvent {
     wallet: Address;
     owner: Address;
-}
-
-struct Metadata {
-    // https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#content-representation
-    // 0 for onchain, 1 for offchain
-    flag: Int as uint8;
-    // if flag is 1, then the content is a URL to the offchain metadata.
-    content: String;
 }
