@@ -14,7 +14,7 @@ export async function run(provider: NetworkProvider) {
     await oracleContract.send(
         provider.sender(),
         {
-            value: toNano('0.1'),
+            value: toNano('1'),
         },
         'gather_incentive'
     );
@@ -22,7 +22,7 @@ export async function run(provider: NetworkProvider) {
     await oracleContract.send(
         provider.sender(),
         {
-            value: toNano('0.1'),
+            value: toNano('1'),
         },
         'withdraw'
     );

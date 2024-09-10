@@ -10,12 +10,12 @@ export async function run(provider: NetworkProvider) {
     await masterContract.send(
         provider.sender(),
         {
-            value: toNano('0.1'),
+            value: toNano('1'),
         },
         {
             $$type: "RegisterOracle",
             queryId: BigInt("123"),
-            stakeValue: toNano("0.05"), // should bigger than MinimalOracleStakeValue
+            stakeValue: toNano("0.01"), // should bigger than MinimalOracleStakeValue
             oracleOwner: provider.sender().address!!,
             responseDestination: provider.sender().address!!,
             manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json",

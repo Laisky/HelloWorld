@@ -302,7 +302,21 @@ contract Bot with Common {
     // this message, and the incentive will be sent to the verifier.
     receive(msg: AttestTaskResult) {
         let incentive = self.attestTaskIncentives.get(msg.taskId);
-        nativeThrowUnless(codeAttestTaskNotFound, incentive != null);
+        if (incentive == null) {
+            // task id not found, refund the rest value to the sender
+            self.reserveValue(0);
+            send(SendParameters{
+                    to: msg.oracleOwner,
+                    value: 0,
+                    mode: SendRemainingBalance,
+                    bounce: false,
+                    body: Excesses{
+                        queryId: msg.queryId,
+                    }.toCell()
+                }
+            );
+            return;
+        }
 
         let ctx = context();
         let oracle = initOf Oracle(self.master, msg.oracleOwner);
@@ -471,7 +485,7 @@ contract Oracle with Common {
                 value: ton("0"),
                 bounce: false,
                 body: msg.toCell(),
-                mode: SendRemainingValue
+                mode: SendRemainingBalance,
             }
         );
     }
@@ -481,25 +495,11 @@ contract Oracle with Common {
     // until the release time.
     receive(msg: PayAttestIncentive){
         let ctx = context();
-        let bot = initOf Bot(self.master, msg.botOwner);
-        let botAddr = contractAddress(bot);
 
-        // sender must be the bot contract
-        nativeThrowUnless(codeSenderAddressInvalid, botAddr == sender());
-        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.incentive);
-
-        // refund the rest value to the bot
-        self.reserveValue(msg.incentive);
-        send(SendParameters{
-                to: sender(),
-                value: 0,
-                mode: SendRemainingBalance,
-                bounce: false,
-                body: Excesses{
-                    queryId: msg.queryId,
-                }.toCell()
-            }
-        );
+        // sender should be the bot contract
+        // let bot = initOf Bot(self.master, msg.botOwner);
+        // let botAddr = contractAddress(bot);
+        // nativeThrowUnless(codeSenderAddressInvalid, botAddr == sender());
 
         // if the release time is greater than now, lock the incentive.
         // otherwise, refund the rest value to the bot

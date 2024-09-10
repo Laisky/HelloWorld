@@ -14,12 +14,12 @@ export async function run(provider: NetworkProvider) {
     await oracleContract.send(
         provider.sender(),
         {
-            value: toNano('0.1'),
+            value: toNano('1'),
         },
         {
             $$type: 'AttestTaskResult',
             queryId: BigInt("123"),
-            taskId: BigInt("0"),
+            taskId: BigInt("1"),
             status: "verified",
             verifiedUrl: "https://ario.laisky.com/alias/attest-verified.json",
             botOwner: provider.sender().address!!,
