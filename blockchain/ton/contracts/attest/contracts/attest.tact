@@ -8,6 +8,7 @@ import "./library/jetton/jetton.tact";
 
 const MinimalOracleStakeValue: Int = ton("0.01");
 const MinimalAttestValue: Int = ton("0.01");
+const MinimalFinishedNotifyAmount: Int = ton("0.05");
 
 // =====================================
 // Some utility functions
@@ -313,7 +314,9 @@ contract Bot with Common {
         let increasedLockedValue = msg.attestValue;
         if (msg.finishedNotifyUser != null) {
             nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyAmount != null);
+            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyMessage != null);
             nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= increasedLockedValue);
+            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyAmount!! >= MinimalFinishedNotifyAmount);
             increasedLockedValue = increasedLockedValue + msg.finishedNotifyAmount!!;
         }
 
@@ -393,10 +396,18 @@ contract Bot with Common {
             balanceReduced = balanceReduced + task!!.finishedNotifyAmount!!;
             nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - balanceReduced >= 0);
 
+            // send message
+            send(SendParameters{
+                to: task!!.finishedNotifyUser!!,
+                value: ton("0.01"),
+                bounce: false,
+                body: task!!.finishedNotifyMessage!!.asComment(),
+            });
+
             // mint token to the user
             send(SendParameters{
                 to: self.master,
-                value: task!!.finishedNotifyAmount!!,
+                value: task!!.finishedNotifyAmount!! - ton("0.01"),
                 bounce: false,
                 body: NotifyUser{
                     queryId: msg.queryId,

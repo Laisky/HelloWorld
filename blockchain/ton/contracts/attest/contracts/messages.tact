@@ -53,6 +53,7 @@ message(0x98d245a0) SubmitAttestTask {
     // if finishedNotifyUser is not null, notify user when the attest task is finished.
     finishedNotifyUser: Address?;
     // finishedNotifyAmount should not be null when finishedNotifyUser is not null.
+    // should be greater than 0.05.
     finishedNotifyAmount: Int? as coins;
     // finishedNotifyMessage should not be null when finishedNotifyUser is not null.
     finishedNotifyMessage: String?;
