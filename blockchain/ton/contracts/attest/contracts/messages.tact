@@ -50,6 +50,20 @@ message(0x98d245a0) SubmitAttestTask {
     // attestValue is the value that will be paid to the verifier,
     // the value in the message should be greater than attestValue.
     attestValue: Int;
+    // if finishedNotifyUser is not null, notify user when the attest task is finished.
+    finishedNotifyUser: Address?;
+    // finishedNotifyTonAmound should not be null when finishedNotifyUser is not null.
+    finishedNotifyTonAmound: Int? as coins;
+    // finishedNotifyMessage should not be null when finishedNotifyUser is not null.
+    finishedNotifyMessage: String?;
+}
+
+message NotifyUser {
+    queryId: Int as uint64;
+    receiver: Address;
+    comment: String;
+    // response_destination must be bot owner
+    response_destination: Address;
 }
 
 message(0x25bded8a) PublishAttestTask {
@@ -105,4 +119,17 @@ message(0x6f368da8) WalletManifestChangedEvent {
 message(0xce1a8739) WalletCreatedEvent {
     wallet: Address;
     owner: Address;
+}
+
+// =====================================
+// Structs
+// =====================================
+struct PendingAttestTask {
+    incentive: Int as coins;
+    // if finishedNotifyUser is not null, notify user when the attest task is finished.
+    finishedNotifyUser: Address?;
+    // finishedNotifyTonAmound should not be null when finishedNotifyUser is not null.
+    finishedNotifyTonAmound: Int? as coins;
+    // finishedNotifyMessage should not be null when finishedNotifyUser is not null.
+    finishedNotifyMessage: String?;
 }

@@ -119,7 +119,7 @@ contract JettonMaster with Txable {
                 queryId: 0,
                 amount: msg.amount,
                 from: myAddress(),
-                response_destination: sender(),
+                response_destination: msg.response_destination,
                 forward_ton_amount: msg.forwardTonAmount,
                 forward_payload: emptyCell(),
             }.toCell(),
@@ -205,6 +205,7 @@ contract JettonMaster with Txable {
             amount: ton("1"),
             receiver: sender(),
             forwardTonAmount: ton("0"),
+            response_destination: sender(),
         });
     }
 

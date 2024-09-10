@@ -14,3 +14,4 @@ const codeAttestValueNotSufficient: Int = 20001;
 const codeAttestTaskNotFound: Int = 20002;
 const codeAttestTaskStatusInvalid: Int = 20003;
 const codeStakeValueNotSufficient: Int = 20004;
+const codeFinishedNotifyFieldsInvalid: Int = 20005;

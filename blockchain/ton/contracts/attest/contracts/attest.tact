@@ -173,6 +173,32 @@ contract Attest with Common {
         );
     }
 
+    receive(msg: NotifyUser) {
+        let ctx = context();
+
+        nativeThrowUnless(codeUnauthorized,
+            contractAddress(self.getBot(msg.response_destination)) == sender());
+
+        let jettonMaster = initOf JettonMaster(
+            myAddress(),
+            "https://ario.laisky.com/SYDesz5IAu3jeEn4RnxaVQQLRk1q-nx13Z4A4OuiUzI",
+        );
+
+        self.reserveValue(0);
+        send(SendParameters{
+            to: contractAddress(jettonMaster),
+            value: 0,
+            mode: SendRemainingBalance,
+            bounce: false,
+            body: Mint{
+                amount: ton("1"),
+                receiver: msg.receiver,
+                forwardTonAmount: 0,
+                response_destination: msg.response_destination,
+            }.toCell(),
+        });
+    }
+
     receive("withdraw"){
         nativeThrowUnless(codeUnauthorized, sender() == self.owner);
 
@@ -208,8 +234,8 @@ contract Bot with Common {
     master: Address;
     manifestUrl: String = "";
     // attestTaskIncentives is the balance of the attest task,
-    // the key is the task id, the value is the incentive of the task.
-    attestTaskIncentives: map<Int as uint64, Int> = emptyMap();
+    // the key is the task id, the value is the PendingAttestTask.
+    attestTaskIncentives: map<Int as uint64, PendingAttestTask> = emptyMap();
     // lockedValue is the value that is locked in the contract, cannot be withdrawed.
     // To ensure there is enough rent, a deposit of at least 1 TON is necessary.
     lockedValue: Int as coins = ton("0");
@@ -230,9 +256,6 @@ contract Bot with Common {
     }
 
     bounced(msg: bounced<PublishAttestTask>) {}
-
-    // receive deposit or refund
-    receive("deposit") {}
 
     // master can set manifest of Bot
     receive(msg: SetBotManifest){
@@ -293,17 +316,29 @@ contract Bot with Common {
         );
 
         self.attestTaskId = self.attestTaskId + 1;
+
         // save the incentive of the task
-        self.attestTaskIncentives.set(self.attestTaskId, msg.attestValue);
+        self.attestTaskIncentives.set(self.attestTaskId, PendingAttestTask{
+            incentive: msg.attestValue,
+            finishedNotifyUser: msg.finishedNotifyUser,
+            finishedNotifyTonAmound: msg.finishedNotifyTonAmound,
+            finishedNotifyMessage: msg.finishedNotifyMessage,
+        });
+
         // lock the incentive of the task for the verifier
         self.lockedValue = self.lockedValue + msg.attestValue;
+        if (msg.finishedNotifyUser != null) {
+            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyTonAmound != null);
+            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyMessage != null);
+            self.lockedValue = self.lockedValue + msg.finishedNotifyTonAmound!!;
+        }
     }
 
     // verifier contract will submit the attest task result by
     // this message, and the incentive will be sent to the verifier.
     receive(msg: AttestTaskResult) {
-        let incentive = self.attestTaskIncentives.get(msg.taskId);
-        if (incentive == null) {
+        let task = self.attestTaskIncentives.get(msg.taskId);
+        if (task == null) {
             // task id not found, refund the rest value to the sender
             self.reserveValue(0);
             send(SendParameters{
@@ -324,8 +359,10 @@ contract Bot with Common {
         let oracleAddr = contractAddress(oracle);
 
         // sender must be an oracle contract
+        let incentive = task!!.incentive;
+        let balanceReduced: Int = incentive;
         nativeThrowUnless(codeSenderAddressInvalid, oracleAddr == sender());
-        nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - incentive!! >= 0);
+        nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - incentive >= 0);
 
         // publish the attest task result,
         // The bot owner can listen to the attest results
@@ -335,20 +372,39 @@ contract Bot with Common {
         // pay the incentive to the verifier
         send(SendParameters{
                 to: oracleAddr,
-                value: incentive!!,
+                value: incentive,
                 bounce: false,
                 body: PayAttestIncentive{
                     queryId: msg.queryId,
                     taskId: msg.taskId,
-                    incentive: incentive!!,
+                    incentive: incentive,
                     releaseTime: now() + 3600 * 24 * 3,
                     botOwner: msg.botOwner
                 }.toCell()
             }
         );
 
+        // notify users
+        if (task!!.finishedNotifyUser != null) {
+            let amount = task!!.finishedNotifyTonAmound!!;
+            balanceReduced = balanceReduced + amount;
+            nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - balanceReduced >= 0);
+
+            send(SendParameters{
+                to: self.master,
+                value: amount,
+                bounce: false,
+                body: NotifyUser{
+                    queryId: msg.queryId,
+                    receiver: task!!.finishedNotifyUser!!,
+                    comment: task!!.finishedNotifyMessage!!,
+                    response_destination: msg.botOwner,
+                }.toCell()
+            });
+        }
+
         // refund
-        self.reserveValue(-incentive!!);
+        self.reserveValue(-balanceReduced);
         send(SendParameters{
                 to: msg.oracleOwner,
                 value: 0,
@@ -361,8 +417,12 @@ contract Bot with Common {
         );
 
         self.attestTaskIncentives.set(msg.taskId, null);
-        self.lockedValue = self.lockedValue - incentive!!;
+        self.lockedValue = self.lockedValue - balanceReduced;
     }
+
+
+    // receive deposit or refund
+    receive("deposit") {}
 
     // owner can withdraw all balance that is not locked
     receive("withdraw"){
@@ -395,12 +455,12 @@ contract Bot with Common {
     }
 
     get fun taskIncentives(taskId: Int): Int {
-        let val = self.attestTaskIncentives.get(taskId);
-        if (val == null) {
+        let task = self.attestTaskIncentives.get(taskId);
+        if (task == null) {
             return 0;
         }
 
-        return val!!;
+        return task!!.incentive;
     }
 
     get fun lockedValue(): Int {
