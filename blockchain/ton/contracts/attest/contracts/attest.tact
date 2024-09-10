@@ -6,6 +6,7 @@ import "./messages.tact";
 
 
 const MinimalOracleStakeValue: Int = ton("0.01");
+const MinimalAttestValue: Int = ton("0.01");
 
 // =====================================
 // Some utility functions
@@ -152,7 +153,6 @@ contract Attest with Common {
         let botAddr = contractAddress(bot);
 
         nativeThrowUnless(codeSenderAddressInvalid, botAddr == sender());
-        nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.attestValue + self.staticTaxFee);
 
         // publish the attest task via emit.
         // the task will be picked by the distributed verifier oracle.
@@ -271,29 +271,27 @@ contract Bot with Common {
         nativeThrowUnless(codeManifestNotSet, self.manifestUrl != "");
         nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= msg.attestValue);
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue + msg.attestValue);
-        nativeThrowUnless(codeAttestValueNotSufficient, msg.attestValue >= ton("0.05"));
+        nativeThrowUnless(codeAttestValueNotSufficient, msg.attestValue >= MinimalAttestValue);
 
         // forward the task to the master contract
-        let pubMsg = PublishAttestTask{
-            queryId: msg.queryId,
-            taskId: self.attestTaskId,
-            status: "pending",
-            botOwner: self.owner,
-            proofUrl: msg.proofUrl,
-            attestValue: msg.attestValue
-        };
-        self.attestTaskId = self.attestTaskId + 1;
-
         self.reserveValue(msg.attestValue);
         send(SendParameters{
                 to: self.master,
                 value: 0,
                 mode: SendRemainingBalance,
                 bounce: true,
-                body: pubMsg.toCell()
+                body: PublishAttestTask{
+                    queryId: msg.queryId,
+                    taskId: self.attestTaskId,
+                    status: "pending",
+                    botOwner: self.owner,
+                    proofUrl: msg.proofUrl,
+                    attestValue: msg.attestValue
+                }.toCell()
             }
         );
 
+        self.attestTaskId = self.attestTaskId + 1;
         // save the incentive of the task
         self.attestTaskIncentives.set(self.attestTaskId, msg.attestValue);
         // lock the incentive of the task for the verifier
