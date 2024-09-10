@@ -607,4 +607,8 @@ contract Oracle with Common {
 
         return total;
     }
+
+    get fun manifestUrl(): String {
+        return self.manifestUrl;
+    }
 }

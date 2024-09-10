@@ -18,6 +18,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'AttestTaskResult',
+            queryId: BigInt("123"),
             taskId: BigInt("0"),
             status: "verified",
             verifiedUrl: "https://ario.laisky.com/alias/attest-verified.json",

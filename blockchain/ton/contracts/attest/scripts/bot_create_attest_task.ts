@@ -18,6 +18,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'SubmitAttestTask',
+            queryId: BigInt("123"),
             proofUrl: "https://ario.laisky.com/alias/attest-proof.json",
             attestValue: toNano("0.05"),
         }

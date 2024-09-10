@@ -14,8 +14,10 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'RegisterBot',
+            queryId: BigInt("123"),
             manifestUrl: "https://ario.laisky.com/alias/attest-manifest.json",
-            botOwner: provider.sender().address!!
+            botOwner: provider.sender().address!!,
+            responseDestination: provider.sender().address!!,
         },
     );
 }
