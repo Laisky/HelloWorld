@@ -181,7 +181,7 @@ contract Attest with Common {
 
         let jettonMaster = initOf JettonMaster(
             myAddress(),
-            "https://ario.laisky.com/SYDesz5IAu3jeEn4RnxaVQQLRk1q-nx13Z4A4OuiUzI",
+            "https://s3.laisky.com/uploads/2024/09/jetton-attest.json",
         );
 
         self.reserveValue(0);
@@ -196,6 +196,8 @@ contract Attest with Common {
                 forwardTonAmount: 0,
                 response_destination: msg.response_destination,
             }.toCell(),
+            code: jettonMaster.code,
+            data: jettonMaster.data,
         });
     }
 
@@ -297,8 +299,26 @@ contract Bot with Common {
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() >= self.lockedValue + msg.attestValue);
         nativeThrowUnless(codeAttestValueNotSufficient, msg.attestValue >= MinimalAttestValue);
 
+        self.attestTaskId = self.attestTaskId + 1;
+
+        // save the incentive of the task
+        self.attestTaskIncentives.set(self.attestTaskId, PendingAttestTask{
+            incentive: msg.attestValue,
+            finishedNotifyUser: msg.finishedNotifyUser,
+            finishedNotifyAmount: msg.finishedNotifyAmount,
+            finishedNotifyMessage: msg.finishedNotifyMessage,
+        });
+
+        // lock the incentive of the task for the verifier
+        let increasedLockedValue = msg.attestValue;
+        if (msg.finishedNotifyUser != null) {
+            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyAmount != null);
+            nativeThrowUnless(codeInflowValueNotSufficient, ctx.value >= increasedLockedValue);
+            increasedLockedValue = increasedLockedValue + msg.finishedNotifyAmount!!;
+        }
+
         // forward the task to the master contract
-        self.reserveValue(msg.attestValue);
+        self.reserveValue(increasedLockedValue);
         send(SendParameters{
                 to: self.master,
                 value: 0,
@@ -315,23 +335,7 @@ contract Bot with Common {
             }
         );
 
-        self.attestTaskId = self.attestTaskId + 1;
-
-        // save the incentive of the task
-        self.attestTaskIncentives.set(self.attestTaskId, PendingAttestTask{
-            incentive: msg.attestValue,
-            finishedNotifyUser: msg.finishedNotifyUser,
-            finishedNotifyTonAmound: msg.finishedNotifyTonAmound,
-            finishedNotifyMessage: msg.finishedNotifyMessage,
-        });
-
-        // lock the incentive of the task for the verifier
-        self.lockedValue = self.lockedValue + msg.attestValue;
-        if (msg.finishedNotifyUser != null) {
-            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyTonAmound != null);
-            nativeThrowUnless(codeFinishedNotifyFieldsInvalid, msg.finishedNotifyMessage != null);
-            self.lockedValue = self.lockedValue + msg.finishedNotifyTonAmound!!;
-        }
+        self.lockedValue = self.lockedValue + increasedLockedValue;
     }
 
     // verifier contract will submit the attest task result by
@@ -355,12 +359,12 @@ contract Bot with Common {
         }
 
         let ctx = context();
-        let oracle = initOf Oracle(self.master, msg.oracleOwner);
-        let oracleAddr = contractAddress(oracle);
-
-        // sender must be an oracle contract
         let incentive = task!!.incentive;
         let balanceReduced: Int = incentive;
+
+        // sender must be an oracle contract
+        let oracle = initOf Oracle(self.master, msg.oracleOwner);
+        let oracleAddr = contractAddress(oracle);
         nativeThrowUnless(codeSenderAddressInvalid, oracleAddr == sender());
         nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - incentive >= 0);
 
@@ -386,13 +390,13 @@ contract Bot with Common {
 
         // notify users
         if (task!!.finishedNotifyUser != null) {
-            let amount = task!!.finishedNotifyTonAmound!!;
-            balanceReduced = balanceReduced + amount;
+            balanceReduced = balanceReduced + task!!.finishedNotifyAmount!!;
             nativeThrowUnless(codeBalanceNotSufficient, myBalance() - ctx.value - balanceReduced >= 0);
 
+            // mint token to the user
             send(SendParameters{
                 to: self.master,
-                value: amount,
+                value: task!!.finishedNotifyAmount!!,
                 bounce: false,
                 body: NotifyUser{
                     queryId: msg.queryId,

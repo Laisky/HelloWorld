@@ -21,6 +21,9 @@ export async function run(provider: NetworkProvider) {
             queryId: BigInt("123"),
             proofUrl: "https://ario.laisky.com/alias/attest-proof.json",
             attestValue: toNano("0.1"),
+            finishedNotifyUser: provider.sender().address!!,
+            finishedNotifyTonAmount: toNano("0.1"),
+            finishedNotifyMessage: "task finished",
         }
     );
 }

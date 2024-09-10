@@ -52,8 +52,8 @@ message(0x98d245a0) SubmitAttestTask {
     attestValue: Int;
     // if finishedNotifyUser is not null, notify user when the attest task is finished.
     finishedNotifyUser: Address?;
-    // finishedNotifyTonAmound should not be null when finishedNotifyUser is not null.
-    finishedNotifyTonAmound: Int? as coins;
+    // finishedNotifyAmount should not be null when finishedNotifyUser is not null.
+    finishedNotifyAmount: Int? as coins;
     // finishedNotifyMessage should not be null when finishedNotifyUser is not null.
     finishedNotifyMessage: String?;
 }
@@ -128,8 +128,8 @@ struct PendingAttestTask {
     incentive: Int as coins;
     // if finishedNotifyUser is not null, notify user when the attest task is finished.
     finishedNotifyUser: Address?;
-    // finishedNotifyTonAmound should not be null when finishedNotifyUser is not null.
-    finishedNotifyTonAmound: Int? as coins;
+    // finishedNotifyAmount should not be null when finishedNotifyUser is not null.
+    finishedNotifyAmount: Int? as coins;
     // finishedNotifyMessage should not be null when finishedNotifyUser is not null.
     finishedNotifyMessage: String?;
 }
