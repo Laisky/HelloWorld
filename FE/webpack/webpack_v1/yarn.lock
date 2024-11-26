@@ -774,10 +774,6 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bootstrap:
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
-
 bootstrap-loader:
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/bootstrap-loader/-/bootstrap-loader-2.0.0-beta.20.tgz#aa570627dc71ef61803ab1d91f770326363a185c"
@@ -794,6 +790,10 @@ bootstrap-loader:
 bootstrap-sass:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.3.7.tgz#6596c7ab40f6637393323ab0bc80d064fc630498"
+
+bootstrap@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.4.1.tgz#c3a347d419e289ad11f4033e3c4132b87c081d72"
 
 brace-expansion@^1.0.0:
   version "1.1.6"
