@@ -1,0 +1,31 @@
+name: YubiKey compatibility
+on:
+  pull_request:
+    paths:
+      - "golang/yubikey/**"
+      - ".github/workflows/yubikey-compatibility.yml"
+  push:
+    branches: [master]
+    paths:
+      - "golang/yubikey/**"
+      - ".github/workflows/yubikey-compatibility.yml"
+permissions:
+  contents: read
+jobs:
+  unit:
+    name: Formatting and unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: golang/yubikey
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.20.14"
+          cache-dependency-path: golang/yubikey/go.sum
+      - run: sudo apt-get update && sudo apt-get install -y libpcsclite-dev
+      - name: Check formatting
+        run: test -z "$(gofmt -l main.go offline_test.go legacy_compatibility_test.go)"
+      - name: Fast offline unit tests
+        run: go test ./...
