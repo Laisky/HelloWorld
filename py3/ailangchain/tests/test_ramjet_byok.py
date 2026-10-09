@@ -16,7 +16,7 @@ KEY = "synthetic-notebook-byok-key"
 BACKEND = "http://127.0.0.1:17980/selected/v1"
 
 
-def load_caller(notebook, embed, credential_error=None):
+def load_caller(notebook, embed, credential_error=None, credential_result=None):
     """Compile definitions only, avoiding imports, data files and cell execution."""
     document = json.loads((NOTEBOOK_ROOT / notebook).read_text())
     cell = next(cell for cell in document["cells"]
@@ -26,10 +26,10 @@ def load_caller(notebook, embed, credential_error=None):
     stream = io.StringIO()
     logger = logging.Logger("synthetic-notebook-caller")
     logger.addHandler(logging.StreamHandler(stream))
-    resolver = Mock(side_effect=credential_error if credential_error else
-                    lambda key, base: {"api_key": key, "base_url": base})
+    resolver = Mock(side_effect=credential_error, return_value=credential_result or
+                    {"api_key": KEY, "base_url": BACKEND})
     namespace = {
-        "resolve_model_credentials": resolver,
+        "resolve_request_credentials": resolver,
         "os": os, "_embedding_pdf": embed, "logger": logger,
         "index_dirpath": "synthetic-index", "name": "synthetic-dataset",
         "load_store": Mock(return_value=SimpleNamespace(
@@ -43,17 +43,20 @@ def load_caller(notebook, embed, credential_error=None):
 
 
 class RamjetBYOKNotebookContracts(unittest.TestCase):
-    def run_caller(self, notebook, environment, failure=None):
+    def run_caller(self, notebook, environment, failure=None, resolved_base=BACKEND):
         captured = []
         def embed(*, apikey, api_base="https://api.openai.com/v1", **kwargs):
             captured.append((apikey, api_base))
             if failure:
                 raise ValueError(failure)
             return SimpleNamespace(store=object())
-        namespace, logs = load_caller(notebook, embed)
+        namespace, logs = load_caller(notebook, embed, credential_result={
+            "api_key": KEY, "base_url": resolved_base})
         with patch.dict(os.environ, environment, clear=True):
             with contextlib.redirect_stdout(io.StringIO()):
                 namespace["run_scan_pdfs"]()
+        namespace["resolve_request_credentials"].assert_called_once_with(
+            environment.get("OPENAI_API_KEY"), environment.get("OPENAI_API_BASE"))
         return captured, namespace, logs.getvalue()
 
     def test_key_and_selected_backend_reach_actual_embedding_call(self):
@@ -71,6 +74,20 @@ class RamjetBYOKNotebookContracts(unittest.TestCase):
                     "OPENAI_API_BASE": "http://127.0.0.1:17980/selected/"})
                 self.assertEqual(captured, [(KEY, BACKEND)])
 
+    def test_query_and_fragment_are_delegated_to_shared_backend_resolver(self):
+        for notebook in NOTEBOOKS:
+            for raw_base, selected in (
+                ("http://127.0.0.1:17980/selected/?route=synthetic#local",
+                 BACKEND + "?route=synthetic#local"),
+                (BACKEND + "?route=synthetic#local",
+                 BACKEND + "?route=synthetic#local"),
+            ):
+                with self.subTest(notebook=notebook, backend=raw_base):
+                    captured, _, _ = self.run_caller(notebook, {
+                        "OPENAI_API_KEY": KEY, "OPENAI_API_BASE": raw_base},
+                        resolved_base=selected)
+                    self.assertEqual(captured, [(KEY, selected)])
+
     def test_missing_key_fails_before_loading_or_saving_an_index(self):
         for notebook in NOTEBOOKS:
             with self.subTest(notebook=notebook):
@@ -80,7 +97,7 @@ class RamjetBYOKNotebookContracts(unittest.TestCase):
                     with contextlib.redirect_stdout(io.StringIO()):
                         with self.assertRaises((ValueError, KeyError)):
                             namespace["run_scan_pdfs"]()
-                namespace["resolve_model_credentials"].assert_called_once_with(
+                namespace["resolve_request_credentials"].assert_called_once_with(
                     None, BACKEND)
                 namespace["load_store"].assert_not_called()
                 namespace["save_store"].assert_not_called()
@@ -98,7 +115,7 @@ class RamjetBYOKNotebookContracts(unittest.TestCase):
                         clear=True):
                         with self.assertRaisesRegex(ValueError, "Invalid BYOK"):
                             namespace["run_scan_pdfs"]()
-                    namespace["resolve_model_credentials"].assert_called_once_with(
+                    namespace["resolve_request_credentials"].assert_called_once_with(
                         bad_key, BACKEND)
                     namespace["load_store"].assert_not_called()
                     namespace["save_store"].assert_not_called()
@@ -113,7 +130,7 @@ class RamjetBYOKNotebookContracts(unittest.TestCase):
                 with patch.dict(os.environ, {"OPENAI_API_KEY": KEY}, clear=True):
                     with self.assertRaisesRegex(ValueError, "OPENAI_API_BASE"):
                         namespace["run_scan_pdfs"]()
-                namespace["resolve_model_credentials"].assert_not_called()
+                namespace["resolve_request_credentials"].assert_not_called()
                 namespace["load_store"].assert_not_called()
                 namespace["save_store"].assert_not_called()
                 embed.assert_not_called()
