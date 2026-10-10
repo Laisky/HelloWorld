@@ -8,7 +8,7 @@
         "pretest": "blueprint build SimpleCounter"
     },
     "devDependencies": {
-        "@ton/blueprint": "^0.22.0",
+        "@ton/blueprint": "^0.47.1",
         "@ton/sandbox": "^0.20.0",
         "@ton/test-utils": "^0.4.2",
         "@types/jest": "^29.5.12",
