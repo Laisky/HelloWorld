@@ -38,7 +38,7 @@
     "chai-bn": "^0.3.1",
     "eslint": "^8.16.0",
     "fast-glob": "^3.2.11",
-    "mocha": "^10.0.0",
+    "mocha": "^10.8.2",
     "nyc": "^15.1.0",
     "prando": "^6.0.1",
     "prettier": "2.6.2",
@@ -48,7 +48,7 @@
     "ts-node": "^10.4.0",
     "ts-sinon": "^2.0.2",
     "typescript": "^4.5.4",
-    "axios": "0.25.0"
+    "axios": "0.34.0"
   },
   "prettier": {
     "printWidth": 100
@@ -71,5 +71,9 @@
     "ton": "^11.16.0",
     "ton-contracts": "^3.1.0",
     "ton-crypto": "^3.1.0"
+  },
+  "overrides": {
+    "axios@<1": "0.34.0",
+    "js-yaml@>=4": "^4.3.0"
   }
 }
