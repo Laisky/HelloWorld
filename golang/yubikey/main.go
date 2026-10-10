@@ -109,7 +109,7 @@ func Encrypt(logger glog.Logger) error {
 	}
 
 	deviceDecrypter := priv.(crypto.Decrypter)
-	gotRaw, err := deviceDecrypter.Decrypt(rand.Reader, cipher, nil)
+	gotRaw, err := decryptLegacyRSA(deviceDecrypter, cipher)
 	if err != nil {
 		return errors.Wrap(err, "decrypt")
 	}
@@ -120,4 +120,11 @@ func Encrypt(logger glog.Logger) error {
 
 	logger.Info("succeed encrypt and decrypt")
 	return nil
+}
+
+// decryptLegacyRSA preserves the historical nil-option PKCS #1 v1.5 contract.
+// This deprecated mode is only suitable for trusted historical data; it can
+// expose a padding oracle if failures are observable to an attacker.
+func decryptLegacyRSA(decrypter crypto.Decrypter, ciphertext []byte) ([]byte, error) {
+	return decrypter.Decrypt(rand.Reader, ciphertext, nil)
 }
