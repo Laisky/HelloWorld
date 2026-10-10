@@ -71,5 +71,9 @@
     "ton": "^11.16.0",
     "ton-contracts": "^3.1.0",
     "ton-crypto": "^3.1.0"
+  },
+  "overrides": {
+    "axios@<1": "0.34.0",
+    "js-yaml@>=4": "^4.3.0"
   }
 }
