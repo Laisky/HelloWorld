@@ -20,5 +20,13 @@
         "ts-jest": "^29.2.0",
         "ts-node": "^10.9.2",
         "typescript": "^5.5.3"
+    },
+    "overrides": {
+        "axios@<1": "^0.34.0",
+        "axios@>=1": "^1.20.0",
+        "js-yaml@<4": "^3.15.2",
+        "js-yaml@>=4": "^4.3.0",
+        "braces": "^3.0.3",
+        "browserslist": "^4.29.3"
     }
 }

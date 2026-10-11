@@ -50,7 +50,7 @@ describe('SimpleCounter', () => {
 
             console.log('counter before increasing', counterBefore);
 
-            const increaseBy = BigInt(Math.floor(Math.random() * 100));
+            const increaseBy = BigInt([1, 7, 42][i]);
 
             console.log('increasing by', increaseBy);
 

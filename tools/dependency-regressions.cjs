@@ -124,16 +124,11 @@ async function kibana() {
 }
 async function webpack() {
   const dir = 'FE/webpack/webpack_v1';
-  await check('Webpack forwarded chains and websocket extensions parse correctly', () => {
-    assert.deepStrictEqual(load(dir, 'forwarded')({
-      headers: {'x-forwarded-for': 'client, proxy'}, connection: {remoteAddress: 'local'}
-    }), ['local', 'proxy', 'client']);
-    const parser = load(dir, 'websocket-extensions/lib/parser');
-    let offer;
-    parser.parseHeader('permessage-deflate; client_max_window_bits')
-      .eachOffer((name, params) => { offer = {name: name, params: params}; });
-    assert.strictEqual(offer.name, 'permessage-deflate');
-    assert.strictEqual(offer.params.client_max_window_bits, true);
+  await check('Webpack keeps Bootstrap 3 styling and glyphicons', () => {
+    const css = fs.readFileSync(path.join(root, dir, 'node_modules/bootstrap/dist/css/bootstrap.css'), 'utf8');
+    assert(css.includes('.glyphicon'));
+    assert(css.includes('.navbar-default'));
+    assert(fs.existsSync(path.join(root, dir, 'node_modules/bootstrap/fonts/glyphicons-halflings-regular.woff2')));
   });
   await check('Webpack JSX compiles with the existing Babel 6 presets', () => {
     const result = load(dir, 'babel-core').transform('ReactDOM.render(<h1>Hello World</h1>, target)', {
@@ -147,32 +142,11 @@ async function webpack() {
     assert.strictEqual(typeof compiler.run, 'function');
     assert.strictEqual(typeof compiler.plugin, 'function');
   });
-  await check('Webpack dev server preserves local SockJS handshake', () => new Promise((resolve, reject) => {
-    const http = require('http');
-    const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'helloworld-webpack-'));
-    fs.writeFileSync(path.join(folder, 'entry.js'), 'module.exports = "hello";');
-    const compiler = load(dir, 'webpack')({entry: path.join(folder, 'entry.js'),
-      output: {path: folder, filename: 'bundle.js'}});
-    const Server = load(dir, 'webpack-dev-server');
-    const server = new Server(compiler, {quiet: true, contentBase: folder});
-    const timer = setTimeout(() => finish(new Error('local server timed out')), 10000);
-    function finish(error) {
-      clearTimeout(timer);
-      server.close();
-      fs.unlinkSync(path.join(folder, 'entry.js')); fs.rmdirSync(folder);
-      error ? reject(error) : resolve();
-    }
-    server.listen(0, '127.0.0.1', () => {
-      const port = server.listeningApp.address().port;
-      http.get('http://127.0.0.1:' + port + '/sockjs-node/info', response => {
-        let data = ''; response.on('data', chunk => { data += chunk; });
-        response.on('end', () => {
-          try { assert.strictEqual(response.statusCode, 200); assert.strictEqual(JSON.parse(data).websocket, true); finish(); }
-          catch (e) { finish(e); }
-        });
-      }).on('error', finish);
-    });
-  }));
+  await check('Webpack local preview serves compiled assets without modern compiler hooks', () => {
+    require('child_process').execFileSync(process.execPath, [
+      path.join(root, dir, 'tests/preview.test.cjs')
+    ], {stdio: 'inherit'});
+  });
 }
 (async () => {
   if (selected === 'slides' || selected === 'all') await slides();

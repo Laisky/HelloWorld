@@ -56,7 +56,7 @@ describe('HelloWorld', () => {
 
             console.log('counter before increasing', counterBefore);
 
-            const increaseBy = Math.floor(Math.random() * 100);
+            const increaseBy = [1, 7, 42][i];
 
             console.log('increasing by', increaseBy);
 
@@ -78,4 +78,26 @@ describe('HelloWorld', () => {
             expect(counterAfter).toBe(counterBefore + increaseBy);
         }
     });
+    it('should deliver a withdraw message without changing the counter', async () => {
+        const recipient = await blockchain.treasury('recipient');
+        const amount = toNano('0.01');
+        const result = await helloWorld.sendWithdraw(deployer.getSender(), {
+            amount, recipient: recipient.address, value: toNano('0.05'),
+        });
+        expect(result.transactions).toHaveTransaction({
+            from: helloWorld.address, to: recipient.address, value: amount, success: true,
+        });
+        expect(await helloWorld.getCounter()).toBe(0);
+    });
+
+    it('should reject withdrawals exceeding the available balance', async () => {
+        const result = await helloWorld.sendWithdraw(deployer.getSender(), {
+            amount: toNano('2'), recipient: deployer.address, value: toNano('0.05'),
+        });
+        expect(result.transactions).toHaveTransaction({
+            from: deployer.address, to: helloWorld.address, success: false, exitCode: 1001,
+        });
+        expect(await helloWorld.getCounter()).toBe(0);
+    });
+
 });
