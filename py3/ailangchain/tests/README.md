@@ -24,10 +24,16 @@ root and an existing /v1 base preserve the selected destination exactly once.
 Provider exception text must not reach logs, even when it echoes the test key.
 
 The notebooks require a Ramjet version exporting
-ramjet.tasks.gptchat.credentials.resolve_request_credentials. Configure the
+ramjet.credentials.resolve_request_credentials. Configure the
 existing OPENAI_API_KEY and OPENAI_API_BASE routes before running the PDF
 scanner; no provider default or Ramjet server key is substituted. Backend roots
 receive one /v1 suffix through the shared resolver, preserving configured query and fragment values. Install/qualify that shared-resolver version before
 using the updated notebook cells. Run these caller tests before enforcing
 Ramjet's no-fallback policy for other production clients. Do not run full
 notebooks for regression validation: they access private configuration and data.
+
+The independent root-level resolver must be installed before these cells are used.
+Caller options are captured before the lazy model-task import, so legacy task
+initialization cannot substitute its server environment values. Invalid caller
+configuration fails before provider import or index work. This prerequisite does
+not grant UID/index access or enable pending server BYOK authorization changes.
