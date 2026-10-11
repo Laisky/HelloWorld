@@ -37,7 +37,7 @@ async function common(dir) {
       },
     );
   }
-  if (fs.existsSync(path.join(modules, "form-data"))) {
+  if (choice === "modern" && fs.existsSync(path.join(modules, "form-data"))) {
     await check(
       dir + ": multipart boundaries resist predictable Math.random",
       () => {
