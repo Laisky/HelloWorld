@@ -3,7 +3,8 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
-const root = path.resolve(__dirname, "..");
+const vm = require("vm");
+const root = process.env.DEPENDENCY_ROOT || path.resolve(__dirname, "..");
 const choice = process.argv[2] || "modern";
 let passed = 0;
 function load(dir, name) {
@@ -33,6 +34,69 @@ async function common(dir) {
         const data = parse("__proto__:\n  polluted: unsafe\nsafe: ok");
         assert.strictEqual({}.polluted, undefined);
         assert.strictEqual(data.safe, "ok");
+      },
+    );
+  }
+  if (fs.existsSync(path.join(modules, "form-data"))) {
+    await check(
+      dir + ": multipart boundaries resist predictable Math.random",
+      () => {
+        const FormData = load(dir, "form-data");
+        const random = Math.random;
+        let first, second;
+        try {
+          Math.random = () => 0;
+          first = new FormData();
+          second = new FormData();
+          assert.notStrictEqual(first.getBoundary(), second.getBoundary());
+        } finally {
+          Math.random = random;
+        }
+        first.append("title", "hello 世界");
+        first.append("file", Buffer.from("example"), "example.txt");
+        const body = first.getBuffer().toString();
+        assert(body.includes("hello 世界"));
+        assert(body.includes('filename="example.txt"'));
+        assert(body.includes("--" + first.getBoundary() + "--"));
+      },
+    );
+  }
+  if (fs.existsSync(path.join(modules, "protobufjs"))) {
+    await check(
+      dir + ": protocol messages preserve integer and Unicode fields",
+      () => {
+        const protobuf = load(dir, "protobufjs");
+        const root = protobuf.parse(
+          'syntax = "proto3"; message Example { uint32 counter = 1; string label = 2; }',
+        ).root;
+        const message = root.lookupType("Example");
+        const value = { counter: 42, label: "hello 世界" };
+        assert.strictEqual(message.verify(value), null);
+        assert.deepStrictEqual(
+          message.toObject(message.decode(message.encode(value).finish())),
+          value,
+        );
+        assert.notStrictEqual(message.verify({ counter: "wrong" }), null);
+      },
+    );
+  }
+  if (fs.existsSync(path.join(modules, "@babel/core"))) {
+    await check(
+      dir + ": Babel preserves executable code and source maps",
+      () => {
+        const result = load(dir, "@babel/core").transformSync(
+          'const greet = (name) => "Hello " + name; greet("world");',
+          {
+            configFile: false,
+            babelrc: false,
+            sourceMaps: true,
+            filename: "greet.js",
+          },
+        );
+        assert.strictEqual(vm.runInNewContext(result.code), "Hello world");
+        assert(
+          result.map.sources.some((source) => source.endsWith("greet.js")),
+        );
       },
     );
   }
@@ -155,6 +219,21 @@ async function axios(dir) {
       assert(html.includes("<h1>Example</h1>"));
       assert(html.includes('src="icon.png"'));
     });
+  if (choice === "slides")
+    await check(
+      "Slides linkification keeps URLs and excludes executable schemes",
+      () => {
+        const Linkify = load("tools/google-slides", "linkify-it");
+        const matches = new Linkify().match(
+          "Visit https://example.com/path?q=one. Mail demo@example.com.",
+        );
+        assert.deepStrictEqual(
+          matches.map((match) => match.url),
+          ["https://example.com/path?q=one", "mailto:demo@example.com"],
+        );
+        assert.strictEqual(new Linkify().match("javascript:alert(1)"), null);
+      },
+    );
   console.log(passed + " dependency behavior checks passed");
 })().catch((error) => {
   console.error(error);

@@ -2,11 +2,9 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MyNFT is ERC721 {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+    uint256 private _tokenIds;
 
     mapping(uint256 => string) private _tokenURIs;
     address _owner;
@@ -25,8 +23,7 @@ contract MyNFT is ERC721 {
         address recipient,
         string memory newTokenURI
     ) public onlyOwner returns (uint256) {
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
+        uint256 newItemId = ++_tokenIds;
         _mint(recipient, newItemId);
         _tokenURIs[newItemId] = string(abi.encodePacked(newTokenURI));
         return newItemId;
