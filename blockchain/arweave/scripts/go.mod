@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	github.com/Laisky/errors/v2 v2.0.1
-	github.com/Laisky/go-utils/v4 v4.9.1
+	github.com/Laisky/go-utils/v4 v4.10.0
 	github.com/everFinance/goar v1.6.3
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
@@ -16,8 +16,9 @@ require (
 	github.com/GoWebProd/uuid7 v0.0.0-20231130161441-17ee54b097d4 // indirect
 	github.com/Laisky/fast-skiplist/v2 v2.0.1 // indirect
 	github.com/Laisky/go-chaining v0.0.0-20180507092046-43dcdc5a21be // indirect
+	github.com/Laisky/golang-fifo v1.0.1-0.20240403091456-fc83d5e38c0b // indirect
 	github.com/Laisky/graphql v1.0.6 // indirect
-	github.com/Laisky/zap v1.27.0 // indirect
+	github.com/Laisky/zap v1.27.1-0.20240628060440-a253d90172e3 // indirect
 	github.com/bits-and-blooms/bitset v1.13.0 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3 // indirect
 	github.com/btcsuite/btcd/btcutil v1.1.5 // indirect

@@ -1,3 +1,6 @@
+//go:build integration_arweave
+
+// The live wallet/balance acceptance requires separate explicit approval.
 package main
 
 import (

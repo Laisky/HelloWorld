@@ -3,7 +3,7 @@ module scripts
 go 1.22.0
 
 require (
-	github.com/Laisky/go-utils/v4 v4.9.1
+	github.com/Laisky/go-utils/v4 v4.10.0
 	github.com/ethereum/go-ethereum v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.8.0
@@ -15,8 +15,9 @@ require (
 	github.com/Laisky/errors/v2 v2.0.1 // indirect
 	github.com/Laisky/fast-skiplist/v2 v2.0.1 // indirect
 	github.com/Laisky/go-chaining v0.0.0-20180507092046-43dcdc5a21be // indirect
+	github.com/Laisky/golang-fifo v1.0.1-0.20240403091456-fc83d5e38c0b // indirect
 	github.com/Laisky/graphql v1.0.6 // indirect
-	github.com/Laisky/zap v1.27.0 // indirect
+	github.com/Laisky/zap v1.27.1-0.20240628060440-a253d90172e3 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
