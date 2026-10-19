@@ -1,0 +1,75 @@
+name: Dependency compatibility
+
+on:
+  pull_request:
+    paths:
+      - 'FE/webpack/webpack_v1/**'
+      - 'blockchain/ton/contracts/**'
+      - '.github/workflows/dependency-compatibility.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'FE/webpack/webpack_v1/**'
+      - 'blockchain/ton/contracts/**'
+      - '.github/workflows/dependency-compatibility.yml'
+permissions:
+  contents: read
+
+jobs:
+  ton:
+    name: TON (${{ matrix.project }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [counter, simple-counter, simple-distributor, minter-contract]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: blockchain/ton/contracts/${{ matrix.project }}/package-lock.json
+      - name: Install locked dependencies
+        working-directory: blockchain/ton/contracts/${{ matrix.project }}
+        run: npm ci --no-audit --no-fund
+      - name: Compile and run local sandbox tests
+        if: matrix.project != 'minter-contract'
+        working-directory: blockchain/ton/contracts/${{ matrix.project }}
+        run: npm test -- --runInBand
+      - name: Compile and run local emulator and dependency tests
+        if: matrix.project == 'minter-contract'
+        working-directory: blockchain/ton/contracts/${{ matrix.project }}
+        run: npm test
+      - name: Check TypeScript
+        working-directory: blockchain/ton/contracts/${{ matrix.project }}
+        run: npx --no-install tsc --noEmit
+      - name: Check temporary-file compatibility
+        working-directory: blockchain/ton/contracts/${{ matrix.project }}
+        run: node ../dependency-contracts.cjs
+      - name: Keep manifests immutable
+        run: git diff --exit-code -- '**/package.json' '**/package-lock.json' '**/yarn.lock'
+
+  webpack:
+    name: Webpack 1 and Bootstrap 5
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '16.20.2'
+      - name: Install locked dependencies
+        working-directory: FE/webpack/webpack_v1
+        run: npx --yes --package=yarn@1.22.22 yarn install --frozen-lockfile --non-interactive
+      - name: Compile and verify the browser page and missing-bundle control
+        working-directory: FE/webpack/webpack_v1
+        run: node tests/build.test.cjs
+      - name: Check the local preview
+        working-directory: FE/webpack/webpack_v1
+        run: node tests/preview.test.cjs
+      - name: Keep manifests immutable
+        run: git diff --exit-code -- '**/package.json' '**/package-lock.json' '**/yarn.lock'

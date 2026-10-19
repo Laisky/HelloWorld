@@ -44,6 +44,6 @@ export async function run(provider: NetworkProvider, args: string[]) {
 
 
     // (Optional) Get the contract's balance after withdrawal
-    const balanceAfter = await provider.getBalance(address);
+    const balanceAfter = (await provider.provider(address).getState()).balance;
     ui.write(`Contract balance after withdrawal: ${balanceAfter.toString()} nanoTON`);
 }

@@ -1,0 +1,12 @@
+{
+    "projects": [
+        {
+            "name": "tact",
+            "path": "contracts/simple_counter.tact",
+            "output": "build/SimpleCounter",
+            "options": {
+                "debug": true
+            }
+        }
+    ]
+}

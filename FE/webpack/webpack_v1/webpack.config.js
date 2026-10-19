@@ -18,7 +18,6 @@ module.exports = {
         sites: './static/jsx/main.jsx',
         vendor: [
             'jquery',
-            'bootstrap',
             'react',
             'react-dom',
             'react-router',
@@ -78,6 +77,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new (require("./bootstrap-assets.cjs"))(),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')

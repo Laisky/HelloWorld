@@ -11,11 +11,11 @@
 
 ### Build
 
-`npx blueprint build` or `yarn blueprint build`
+`npm run build`
 
 ### Test
 
-`npx blueprint test` or `yarn blueprint test`
+`npm test`
 
 ### Deploy or run another script
 
@@ -24,3 +24,9 @@
 ### Add a new contract
 
 `npx blueprint create ContractName` or `yarn blueprint create ContractName`
+
+Blueprint 0.47 no longer compiles Tact. This example calls the standalone
+Tact 1.4.0 compiler so its existing generated wrapper, code, initial data and
+address remain reproducible. Build before running an operator-selected script.
+The contract source and debug option are unchanged; protobufjs and tmp are
+resolved to patched versions through the checked-in lockfile.

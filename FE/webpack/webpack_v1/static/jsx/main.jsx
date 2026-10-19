@@ -3,7 +3,6 @@
 // css
 import '../css/app.css';
 import '../sass/app.scss';
-import 'bootstrap-loader';
 
 
 ReactDOM.render(

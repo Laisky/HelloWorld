@@ -11,8 +11,6 @@
     "babel-preset-es2016": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "bootstrap": "^5.3.8",
-    "bootstrap-loader": "^2.0.0-beta.20",
-    "bootstrap-sass": "^3.4.1",
     "compass-mixins": "^0.12.10",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -32,10 +30,12 @@
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "@popperjs/core": "^2.11.8"
   },
   "scripts": {
     "build": "webpack",
-    "start": "node preview.cjs"
+    "start": "node preview.cjs",
+    "test:build": "node tests/build.test.cjs"
   }
 }

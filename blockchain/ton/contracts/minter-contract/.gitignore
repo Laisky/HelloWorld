@@ -9,3 +9,8 @@ tonwallets
 lib/cmd_temp.ts
 dist
 *.tgz
+
+!build/
+build/*
+!build/_build.ts
+!build/jetton-minter.deploy.ts

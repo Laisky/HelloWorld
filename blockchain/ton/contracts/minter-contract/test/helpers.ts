@@ -44,7 +44,7 @@ export function internalMessage(params: {
 // temp fix until ton-contract-executor (unit tests) remembers c7 value between calls
 export function setBalance(contract: SmartContract, balance: BN) {
   contract.setC7Config({
-    balance: balance.toNumber(),
+    balance,
   });
 }
 
