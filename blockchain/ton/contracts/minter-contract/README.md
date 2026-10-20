@@ -5,6 +5,18 @@
 This project contains everything you need to deploy a new token (Jetton contract) to TON blockchain. This project is free and open source and was created for educational purposes.
 
 
+## Offline build and tests
+
+Use Node 22, then run `npm ci` and `npm test`. The test command compiles the
+unchanged checked-in contracts with the pinned FunC WASM package and runs both
+the local contract emulator and HTTP/serialization compatibility tests.
+`npm run build` writes ignored `.compiled.json` files; no global func/fift
+installation or install-time download script is needed. The legacy emulator test
+process disables global fetch so its Emscripten bundle reads the local WASM file
+instead of treating a filesystem path as a URL. The pure metadata helper
+comes from upstream commit `074b7d5f45f43552146fdf54f972020b2757bc18`.
+The upstream deployment walkthrough below is separate from this offline build.
+
 ## Option 1: Deploy a standard Jetton using your browser
 
 This is by far the simpler option if you want to use the standard Jetton code. You will not need to install any tools on your machine, just open up your web browser, fill-in some data about your token in the HTML form and click deploy.
